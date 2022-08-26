@@ -25,7 +25,7 @@ from ldm.util import instantiate_from_config
 from ldm.models.diffusion.ddim import DDIMSampler
 from ldm.models.diffusion.plms import PLMSSampler
 
-#python scripts/img2img_anim.py --prompt "Film test 1" --strength 0.42 --ddim_steps 80 --scale 8
+#python Tools/Animator/sd_anim.py --prompt "Film test 1" --strength 0.42 --ddim_steps 80 --scale 8
 
 def chunk(it, size):
     it = iter(it)
@@ -284,7 +284,11 @@ def main():
 
     sampler.make_schedule(ddim_num_steps=opt.ddim_steps, ddim_eta=opt.ddim_eta, verbose=False)
 
-    promptList = [("Futurama, Everyone at church listening to zoidberg's sermon, religious, traditional",0.36, 40),
+
+    promptList = [("A beautiful sunny day in the fields, cinematic",0.25, 50),("A lovely forest, castle in frame, imax 70mm, cinematic",0.30, 50)]
+
+    '''
+    promptList = [    ("Futurama, Everyone at church listening to zoidberg's sermon, religious, traditional",0.36, 40),
 ("Futurama, hermes performing his latest stunt, clowning around, circus",0.32, 25),
 ("Futurama visiting the moon for a dinner party, wealthy lifestyle, upper class",0.3, 30),
 #("Star wipe, cinematic transistion",0.5, 10),
@@ -312,6 +316,8 @@ def main():
 ("minions, the minions at a restaurant, eating, food",0.3, 35),
 ("minions, the minions going down a slide, comedy",0.3, 35),
 ("End credits, film credits",0.375, 50)]
+    '''
+
 
     sampleCount = 0
     imageCount = 0
@@ -455,3 +461,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+

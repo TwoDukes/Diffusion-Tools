@@ -1,3 +1,6 @@
 **/Outputs
 *.ckpt
 init*
+*.log
+**/testFiles
+**/testFiles/*
