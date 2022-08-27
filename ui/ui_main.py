@@ -52,7 +52,7 @@ class Ui_MainWindow(object):
         self.MainName.setMinimumSize(QSize(800, 0))
         font = QFont()
         font.setFamily(u"MS Shell Dlg 2")
-        font.setPointSize(28)
+        font.setPointSize(24)
         font.setBold(False)
         font.setWeight(50)
         self.MainName.setFont(font)
@@ -270,12 +270,13 @@ class Ui_MainWindow(object):
         self.stepSlider.setObjectName(u"stepSlider")
         sizePolicy.setHeightForWidth(self.stepSlider.sizePolicy().hasHeightForWidth())
         self.stepSlider.setSizePolicy(sizePolicy)
-        self.stepSlider.setMaximum(150)
-        self.stepSlider.setValue(20)
-        self.stepSlider.setSliderPosition(20)
+        self.stepSlider.setMaximum(25)
+        self.stepSlider.setPageStep(1)
+        self.stepSlider.setValue(4)
+        self.stepSlider.setSliderPosition(4)
         self.stepSlider.setOrientation(Qt.Horizontal)
         self.stepSlider.setTickPosition(QSlider.TicksAbove)
-        self.stepSlider.setTickInterval(10)
+        self.stepSlider.setTickInterval(1)
 
         self.verticalLayout.addWidget(self.stepSlider)
 
@@ -298,11 +299,12 @@ class Ui_MainWindow(object):
         sizePolicy.setHeightForWidth(self.scaleSlider.sizePolicy().hasHeightForWidth())
         self.scaleSlider.setSizePolicy(sizePolicy)
         self.scaleSlider.setMaximum(20)
+        self.scaleSlider.setPageStep(1)
         self.scaleSlider.setValue(7)
         self.scaleSlider.setSliderPosition(7)
         self.scaleSlider.setOrientation(Qt.Horizontal)
         self.scaleSlider.setTickPosition(QSlider.TicksAbove)
-        self.scaleSlider.setTickInterval(5)
+        self.scaleSlider.setTickInterval(0)
 
         self.verticalLayout.addWidget(self.scaleSlider)
 
@@ -325,6 +327,7 @@ class Ui_MainWindow(object):
         self.imageCountSlider.setSizePolicy(sizePolicy)
         self.imageCountSlider.setMinimum(1)
         self.imageCountSlider.setMaximum(9)
+        self.imageCountSlider.setPageStep(1)
         self.imageCountSlider.setOrientation(Qt.Horizontal)
         self.imageCountSlider.setTickPosition(QSlider.TicksAbove)
         self.imageCountSlider.setTickInterval(1)
@@ -392,7 +395,7 @@ class Ui_MainWindow(object):
     # setupUi
 
     def retranslateUi(self, MainWindow):
-        MainWindow.setWindowTitle(QCoreApplication.translate("MainWindow", u"SD Tools", None))
+        MainWindow.setWindowTitle(QCoreApplication.translate("MainWindow", u"Diffusion Tools", None))
         self.actionNew.setText(QCoreApplication.translate("MainWindow", u"New", None))
         self.action_2.setText(QCoreApplication.translate("MainWindow", u"New", None))
 #if QT_CONFIG(statustip)
@@ -416,7 +419,7 @@ class Ui_MainWindow(object):
 #if QT_CONFIG(statustip)
         self.actionSave.setStatusTip(QCoreApplication.translate("MainWindow", u"Save a new file", None))
 #endif // QT_CONFIG(statustip)
-        self.MainName.setText(QCoreApplication.translate("MainWindow", u"SD TOOLS", None))
+        self.MainName.setText(QCoreApplication.translate("MainWindow", u"DIFFUSION TOOLS", None))
         self.txt2imgButton.setText(QCoreApplication.translate("MainWindow", u"txt2img", None))
         self.img2imgButton.setText(QCoreApplication.translate("MainWindow", u"img2img", None))
         self.vid2vidButton.setText(QCoreApplication.translate("MainWindow", u"vid2vid", None))

@@ -17,7 +17,7 @@
    </size>
   </property>
   <property name="windowTitle">
-   <string>SD Tools</string>
+   <string>Diffusion Tools</string>
   </property>
   <property name="styleSheet">
    <string notr="true">background-color: rgb(68, 68, 68);
@@ -54,7 +54,7 @@ color: rgb(255, 255, 255);</string>
       <property name="font">
        <font>
         <family>MS Shell Dlg 2</family>
-        <pointsize>28</pointsize>
+        <pointsize>24</pointsize>
         <weight>50</weight>
         <bold>false</bold>
        </font>
@@ -69,7 +69,7 @@ color: rgb(255, 255, 255);</string>
        <enum>QFrame::NoFrame</enum>
       </property>
       <property name="text">
-       <string>SD TOOLS</string>
+       <string>DIFFUSION TOOLS</string>
       </property>
      </widget>
     </item>
@@ -545,13 +545,16 @@ color: rgb(35, 35, 35);</string>
            </sizepolicy>
           </property>
           <property name="maximum">
-           <number>150</number>
+           <number>25</number>
+          </property>
+          <property name="pageStep">
+           <number>1</number>
           </property>
           <property name="value">
-           <number>20</number>
+           <number>4</number>
           </property>
           <property name="sliderPosition">
-           <number>20</number>
+           <number>4</number>
           </property>
           <property name="orientation">
            <enum>Qt::Horizontal</enum>
@@ -560,7 +563,7 @@ color: rgb(35, 35, 35);</string>
            <enum>QSlider::TicksAbove</enum>
           </property>
           <property name="tickInterval">
-           <number>10</number>
+           <number>1</number>
           </property>
          </widget>
         </item>
@@ -607,6 +610,9 @@ color: rgb(35, 35, 35);</string>
           <property name="maximum">
            <number>20</number>
           </property>
+          <property name="pageStep">
+           <number>1</number>
+          </property>
           <property name="value">
            <number>7</number>
           </property>
@@ -620,7 +626,7 @@ color: rgb(35, 35, 35);</string>
            <enum>QSlider::TicksAbove</enum>
           </property>
           <property name="tickInterval">
-           <number>5</number>
+           <number>0</number>
           </property>
          </widget>
         </item>
@@ -663,6 +669,9 @@ color: rgb(35, 35, 35);</string>
           </property>
           <property name="maximum">
            <number>9</number>
+          </property>
+          <property name="pageStep">
+           <number>1</number>
           </property>
           <property name="orientation">
            <enum>Qt::Horizontal</enum>

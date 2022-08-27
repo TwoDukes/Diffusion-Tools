@@ -120,12 +120,12 @@ if __name__ == '__main__':
 
     window = MainWindow()
 
-    window.ui.stepSlider.valueChanged.connect(lambda: SliderChanged((window.ui.stepSlider.value(), window.ui.stepCountLabel, 'STEP COUNT')))
+    window.ui.stepSlider.valueChanged.connect(lambda: SliderChanged((window.ui.stepSlider.value()*5, window.ui.stepCountLabel, 'STEP COUNT')))
     window.ui.scaleSlider.valueChanged.connect(lambda: SliderChanged((window.ui.scaleSlider.value(), window.ui.scaleCountLabel, 'SCALE')))
     window.ui.imageCountSlider.valueChanged.connect(lambda: SliderChanged((window.ui.imageCountSlider.value(), window.ui.imageAmountLabel, 'IMAGES')))
     window.ui.generateButton.clicked.connect(lambda: Generate_txt2img({
         'prompt': window.ui.promptInput.text(),
-        'steps': window.ui.stepSlider.value(),
+        'steps': window.ui.stepSlider.value()*5,
         'scale': window.ui.scaleSlider.value(),
         'imageCount': window.ui.imageCountSlider.value(),
         'seed': SeedRandomize(window.ui.seedInputBox,window.ui.seedRandomized.isChecked()),
