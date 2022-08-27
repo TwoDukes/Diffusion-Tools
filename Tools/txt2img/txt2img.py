@@ -270,8 +270,6 @@ async def main(args):
         assert prompt is not None
         data = [batch_size * [prompt]]
 
-        print(f"!!!!!!!!!!!!!data = {data}")
-
     else:
         print(f"reading prompts from {opt.from_file}")
         with open(opt.from_file, "r") as f:
