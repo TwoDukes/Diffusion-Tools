@@ -1,3 +1,4 @@
+from ast import arg
 from math import ceil, floor
 import random
 import sys
@@ -65,15 +66,15 @@ def Generate_txt2img(args, previewLabel):
                 'prompt': args['prompt'],
                 'outdir':  'Outputs/txt2img-samples',
                 'skip_grid': None,
-                'skip_save': None,
+                'skip_save': True,
                 'ddim_steps': args['steps'],
                 'plms': None,
                 'laion400m': False,
                 'fixed_code': None,
                 'ddim_eta': 0.0,
                 'n_iter': 1,
-                'H': 512,
-                'W': 512,
+                'H': args['H'],
+                'W': args['W'],
                 'C': 4,
                 'f': 8,
                 'n_samples': args['imageCount'],
@@ -127,7 +128,9 @@ if __name__ == '__main__':
         'steps': window.ui.stepSlider.value(),
         'scale': window.ui.scaleSlider.value(),
         'imageCount': window.ui.imageCountSlider.value(),
-        'seed': SeedRandomize(window.ui.seedInputBox,window.ui.seedRandomized.isChecked())
+        'seed': SeedRandomize(window.ui.seedInputBox,window.ui.seedRandomized.isChecked()),
+        'W': window.ui.widthInput.value(),
+        'H': window.ui.heightInput.value(),
     },window.ui.imagePreview))
     
     SetPreviewImage(window.ui.imagePreview, 'ui/preview.png')
