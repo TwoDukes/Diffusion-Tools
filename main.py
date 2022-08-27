@@ -1,4 +1,5 @@
 from math import ceil, floor
+import random
 import sys
 import asyncio
 import torch
@@ -81,7 +82,7 @@ def Generate_txt2img(args, previewLabel):
                 'from_file': None,
                 'config': 'configs/stable-diffusion/v1-inference.yaml', 
                 'ckpt': 'models/ldm/stable-diffusion-v1/model.ckpt',
-                'seed': None,
+                'seed': int(args['seed']),
                 'precision':'autocast'
             }
 
@@ -98,6 +99,18 @@ def SetPreviewImage(labelElement, imageURL):
 def SliderChanged(args):
     args[1].setText(f"{args[2]}: {str(args[0])}")
 
+def SeedRandomize(seed, isRandom):
+    if isRandom:
+        seed.setText(str(random.randint(0, 999999999)))
+    try:
+        int(seed.text())
+    except:
+        print("Seed is not a number")
+        seed.setText(str(random.randint(0, 999999999)))
+
+    return seed.text()
+    
+
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
@@ -113,10 +126,11 @@ if __name__ == '__main__':
         'prompt': window.ui.promptInput.text(),
         'steps': window.ui.stepSlider.value(),
         'scale': window.ui.scaleSlider.value(),
-        'imageCount': window.ui.imageCountSlider.value()
+        'imageCount': window.ui.imageCountSlider.value(),
+        'seed': SeedRandomize(window.ui.seedInputBox,window.ui.seedRandomized.isChecked())
     },window.ui.imagePreview))
     
-    SetPreviewImage(window.ui.imagePreview, 'ui/loading.png')
+    SetPreviewImage(window.ui.imagePreview, 'ui/preview.png')
 
 
     window.show()
