@@ -47,24 +47,7 @@ def numpy_to_pil(images):
     return pil_images
 
 
-def load_model_from_config(config, ckpt, verbose=False):
-    print(f"Loading model from {ckpt}")
-    pl_sd = torch.load(ckpt, map_location="cpu")
-    if "global_step" in pl_sd:
-        print(f"Global Step: {pl_sd['global_step']}")
-    sd = pl_sd["state_dict"]
-    model = instantiate_from_config(config.model)
-    m, u = model.load_state_dict(sd, strict=False)
-    if len(m) > 0 and verbose:
-        print("missing keys:")
-        print(m)
-    if len(u) > 0 and verbose:
-        print("unexpected keys:")
-        print(u)
 
-    model.cuda()
-    model.eval()
-    return model
 
 
 def put_watermark(img, wm_encoder=None):
@@ -96,7 +79,7 @@ def check_safety(x_image):
     return x_checked_image, has_nsfw_concept
 
 
-async def main(args):
+def main(args, model, config):
     parser = argparse.ArgumentParser()
 
     parser.add_argument(
@@ -244,8 +227,7 @@ async def main(args):
     print("init_seed = ", opt.seed)
     seed_everything(opt.seed)
 
-    config = OmegaConf.load(f"{opt.config}")
-    model = load_model_from_config(config, f"{opt.ckpt}")
+    
 
     device = torch.device("cuda") if torch.cuda.is_available() else torch.device("cpu")
     model = model.to(device)
@@ -284,6 +266,8 @@ async def main(args):
     start_code = None
     if opt.fixed_code:
         start_code = torch.randn([opt.n_samples, opt.C, opt.H // opt.f, opt.W // opt.f], device=device)
+
+    finalPath = None
 
     precision_scope = autocast if opt.precision=="autocast" else nullcontext
     with torch.no_grad():
@@ -324,6 +308,9 @@ async def main(args):
                                 x_sample = 255. * rearrange(x_sample.cpu().numpy(), 'c h w -> h w c')
                                 img = Image.fromarray(x_sample.astype(np.uint8))
                                 img = put_watermark(img, wm_encoder)
+
+                                finalPath = os.path.join(sample_path, f"{base_count:05}.png")
+
                                 img.save(os.path.join(sample_path, f"{base_count:05}.png"))
                                 base_count += 1
 
@@ -341,12 +328,17 @@ async def main(args):
                     img = Image.fromarray(grid.astype(np.uint8))
                     img = put_watermark(img, wm_encoder)
                     img.save(os.path.join(outpath, f'grid-{grid_count:04}.png'))
+                    
+                    finalPath = os.path.join(outpath, f'grid-{grid_count:04}.png')
+
                     grid_count += 1
 
                 toc = time.time()
 
     print(f"Your samples are ready and waiting for you here: \n{outpath} \n"
           f" \nEnjoy.")
+
+    return finalPath
 
 
 if __name__ == "__main__":

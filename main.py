@@ -1,19 +1,50 @@
 import sys
 import asyncio
+import torch
 from Tools.txt2img.txt2img import main as txt2img
 from PySide2.QtWidgets import QApplication, QMainWindow
 from PySide2.QtCore import QFile
+from PySide2 import QtCore, QtGui, QtWidgets
 from ui.ui_main import Ui_MainWindow
+from omegaconf import OmegaConf
+from ldm.util import instantiate_from_config
 
+config_g = None
+model_g = None
+
+def load_model_from_config(config, ckpt, verbose=False):
+    print(f"Loading model from {ckpt}")
+    pl_sd = torch.load(ckpt, map_location="cpu")
+    if "global_step" in pl_sd:
+        print(f"Global Step: {pl_sd['global_step']}")
+    sd = pl_sd["state_dict"]
+    model = instantiate_from_config(config.model)
+    m, u = model.load_state_dict(sd, strict=False)
+    if len(m) > 0 and verbose:
+        print("missing keys:")
+        print(m)
+    if len(u) > 0 and verbose:
+        print("unexpected keys:")
+        print(u)
+
+    model.cuda()
+    model.eval()
+    return model
 
 class dotdict(dict):    
         __getattr__ = dict.get
         __setattr__ = dict.__setitem__
         __delattr__ = dict.__delitem__
 
-def main():
+def loadSDModel():
+
+    modelPath = 'models/ldm/stable-diffusion-v1/model.ckpt'
+    configPath = 'configs/stable-diffusion/v1-inference.yaml'
+
+    config = OmegaConf.load(f"{configPath}")
+    model = load_model_from_config(config, f"{modelPath}")
    
-    print('main')
+    return model, config
     
 
 class MainWindow(QMainWindow):
@@ -24,8 +55,9 @@ class MainWindow(QMainWindow):
 
 
 
-def Generate_txt2img(args):                                                                                   
+def Generate_txt2img(args, previewLabel):                                                                                   
     print("GENERATING")
+    SetPreviewImage(previewLabel, 'ui/loading.png')
 
     args = {
                 'prompt': args['prompt'],
@@ -53,14 +85,23 @@ def Generate_txt2img(args):
             }
 
     args = dotdict(args)
-    asyncio.run(txt2img(args))
+    curImage = txt2img(args, model_g, config_g)
+    print(curImage)
+    SetPreviewImage(previewLabel, curImage)
+
+# this function sets an image to a label
+def SetPreviewImage(labelElement, imageURL):
+    labelElement.setPixmap(QtGui.QPixmap(imageURL))
     
+# this function sets a text to a label
 def SliderChanged(args):
     args[1].setText(f"{args[2]}: {str(args[0])}")
 
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
+
+    model_g, config_g = loadSDModel()
 
     window = MainWindow()
 
@@ -70,9 +111,10 @@ if __name__ == '__main__':
         'prompt': window.ui.promptInput.text(),
         'steps': window.ui.stepSlider.value(),
         'scale': window.ui.scaleSlider.value()
-    }))
+    },window.ui.imagePreview))
+    
+    SetPreviewImage(window.ui.imagePreview, 'ui/loading.png')
 
-    #main()
 
     window.show()
 

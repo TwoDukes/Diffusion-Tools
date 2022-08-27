@@ -285,7 +285,10 @@ def main():
     sampler.make_schedule(ddim_num_steps=opt.ddim_steps, ddim_eta=opt.ddim_eta, verbose=False)
 
 
-    promptList = [("A beautiful sunny day in the fields, cinematic",0.25, 50),("A lovely forest, castle in frame, imax 70mm, cinematic",0.30, 50)]
+    promptList = [("a sunken shipwreck teeming with life, eerie, spooky",0.22, 50),
+    ("scuba divers exploring a coral reef, beautiful colors, bright, cheerful",0.30, 50),
+    ("An underwater city filled with shining lights and glass buildings, science fiction, cityscape, metropolis",0.25, 50),
+    ("an ecosystem inside a lava lamp",0.26, 50)]
 
     '''
     promptList = [    ("Futurama, Everyone at church listening to zoidberg's sermon, religious, traditional",0.36, 40),
@@ -317,6 +320,8 @@ def main():
 ("minions, the minions going down a slide, comedy",0.3, 35),
 ("End credits, film credits",0.375, 50)]
     '''
+
+    
 
 
     sampleCount = 0

@@ -163,10 +163,15 @@ class Ui_MainWindow(object):
 
         self.verticalLayout_2.addLayout(self.horizontalLayout)
 
+        self.label = QLabel(self.centralwidget)
+        self.label.setObjectName(u"label")
+
+        self.verticalLayout_2.addWidget(self.label)
+
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QMenuBar(MainWindow)
         self.menubar.setObjectName(u"menubar")
-        self.menubar.setGeometry(QRect(0, 0, 1100, 26))
+        self.menubar.setGeometry(QRect(0, 0, 1100, 21))
         MainWindow.setMenuBar(self.menubar)
         self.statusbar = QStatusBar(MainWindow)
         self.statusbar.setObjectName(u"statusbar")
@@ -208,5 +213,6 @@ class Ui_MainWindow(object):
         self.scaleCountLabel.setText(QCoreApplication.translate("MainWindow", u"SCALE: 5", None))
         self.generateButton.setText(QCoreApplication.translate("MainWindow", u"Generate", None))
         self.imagePreview.setText("")
+        self.label.setText("")
     # retranslateUi
 
