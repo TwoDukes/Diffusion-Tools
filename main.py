@@ -1,3 +1,4 @@
+from math import ceil, floor
 import sys
 import asyncio
 import torch
@@ -74,8 +75,8 @@ def Generate_txt2img(args, previewLabel):
                 'W': 512,
                 'C': 4,
                 'f': 8,
-                'n_samples': 1,
-                'n_rows': 0,
+                'n_samples': args['imageCount'],
+                'n_rows': int(floor(float(args['imageCount'])/2)),
                 'scale': args['scale'],
                 'from_file': None,
                 'config': 'configs/stable-diffusion/v1-inference.yaml', 
@@ -107,10 +108,12 @@ if __name__ == '__main__':
 
     window.ui.stepSlider.valueChanged.connect(lambda: SliderChanged((window.ui.stepSlider.value(), window.ui.stepCountLabel, 'STEP COUNT')))
     window.ui.scaleSlider.valueChanged.connect(lambda: SliderChanged((window.ui.scaleSlider.value(), window.ui.scaleCountLabel, 'SCALE')))
+    window.ui.imageCountSlider.valueChanged.connect(lambda: SliderChanged((window.ui.imageCountSlider.value(), window.ui.imageAmountLabel, 'IMAGES')))
     window.ui.generateButton.clicked.connect(lambda: Generate_txt2img({
         'prompt': window.ui.promptInput.text(),
         'steps': window.ui.stepSlider.value(),
-        'scale': window.ui.scaleSlider.value()
+        'scale': window.ui.scaleSlider.value(),
+        'imageCount': window.ui.imageCountSlider.value()
     },window.ui.imagePreview))
     
     SetPreviewImage(window.ui.imagePreview, 'ui/loading.png')

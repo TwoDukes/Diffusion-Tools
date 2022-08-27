@@ -135,6 +135,29 @@ class Ui_MainWindow(object):
 
         self.verticalLayout.addWidget(self.scaleSlider)
 
+        self.imageAmountLabel = QLabel(self.centralwidget)
+        self.imageAmountLabel.setObjectName(u"imageAmountLabel")
+        sizePolicy.setHeightForWidth(self.imageAmountLabel.sizePolicy().hasHeightForWidth())
+        self.imageAmountLabel.setSizePolicy(sizePolicy)
+        self.imageAmountLabel.setMinimumSize(QSize(0, 20))
+        font4 = QFont()
+        font4.setPointSize(8)
+        font4.setBold(True)
+        font4.setWeight(75)
+        self.imageAmountLabel.setFont(font4)
+
+        self.verticalLayout.addWidget(self.imageAmountLabel)
+
+        self.imageCountSlider = QSlider(self.centralwidget)
+        self.imageCountSlider.setObjectName(u"imageCountSlider")
+        self.imageCountSlider.setMinimum(1)
+        self.imageCountSlider.setMaximum(9)
+        self.imageCountSlider.setOrientation(Qt.Horizontal)
+        self.imageCountSlider.setTickPosition(QSlider.TicksAbove)
+        self.imageCountSlider.setTickInterval(1)
+
+        self.verticalLayout.addWidget(self.imageCountSlider)
+
         self.verticalSpacer = QSpacerItem(20, 45, QSizePolicy.Minimum, QSizePolicy.Fixed)
 
         self.verticalLayout.addItem(self.verticalSpacer)
@@ -146,6 +169,7 @@ class Ui_MainWindow(object):
         sizePolicy2.setVerticalStretch(0)
         sizePolicy2.setHeightForWidth(self.generateButton.sizePolicy().hasHeightForWidth())
         self.generateButton.setSizePolicy(sizePolicy2)
+        self.generateButton.setAcceptDrops(False)
         self.generateButton.setStyleSheet(u"background-color: rgb(216, 216, 216);\n"
 "color: rgb(16, 16, 16);")
 
@@ -156,7 +180,9 @@ class Ui_MainWindow(object):
 
         self.imagePreview = QLabel(self.centralwidget)
         self.imagePreview.setObjectName(u"imagePreview")
-        self.imagePreview.setPixmap(QPixmap(u"../outputs/txt2img-samples/grid-0008.png"))
+        self.imagePreview.setMaximumSize(QSize(512, 512))
+        self.imagePreview.setPixmap(QPixmap(u"../outputs/txt2img-samples/grid-0049.png"))
+        self.imagePreview.setScaledContents(True)
 
         self.horizontalLayout.addWidget(self.imagePreview)
 
@@ -171,11 +197,15 @@ class Ui_MainWindow(object):
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QMenuBar(MainWindow)
         self.menubar.setObjectName(u"menubar")
-        self.menubar.setGeometry(QRect(0, 0, 1100, 21))
+        self.menubar.setGeometry(QRect(0, 0, 1100, 26))
+        self.menuMenu = QMenu(self.menubar)
+        self.menuMenu.setObjectName(u"menuMenu")
         MainWindow.setMenuBar(self.menubar)
         self.statusbar = QStatusBar(MainWindow)
         self.statusbar.setObjectName(u"statusbar")
         MainWindow.setStatusBar(self.statusbar)
+
+        self.menubar.addAction(self.menuMenu.menuAction())
 
         self.retranslateUi(MainWindow)
 
@@ -211,8 +241,13 @@ class Ui_MainWindow(object):
         self.promptLabel.setText(QCoreApplication.translate("MainWindow", u"PROMPT", None))
         self.stepCountLabel.setText(QCoreApplication.translate("MainWindow", u"STEP COUNT: 50", None))
         self.scaleCountLabel.setText(QCoreApplication.translate("MainWindow", u"SCALE: 5", None))
+        self.imageAmountLabel.setText(QCoreApplication.translate("MainWindow", u"IMAGES: 1", None))
         self.generateButton.setText(QCoreApplication.translate("MainWindow", u"Generate", None))
+#if QT_CONFIG(shortcut)
+        self.generateButton.setShortcut(QCoreApplication.translate("MainWindow", u"Return", None))
+#endif // QT_CONFIG(shortcut)
         self.imagePreview.setText("")
         self.label.setText("")
+        self.menuMenu.setTitle(QCoreApplication.translate("MainWindow", u"Menu", None))
     # retranslateUi
 
