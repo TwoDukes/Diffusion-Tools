@@ -285,7 +285,7 @@ def main():
     sampler.make_schedule(ddim_num_steps=opt.ddim_steps, ddim_eta=opt.ddim_eta, verbose=False)
 
 
-    promptList = [("A cuty puppy",0.28, 25)]
+    promptList = [("A duke and a pink donut",0.30, 50)]
 
     '''
     promptList = [    ("Futurama, Everyone at church listening to zoidberg's sermon, religious, traditional",0.36, 40),

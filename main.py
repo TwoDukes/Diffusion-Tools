@@ -6,6 +6,7 @@ import asyncio
 import torch
 import traceback
 from Tools.txt2img.txt2img import main as txt2img
+from Tools.img2img.img2img import main as img2img
 from PySide2.QtWidgets import QApplication, QMainWindow, QVBoxLayout, QLabel, QPushButton, QWidget
 from PySide2.QtCore import QFile, QTimer, QRunnable, Slot, Signal, QObject, QThreadPool
 from PySide2 import QtCore, QtGui, QtWidgets
@@ -143,7 +144,7 @@ def Generate_txt2img(args, previewLabel, window):
     SetPreviewImage(previewLabel, 'ui/loading.png')
 
     def progress_fn(n):
-        print(f"{n}%")
+        print(f"{n}% !!!!!!!!!!!!!!!!!!!!!!!")
 
     def setResult(curImage):
         SetPreviewImage(previewLabel, curImage)

@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1200</width>
-    <height>680</height>
+    <width>1532</width>
+    <height>999</height>
    </rect>
   </property>
   <property name="minimumSize">
@@ -33,7 +33,7 @@ color: rgb(255, 255, 255);</string>
      <verstretch>0</verstretch>
     </sizepolicy>
    </property>
-   <layout class="QVBoxLayout" name="verticalLayout_2" stretch="0,0,0">
+   <layout class="QVBoxLayout" name="verticalLayout_2" stretch="0,0,0,0">
     <property name="sizeConstraint">
      <enum>QLayout::SetDefaultConstraint</enum>
     </property>
@@ -74,7 +74,14 @@ color: rgb(255, 255, 255);</string>
      </widget>
     </item>
     <item>
-     <layout class="QHBoxLayout" name="horizontalLayout" stretch="0,0,0">
+     <widget class="Line" name="line">
+      <property name="orientation">
+       <enum>Qt::Horizontal</enum>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <layout class="QHBoxLayout" name="horizontalLayout" stretch="0,0,0,0">
       <property name="rightMargin">
        <number>20</number>
       </property>
@@ -233,6 +240,13 @@ color: rgb(255, 255, 255);</string>
          </spacer>
         </item>
        </layout>
+      </item>
+      <item>
+       <widget class="Line" name="line_2">
+        <property name="orientation">
+         <enum>Qt::Vertical</enum>
+        </property>
+       </widget>
       </item>
       <item>
        <layout class="QVBoxLayout" name="verticalLayout">
@@ -772,7 +786,7 @@ color: rgb(16, 16, 16);</string>
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1200</width>
+     <width>1532</width>
      <height>26</height>
     </rect>
    </property>
@@ -780,6 +794,7 @@ color: rgb(16, 16, 16);</string>
     <property name="title">
      <string>Menu</string>
     </property>
+    <addaction name="actionopen_output_folder"/>
    </widget>
    <addaction name="menuMenu"/>
   </widget>
@@ -825,6 +840,14 @@ color: rgb(16, 16, 16);</string>
    </property>
    <property name="statusTip">
     <string>Save a new file</string>
+   </property>
+  </action>
+  <action name="actionopen_output_folder">
+   <property name="text">
+    <string>open output folder</string>
+   </property>
+   <property name="statusTip">
+    <string/>
    </property>
   </action>
  </widget>
