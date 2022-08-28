@@ -15,7 +15,6 @@ from pytorch_lightning import seed_everything
 from torch import autocast
 from contextlib import contextmanager, nullcontext
 
-from ldm.util import instantiate_from_config
 from ldm.models.diffusion.ddim import DDIMSampler
 from ldm.models.diffusion.plms import PLMSSampler
 
@@ -78,7 +77,7 @@ def check_safety(x_image):
     return x_checked_image, has_nsfw_concept
 
 
-def main(args, model, config):
+def main(args, model, progress_callback):
     parser = argparse.ArgumentParser()
 
     parser.add_argument(
@@ -262,6 +261,8 @@ def main(args, model, config):
         start_code = torch.randn([opt.n_samples, opt.C, opt.H // opt.f, opt.W // opt.f], device=device)
 
     finalPath = None
+
+    progress_callback.emit(50)
 
     precision_scope = autocast if opt.precision=="autocast" else nullcontext
     with torch.no_grad():

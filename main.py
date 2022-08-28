@@ -4,16 +4,19 @@ import random
 import sys
 import asyncio
 import torch
+import traceback
 from Tools.txt2img.txt2img import main as txt2img
-from PySide2.QtWidgets import QApplication, QMainWindow
-from PySide2.QtCore import QFile
+from PySide2.QtWidgets import QApplication, QMainWindow, QVBoxLayout, QLabel, QPushButton, QWidget
+from PySide2.QtCore import QFile, QTimer, QRunnable, Slot, Signal, QObject, QThreadPool
 from PySide2 import QtCore, QtGui, QtWidgets
+from PySide2.QtCore import QRunnable, Slot, QThreadPool
 from ui.ui_main import Ui_MainWindow
 from omegaconf import OmegaConf
 from ldm.util import instantiate_from_config
 
 config_g = None
 model_g = None
+
 
 def load_model_from_config(config, ckpt, verbose=False):
     print(f"Loading model from {ckpt}")
@@ -50,17 +53,100 @@ def loadSDModel():
     return model, config
     
 
+#------------------WORKER------------------
+
+class WorkerSignals(QObject):
+    '''
+    Defines the signals available from a running worker thread.
+
+    Supported signals are:
+
+    finished
+        No data
+
+    error
+        tuple (exctype, value, traceback.format_exc() )
+
+    result
+        object data returned from processing, anything
+
+    progress
+        int indicating % progress
+
+    '''
+    finished = Signal()
+    error = Signal(tuple)
+    result = Signal(object)
+    progress = Signal(int)
+
+
+class Worker(QRunnable):
+    '''
+    Worker thread
+
+    Inherits from QRunnable to handler worker thread setup, signals and wrap-up.
+
+    :param callback: The function callback to run on this worker thread. Supplied args and
+                     kwargs will be passed through to the runner.
+    :type callback: function
+    :param args: Arguments to pass to the callback function
+    :param kwargs: Keywords to pass to the callback function
+
+    '''
+
+    def __init__(self, fn, *args, **kwargs):
+        super(Worker, self).__init__()
+
+        # Store constructor arguments (re-used for processing)
+        self.fn = fn
+        self.args = args
+        self.kwargs = kwargs
+        self.signals = WorkerSignals()
+
+        # Add the callback to our kwargs
+        self.kwargs['progress_callback'] = self.signals.progress
+
+    @Slot()
+    def run(self):
+        '''
+        Initialise the runner function with passed args, kwargs.
+        '''
+
+        # Retrieve args/kwargs here; and fire processing using them
+        try:
+            result = self.fn(*self.args, **self.kwargs)
+        except:
+            traceback.print_exc()
+            exctype, value = sys.exc_info()[:2]
+            self.signals.error.emit((exctype, value, traceback.format_exc()))
+        else:
+            self.signals.result.emit(result)  # Return the result of the processing
+        finally:
+            self.signals.finished.emit()
+
+#------------------WORKER------------------
+#------------------UI------------------
+
 class MainWindow(QMainWindow):
     def __init__(self):
         super(MainWindow, self).__init__()
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
 
+        self.threadpool = QThreadPool()
+        print("Multithreading with maximum %d threads" % self.threadpool.maxThreadCount())
 
 
-def Generate_txt2img(args, previewLabel):                                                                                   
+
+def Generate_txt2img(args, previewLabel, window):                                                                                   
     print("GENERATING")
     SetPreviewImage(previewLabel, 'ui/loading.png')
+
+    def progress_fn(n):
+        print(f"{n}%")
+
+    def setResult(curImage):
+        SetPreviewImage(previewLabel, curImage)
 
     args = {
                 'prompt': args['prompt'],
@@ -88,9 +174,17 @@ def Generate_txt2img(args, previewLabel):
             }
 
     args = dotdict(args)
-    curImage = txt2img(args, model_g, config_g)
-    print(curImage)
-    SetPreviewImage(previewLabel, curImage)
+    generationWorker = Worker(txt2img, args, model_g)
+    #curImage = txt2img(args, model_g, config_g)
+    #generationWorker.run()
+    generationWorker.signals.result.connect(setResult)
+    generationWorker.signals.progress.connect(progress_fn)
+
+    window.threadpool.start(generationWorker)
+    #print(curImage)
+    #SetPreviewImage(previewLabel, curImage)
+
+
 
 # this function sets an image to a label
 def SetPreviewImage(labelElement, imageURL):
@@ -131,7 +225,7 @@ if __name__ == '__main__':
         'seed': SeedRandomize(window.ui.seedInputBox,window.ui.seedRandomized.isChecked()),
         'W': window.ui.widthInput.value(),
         'H': window.ui.heightInput.value(),
-    },window.ui.imagePreview))
+    },window.ui.imagePreview, window))
     
     SetPreviewImage(window.ui.imagePreview, 'ui/preview.png')
 

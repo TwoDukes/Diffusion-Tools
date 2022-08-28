@@ -285,10 +285,7 @@ def main():
     sampler.make_schedule(ddim_num_steps=opt.ddim_steps, ddim_eta=opt.ddim_eta, verbose=False)
 
 
-    promptList = [("a sunken shipwreck teeming with life, eerie, spooky",0.22, 50),
-    ("scuba divers exploring a coral reef, beautiful colors, bright, cheerful",0.30, 50),
-    ("An underwater city filled with shining lights and glass buildings, science fiction, cityscape, metropolis",0.25, 50),
-    ("an ecosystem inside a lava lamp",0.26, 50)]
+    promptList = [("A cuty puppy",0.28, 25)]
 
     '''
     promptList = [    ("Futurama, Everyone at church listening to zoidberg's sermon, religious, traditional",0.36, 40),
