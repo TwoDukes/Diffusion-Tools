@@ -213,8 +213,14 @@ def SeedRandomize(seed, isRandom):
 
     return seed.text()
 
-def setFilePath(fileLineEdit):
+def setFolderPath(fileLineEdit):
     fileLineEdit.setText(QFileDialog.getExistingDirectory(None, "Select Directory"))
+
+
+def setFilePath(fileLineEdit, previewLabel=None):
+    fileLineEdit.setText(QFileDialog.getOpenFileName(None, "Select File")[0])
+    if previewLabel != None:
+        SetPreviewImage(previewLabel, fileLineEdit.text())
 
 def getArgs(window):
     args = {
@@ -249,8 +255,8 @@ if __name__ == '__main__':
     window.ui.strengthSlider.valueChanged.connect(lambda: SliderChanged((f"{window.ui.strengthSlider.value()}%", window.ui.strengthValueBox)))
 
     #buttons
-    window.ui.imageOutputFolderButton.clicked.connect(lambda: setFilePath(window.ui.imageOutputFolderLineEdit))
-    window.ui.img2imgChoosefolder.clicked.connect(lambda: setFilePath(window.ui.img2imgInitPathLineEdit))
+    window.ui.imageOutputFolderButton.clicked.connect(lambda: setFolderPath(window.ui.imageOutputFolderLineEdit))
+    window.ui.img2imgChoosefolder.clicked.connect(lambda: setFilePath(window.ui.img2imgInitPathLineEdit, window.ui.imagePreview))
 
     #checkboxes
 
