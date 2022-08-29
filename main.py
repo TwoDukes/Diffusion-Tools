@@ -152,6 +152,7 @@ def Generate_Image(args, previewLabel, window):
         #set init image line edit to cur image
         window.ui.img2imgInitPathLineEdit.setText(curImage)
         #curImage_g = curImage
+        SetImageSize(args['W'], args['H'], previewLabel)
         SetPreviewImage(previewLabel, curImage)
 
     args = {
@@ -213,18 +214,29 @@ def SeedRandomize(seed, isRandom):
 
     return seed.text()
 
-def setFolderPath(fileLineEdit):
-    fileLineEdit.setText(QFileDialog.getExistingDirectory(None, "Select Directory"))
 
+def setFolderPath(fileLineEdit):
+    filePath = QFileDialog.getExistingDirectory(None, "Select Directory")
+    if filePath != "":
+        fileLineEdit.setText(filePath)
 
 def setFilePath(fileLineEdit, previewLabel=None):
-    fileLineEdit.setText(QFileDialog.getOpenFileName(None, "Select File")[0])
-    if previewLabel != None:
-        SetPreviewImage(previewLabel, fileLineEdit.text())
+    filePath = QFileDialog.getOpenFileName(None, "Select File")[0]
+    if filePath != "":
+        fileLineEdit.setText(filePath)
+        if previewLabel != None:
+            SetPreviewImage(previewLabel, fileLineEdit.text())
+
+def SetImageSize(w,h,label):
+    label.setMaximumHeight(h)
+    label.setMinimumHeight(h)
+    label.setMaximumWidth(w)
+    label.setMinimumWidth(w)
+
 
 def getArgs(window):
     args = {
-        'prompt': window.ui.promptInput.toPlainText(),
+        'prompt': window.ui.promptInput.text(),
         'steps': int(window.ui.stepsValueBox.text()),
         'scale': int(window.ui.scaleValueBox.text()),
         'imageCount': int(window.ui.imageCountValueBox.text()),
@@ -246,7 +258,6 @@ if __name__ == '__main__':
 
     window = MainWindow()
 
-   
 
     #sliders
     window.ui.stepSlider.valueChanged.connect(lambda: SliderChanged((window.ui.stepSlider.value()*5, window.ui.stepsValueBox)))
@@ -257,8 +268,6 @@ if __name__ == '__main__':
     #buttons
     window.ui.imageOutputFolderButton.clicked.connect(lambda: setFolderPath(window.ui.imageOutputFolderLineEdit))
     window.ui.img2imgChoosefolder.clicked.connect(lambda: setFilePath(window.ui.img2imgInitPathLineEdit, window.ui.imagePreview))
-
-    #checkboxes
 
     #gererate button
     window.ui.generateButton.clicked.connect(lambda: Generate_Image(getArgs(window), window.ui.imagePreview, window))

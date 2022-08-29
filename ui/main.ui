@@ -268,7 +268,7 @@ color: rgb(255, 255, 255);</string>
         <item>
          <widget class="QLabel" name="label_2">
           <property name="sizePolicy">
-           <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+           <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
             <horstretch>0</horstretch>
             <verstretch>0</verstretch>
            </sizepolicy>
@@ -309,39 +309,21 @@ color: rgb(255, 255, 255);</string>
          </widget>
         </item>
         <item>
-         <widget class="QTextEdit" name="promptInput">
+         <widget class="QLineEdit" name="promptInput">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
             <horstretch>0</horstretch>
             <verstretch>0</verstretch>
            </sizepolicy>
           </property>
-          <property name="maximumSize">
-           <size>
-            <width>16777215</width>
-            <height>35</height>
-           </size>
-          </property>
           <property name="font">
            <font>
             <pointsize>12</pointsize>
            </font>
           </property>
-          <property name="focusPolicy">
-           <enum>Qt::StrongFocus</enum>
-          </property>
           <property name="styleSheet">
            <string notr="true">background-color: rgb(218, 218, 218);
 color: rgb(35, 35, 35);</string>
-          </property>
-          <property name="frameShape">
-           <enum>QFrame::StyledPanel</enum>
-          </property>
-          <property name="frameShadow">
-           <enum>QFrame::Sunken</enum>
-          </property>
-          <property name="tabChangesFocus">
-           <bool>true</bool>
           </property>
           <property name="placeholderText">
            <string>Anything you can imagine...</string>
@@ -444,7 +426,7 @@ color: rgb(35, 35, 35);</string>
             </property>
             <property name="sizeHint" stdset="0">
              <size>
-              <width>310</width>
+              <width>270</width>
               <height>20</height>
              </size>
             </property>
@@ -714,6 +696,12 @@ color: rgb(35, 35, 35);</string>
           </item>
           <item>
            <widget class="QLineEdit" name="scaleValueBox">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
             <property name="maximumSize">
              <size>
               <width>30</width>
@@ -808,6 +796,12 @@ color: rgb(35, 35, 35);</string>
           </item>
           <item>
            <widget class="QLineEdit" name="imageCountValueBox">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
             <property name="maximumSize">
              <size>
               <width>30</width>
@@ -873,6 +867,12 @@ color: rgb(35, 35, 35);</string>
                 <layout class="QHBoxLayout" name="horizontalLayout_10">
                  <item>
                   <widget class="QCheckBox" name="img2imgCheckbox">
+                   <property name="sizePolicy">
+                    <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
+                     <horstretch>0</horstretch>
+                     <verstretch>0</verstretch>
+                    </sizepolicy>
+                   </property>
                    <property name="font">
                     <font>
                      <weight>75</weight>
@@ -889,6 +889,12 @@ color: rgb(35, 35, 35);</string>
                  </item>
                  <item>
                   <widget class="QLineEdit" name="img2imgInitPathLineEdit">
+                   <property name="sizePolicy">
+                    <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                     <horstretch>0</horstretch>
+                     <verstretch>0</verstretch>
+                    </sizepolicy>
+                   </property>
                    <property name="styleSheet">
                     <string notr="true">background-color: rgb(218, 218, 218);
 color: rgb(35, 35, 35);</string>
@@ -900,6 +906,12 @@ color: rgb(35, 35, 35);</string>
                  </item>
                  <item>
                   <widget class="QPushButton" name="img2imgChoosefolder">
+                   <property name="sizePolicy">
+                    <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
+                     <horstretch>0</horstretch>
+                     <verstretch>0</verstretch>
+                    </sizepolicy>
+                   </property>
                    <property name="text">
                     <string>Choose Folder</string>
                    </property>
@@ -911,6 +923,12 @@ color: rgb(35, 35, 35);</string>
                 <layout class="QHBoxLayout" name="horizontalLayout_13">
                  <item>
                   <widget class="QLabel" name="strengthLabel">
+                   <property name="sizePolicy">
+                    <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
+                     <horstretch>0</horstretch>
+                     <verstretch>0</verstretch>
+                    </sizepolicy>
+                   </property>
                    <property name="font">
                     <font>
                      <weight>75</weight>
@@ -924,6 +942,12 @@ color: rgb(35, 35, 35);</string>
                  </item>
                  <item>
                   <widget class="QSlider" name="strengthSlider">
+                   <property name="sizePolicy">
+                    <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+                     <horstretch>0</horstretch>
+                     <verstretch>0</verstretch>
+                    </sizepolicy>
+                   </property>
                    <property name="maximum">
                     <number>100</number>
                    </property>
@@ -946,6 +970,12 @@ color: rgb(35, 35, 35);</string>
                  </item>
                  <item>
                   <widget class="QLineEdit" name="strengthValueBox">
+                   <property name="sizePolicy">
+                    <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                     <horstretch>0</horstretch>
+                     <verstretch>0</verstretch>
+                    </sizepolicy>
+                   </property>
                    <property name="minimumSize">
                     <size>
                      <width>50</width>
@@ -1033,35 +1063,52 @@ color: rgb(16, 16, 16);</string>
       <item>
        <layout class="QVBoxLayout" name="verticalLayout_6">
         <item>
-         <widget class="QLabel" name="imagePreview">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="minimumSize">
-           <size>
-            <width>512</width>
-            <height>512</height>
-           </size>
-          </property>
-          <property name="maximumSize">
-           <size>
-            <width>512</width>
-            <height>512</height>
-           </size>
-          </property>
-          <property name="text">
-           <string/>
-          </property>
-          <property name="pixmap">
-           <pixmap>preview.png</pixmap>
-          </property>
-          <property name="scaledContents">
-           <bool>true</bool>
-          </property>
-         </widget>
+         <layout class="QHBoxLayout" name="horizontalLayout_8">
+          <item>
+           <widget class="QLabel" name="imagePreview">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="minimumSize">
+             <size>
+              <width>512</width>
+              <height>512</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>512</width>
+              <height>512</height>
+             </size>
+            </property>
+            <property name="text">
+             <string/>
+            </property>
+            <property name="pixmap">
+             <pixmap>preview.png</pixmap>
+            </property>
+            <property name="scaledContents">
+             <bool>true</bool>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <spacer name="horizontalSpacer_4">
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>40</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+         </layout>
         </item>
         <item>
          <layout class="QHBoxLayout" name="horizontalLayout_9">
@@ -1080,6 +1127,12 @@ color: rgb(16, 16, 16);</string>
           </item>
           <item>
            <widget class="QLineEdit" name="imageOutputFolderLineEdit">
+            <property name="minimumSize">
+             <size>
+              <width>318</width>
+              <height>0</height>
+             </size>
+            </property>
             <property name="styleSheet">
              <string notr="true">background-color: rgb(218, 218, 218);
 color: rgb(35, 35, 35);</string>
@@ -1095,6 +1148,22 @@ color: rgb(35, 35, 35);</string>
              <string>Choose Folder</string>
             </property>
            </widget>
+          </item>
+          <item>
+           <spacer name="horizontalSpacer_5">
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+            <property name="sizeType">
+             <enum>QSizePolicy::Preferred</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>40</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
           </item>
          </layout>
         </item>
