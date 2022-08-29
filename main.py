@@ -141,7 +141,7 @@ class MainWindow(QMainWindow):
 
 def Generate_txt2img(args, previewLabel, window):                                                                                   
     print("GENERATING")
-    SetPreviewImage(previewLabel, 'ui/loading.png')
+    #SetPreviewImage(previewLabel, 'ui/loading.png')
 
     def progress_fn(n):
         print(f"{n}% !!!!!!!!!!!!!!!!!!!!!!!")
@@ -159,7 +159,7 @@ def Generate_txt2img(args, previewLabel, window):
                 'laion400m': False,
                 'fixed_code': None,
                 'ddim_eta': 0.0,
-                'n_iter': 1,
+                'n_iter': args['iterations'],
                 'H': args['H'],
                 'W': args['W'],
                 'C': 4,
@@ -193,7 +193,7 @@ def SetPreviewImage(labelElement, imageURL):
     
 # this function sets a text to a label
 def SliderChanged(args):
-    args[1].setText(f"{args[2]}: {str(args[0])}")
+    args[1].setText(str(args[0]))
 
 def SeedRandomize(seed, isRandom):
     if isRandom:
@@ -215,14 +215,19 @@ if __name__ == '__main__':
 
     window = MainWindow()
 
-    window.ui.stepSlider.valueChanged.connect(lambda: SliderChanged((window.ui.stepSlider.value()*5, window.ui.stepCountLabel, 'STEP COUNT')))
-    window.ui.scaleSlider.valueChanged.connect(lambda: SliderChanged((window.ui.scaleSlider.value(), window.ui.scaleCountLabel, 'SCALE')))
-    window.ui.imageCountSlider.valueChanged.connect(lambda: SliderChanged((window.ui.imageCountSlider.value(), window.ui.imageAmountLabel, 'IMAGES')))
+    #sliders
+    window.ui.stepSlider.valueChanged.connect(lambda: SliderChanged((window.ui.stepSlider.value()*5, window.ui.stepsValueBox)))
+    window.ui.scaleSlider.valueChanged.connect(lambda: SliderChanged((window.ui.scaleSlider.value(), window.ui.scaleValueBox)))
+    window.ui.imageCountSlider.valueChanged.connect(lambda: SliderChanged((window.ui.imageCountSlider.value(), window.ui.imageCountValueBox)))
+    window.ui.iterationsSlider.valueChanged.connect(lambda: SliderChanged((window.ui.iterationsSlider.value(), window.ui.iterationsValueBox)))
+
+    #gererate button
     window.ui.generateButton.clicked.connect(lambda: Generate_txt2img({
-        'prompt': window.ui.promptInput.text(),
-        'steps': window.ui.stepSlider.value()*5,
-        'scale': window.ui.scaleSlider.value(),
-        'imageCount': window.ui.imageCountSlider.value(),
+        'prompt': window.ui.promptInput.toPlainText(),
+        'steps': int(window.ui.stepsValueBox.txt())*5,
+        'scale': int(window.ui.scaleValueBox.txt()),
+        'imageCount': int(window.ui.imageCountValueBox.txt()),
+        'iterations': int(window.ui.iterationsValueBox.txt()),
         'seed': SeedRandomize(window.ui.seedInputBox,window.ui.seedRandomized.isChecked()),
         'W': window.ui.widthInput.value(),
         'H': window.ui.heightInput.value(),

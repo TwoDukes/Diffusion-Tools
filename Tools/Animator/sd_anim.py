@@ -285,7 +285,8 @@ def main():
     sampler.make_schedule(ddim_num_steps=opt.ddim_steps, ddim_eta=opt.ddim_eta, verbose=False)
 
 
-    promptList = [("A duke and a pink donut",0.30, 50)]
+    promptList = [("portrait of face to face humans scientific intelligences meet online, mooc, intricate, elegant, highly detailed, concept art, smooth, sharp focus, lineart, illustration, shadows, penned with thin colors on white, 8 k ",0.32, 50),
+                  ("A face to face meeting of two scientific minds online, one human and one AI, digital art, pixiv, detailed ",0.32, 50),]
 
     '''
     promptList = [    ("Futurama, Everyone at church listening to zoidberg's sermon, religious, traditional",0.36, 40),
