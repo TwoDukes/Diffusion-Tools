@@ -17,8 +17,8 @@ class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         if not MainWindow.objectName():
             MainWindow.setObjectName(u"MainWindow")
-        MainWindow.resize(1205, 740)
-        MainWindow.setMinimumSize(QSize(1200, 680))
+        MainWindow.resize(1200, 720)
+        MainWindow.setMinimumSize(QSize(1200, 720))
         MainWindow.setStyleSheet(u"background-color: rgb(68, 68, 68);\n"
 "color: rgb(255, 255, 255);")
         self.actionNew = QAction(MainWindow)
@@ -179,10 +179,12 @@ class Ui_MainWindow(object):
         font4 = QFont()
         font4.setPointSize(12)
         self.promptInput.setFont(font4)
+        self.promptInput.setFocusPolicy(Qt.StrongFocus)
         self.promptInput.setStyleSheet(u"background-color: rgb(218, 218, 218);\n"
 "color: rgb(35, 35, 35);")
         self.promptInput.setFrameShape(QFrame.StyledPanel)
         self.promptInput.setFrameShadow(QFrame.Sunken)
+        self.promptInput.setTabChangesFocus(True)
 
         self.verticalLayout.addWidget(self.promptInput)
 
@@ -211,6 +213,7 @@ class Ui_MainWindow(object):
         self.seedInputBox.setFont(font5)
         self.seedInputBox.setStyleSheet(u"background-color: rgb(218, 218, 218);\n"
 "color: rgb(35, 35, 35);")
+        self.seedInputBox.setInputMethodHints(Qt.ImhDigitsOnly)
 
         self.horizontalLayout_2.addWidget(self.seedInputBox)
 
@@ -224,7 +227,7 @@ class Ui_MainWindow(object):
 
         self.horizontalLayout_2.addWidget(self.seedRandomized)
 
-        self.horizontalSpacer = QSpacerItem(300, 20, QSizePolicy.Preferred, QSizePolicy.Minimum)
+        self.horizontalSpacer = QSpacerItem(310, 20, QSizePolicy.Preferred, QSizePolicy.Minimum)
 
         self.horizontalLayout_2.addItem(self.horizontalSpacer)
 
@@ -312,6 +315,7 @@ class Ui_MainWindow(object):
         self.stepsValueBox.setSizePolicy(sizePolicy3)
         self.stepsValueBox.setMaximumSize(QSize(30, 16777215))
         self.stepsValueBox.setFont(font5)
+        self.stepsValueBox.setInputMethodHints(Qt.ImhDigitsOnly)
         self.stepsValueBox.setFrame(False)
         self.stepsValueBox.setAlignment(Qt.AlignCenter)
 
@@ -355,6 +359,7 @@ class Ui_MainWindow(object):
         self.scaleValueBox.setObjectName(u"scaleValueBox")
         self.scaleValueBox.setMaximumSize(QSize(30, 16777215))
         self.scaleValueBox.setFont(font5)
+        self.scaleValueBox.setInputMethodHints(Qt.ImhDigitsOnly)
         self.scaleValueBox.setFrame(False)
         self.scaleValueBox.setAlignment(Qt.AlignCenter)
 
@@ -401,6 +406,7 @@ class Ui_MainWindow(object):
         self.imageCountValueBox.setObjectName(u"imageCountValueBox")
         self.imageCountValueBox.setMaximumSize(QSize(30, 16777215))
         self.imageCountValueBox.setFont(font5)
+        self.imageCountValueBox.setInputMethodHints(Qt.ImhDigitsOnly)
         self.imageCountValueBox.setFrame(False)
         self.imageCountValueBox.setAlignment(Qt.AlignCenter)
 
@@ -409,46 +415,97 @@ class Ui_MainWindow(object):
 
         self.verticalLayout.addLayout(self.horizontalLayout_6)
 
-        self.horizontalLayout_8 = QHBoxLayout()
-        self.horizontalLayout_8.setObjectName(u"horizontalLayout_8")
-        self.iterationLabel = QLabel(self.centralwidget)
-        self.iterationLabel.setObjectName(u"iterationLabel")
-        self.iterationLabel.setMaximumSize(QSize(75, 16777215))
-        self.iterationLabel.setFont(font3)
+        self.verticalLayout_3 = QVBoxLayout()
+        self.verticalLayout_3.setObjectName(u"verticalLayout_3")
+        self.img2imgGroup = QGroupBox(self.centralwidget)
+        self.img2imgGroup.setObjectName(u"img2imgGroup")
+        sizePolicy6 = QSizePolicy(QSizePolicy.Preferred, QSizePolicy.Preferred)
+        sizePolicy6.setHorizontalStretch(0)
+        sizePolicy6.setVerticalStretch(0)
+        sizePolicy6.setHeightForWidth(self.img2imgGroup.sizePolicy().hasHeightForWidth())
+        self.img2imgGroup.setSizePolicy(sizePolicy6)
+        self.img2imgGroup.setMinimumSize(QSize(0, 120))
+        self.img2imgGroup.setAlignment(Qt.AlignCenter)
+        self.img2imgGroup.setFlat(False)
+        self.img2imgGroup.setCheckable(False)
+        self.verticalLayout_7 = QVBoxLayout(self.img2imgGroup)
+        self.verticalLayout_7.setObjectName(u"verticalLayout_7")
+        self.verticalLayout_4 = QVBoxLayout()
+        self.verticalLayout_4.setSpacing(7)
+        self.verticalLayout_4.setObjectName(u"verticalLayout_4")
+        self.horizontalLayout_10 = QHBoxLayout()
+        self.horizontalLayout_10.setObjectName(u"horizontalLayout_10")
+        self.img2imgCheckbox = QCheckBox(self.img2imgGroup)
+        self.img2imgCheckbox.setObjectName(u"img2imgCheckbox")
+        self.img2imgCheckbox.setFont(font3)
+        self.img2imgCheckbox.setTristate(False)
 
-        self.horizontalLayout_8.addWidget(self.iterationLabel)
+        self.horizontalLayout_10.addWidget(self.img2imgCheckbox)
 
-        self.iterationsSlider = QSlider(self.centralwidget)
-        self.iterationsSlider.setObjectName(u"iterationsSlider")
-        self.iterationsSlider.setMinimum(1)
-        self.iterationsSlider.setMaximum(10)
-        self.iterationsSlider.setPageStep(1)
-        self.iterationsSlider.setValue(2)
-        self.iterationsSlider.setOrientation(Qt.Horizontal)
-        self.iterationsSlider.setTickPosition(QSlider.TicksAbove)
-        self.iterationsSlider.setTickInterval(1)
+        self.img2imgInitPathLineEdit = QLineEdit(self.img2imgGroup)
+        self.img2imgInitPathLineEdit.setObjectName(u"img2imgInitPathLineEdit")
+        self.img2imgInitPathLineEdit.setStyleSheet(u"background-color: rgb(218, 218, 218);\n"
+"color: rgb(35, 35, 35);")
 
-        self.horizontalLayout_8.addWidget(self.iterationsSlider)
+        self.horizontalLayout_10.addWidget(self.img2imgInitPathLineEdit)
 
-        self.iterationsValueBox = QLineEdit(self.centralwidget)
-        self.iterationsValueBox.setObjectName(u"iterationsValueBox")
-        self.iterationsValueBox.setMaximumSize(QSize(30, 16777215))
-        self.iterationsValueBox.setFont(font5)
-        self.iterationsValueBox.setFrame(False)
-        self.iterationsValueBox.setAlignment(Qt.AlignCenter)
+        self.img2imgChoosefolder = QPushButton(self.img2imgGroup)
+        self.img2imgChoosefolder.setObjectName(u"img2imgChoosefolder")
 
-        self.horizontalLayout_8.addWidget(self.iterationsValueBox)
+        self.horizontalLayout_10.addWidget(self.img2imgChoosefolder)
 
 
-        self.verticalLayout.addLayout(self.horizontalLayout_8)
+        self.verticalLayout_4.addLayout(self.horizontalLayout_10)
+
+        self.horizontalLayout_13 = QHBoxLayout()
+        self.horizontalLayout_13.setObjectName(u"horizontalLayout_13")
+        self.strengthLabel = QLabel(self.img2imgGroup)
+        self.strengthLabel.setObjectName(u"strengthLabel")
+        self.strengthLabel.setFont(font3)
+
+        self.horizontalLayout_13.addWidget(self.strengthLabel)
+
+        self.strengthSlider = QSlider(self.img2imgGroup)
+        self.strengthSlider.setObjectName(u"strengthSlider")
+        self.strengthSlider.setMaximum(100)
+        self.strengthSlider.setSingleStep(1)
+        self.strengthSlider.setValue(70)
+        self.strengthSlider.setOrientation(Qt.Horizontal)
+        self.strengthSlider.setTickPosition(QSlider.TicksAbove)
+        self.strengthSlider.setTickInterval(10)
+
+        self.horizontalLayout_13.addWidget(self.strengthSlider)
+
+        self.strengthValueBox = QLineEdit(self.img2imgGroup)
+        self.strengthValueBox.setObjectName(u"strengthValueBox")
+        self.strengthValueBox.setMinimumSize(QSize(50, 0))
+        self.strengthValueBox.setMaximumSize(QSize(30, 16777215))
+        self.strengthValueBox.setSizeIncrement(QSize(0, 0))
+        self.strengthValueBox.setFont(font5)
+        self.strengthValueBox.setFrame(False)
+        self.strengthValueBox.setAlignment(Qt.AlignCenter)
+
+        self.horizontalLayout_13.addWidget(self.strengthValueBox)
+
+
+        self.verticalLayout_4.addLayout(self.horizontalLayout_13)
+
+
+        self.verticalLayout_7.addLayout(self.verticalLayout_4)
+
+
+        self.verticalLayout_3.addWidget(self.img2imgGroup)
+
+
+        self.verticalLayout.addLayout(self.verticalLayout_3)
 
         self.generateButton = QPushButton(self.centralwidget)
         self.generateButton.setObjectName(u"generateButton")
-        sizePolicy6 = QSizePolicy(QSizePolicy.Minimum, QSizePolicy.Fixed)
-        sizePolicy6.setHorizontalStretch(0)
-        sizePolicy6.setVerticalStretch(0)
-        sizePolicy6.setHeightForWidth(self.generateButton.sizePolicy().hasHeightForWidth())
-        self.generateButton.setSizePolicy(sizePolicy6)
+        sizePolicy7 = QSizePolicy(QSizePolicy.Minimum, QSizePolicy.Fixed)
+        sizePolicy7.setHorizontalStretch(0)
+        sizePolicy7.setVerticalStretch(0)
+        sizePolicy7.setHeightForWidth(self.generateButton.sizePolicy().hasHeightForWidth())
+        self.generateButton.setSizePolicy(sizePolicy7)
         self.generateButton.setAcceptDrops(False)
         self.generateButton.setStyleSheet(u"background-color: rgb(216, 216, 216);\n"
 "color: rgb(16, 16, 16);")
@@ -466,17 +523,40 @@ class Ui_MainWindow(object):
         self.verticalLayout_6.setObjectName(u"verticalLayout_6")
         self.imagePreview = QLabel(self.centralwidget)
         self.imagePreview.setObjectName(u"imagePreview")
-        sizePolicy7 = QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Preferred)
-        sizePolicy7.setHorizontalStretch(0)
-        sizePolicy7.setVerticalStretch(0)
-        sizePolicy7.setHeightForWidth(self.imagePreview.sizePolicy().hasHeightForWidth())
-        self.imagePreview.setSizePolicy(sizePolicy7)
+        sizePolicy8 = QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Preferred)
+        sizePolicy8.setHorizontalStretch(0)
+        sizePolicy8.setVerticalStretch(0)
+        sizePolicy8.setHeightForWidth(self.imagePreview.sizePolicy().hasHeightForWidth())
+        self.imagePreview.setSizePolicy(sizePolicy8)
         self.imagePreview.setMinimumSize(QSize(512, 512))
         self.imagePreview.setMaximumSize(QSize(512, 512))
         self.imagePreview.setPixmap(QPixmap(u"preview.png"))
         self.imagePreview.setScaledContents(True)
 
         self.verticalLayout_6.addWidget(self.imagePreview)
+
+        self.horizontalLayout_9 = QHBoxLayout()
+        self.horizontalLayout_9.setObjectName(u"horizontalLayout_9")
+        self.outputFolderLabel = QLabel(self.centralwidget)
+        self.outputFolderLabel.setObjectName(u"outputFolderLabel")
+        self.outputFolderLabel.setFont(font3)
+
+        self.horizontalLayout_9.addWidget(self.outputFolderLabel)
+
+        self.imageOutputFolderLineEdit = QLineEdit(self.centralwidget)
+        self.imageOutputFolderLineEdit.setObjectName(u"imageOutputFolderLineEdit")
+        self.imageOutputFolderLineEdit.setStyleSheet(u"background-color: rgb(218, 218, 218);\n"
+"color: rgb(35, 35, 35);")
+
+        self.horizontalLayout_9.addWidget(self.imageOutputFolderLineEdit)
+
+        self.imageOutputFolderButton = QPushButton(self.centralwidget)
+        self.imageOutputFolderButton.setObjectName(u"imageOutputFolderButton")
+
+        self.horizontalLayout_9.addWidget(self.imageOutputFolderButton)
+
+
+        self.verticalLayout_6.addLayout(self.horizontalLayout_9)
 
         self.verticalSpacer_2 = QSpacerItem(20, 40, QSizePolicy.Minimum, QSizePolicy.Expanding)
 
@@ -492,15 +572,10 @@ class Ui_MainWindow(object):
 
         self.verticalLayout_2.addLayout(self.horizontalLayout)
 
-        self.label = QLabel(self.centralwidget)
-        self.label.setObjectName(u"label")
-
-        self.verticalLayout_2.addWidget(self.label)
-
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QMenuBar(MainWindow)
         self.menubar.setObjectName(u"menubar")
-        self.menubar.setGeometry(QRect(0, 0, 1205, 26))
+        self.menubar.setGeometry(QRect(0, 0, 1200, 26))
         self.menuMenu = QMenu(self.menubar)
         self.menuMenu.setObjectName(u"menuMenu")
         MainWindow.setMenuBar(self.menubar)
@@ -551,7 +626,7 @@ class Ui_MainWindow(object):
         self.vid2vidButton.setText(QCoreApplication.translate("MainWindow", u"vid2vid", None))
         self.txt2animButton.setText(QCoreApplication.translate("MainWindow", u"txt2anim", None))
         self.inpaintingButton.setText(QCoreApplication.translate("MainWindow", u"Inpainting", None))
-        self.label_2.setText(QCoreApplication.translate("MainWindow", u"TXT2IMG", None))
+        self.label_2.setText(QCoreApplication.translate("MainWindow", u"SINGLE IMAGE DIFFUSION", None))
         self.promptLabel.setText(QCoreApplication.translate("MainWindow", u"PROMPT", None))
         self.promptInput.setPlaceholderText(QCoreApplication.translate("MainWindow", u"Anything you can imagine...", None))
         self.seedLable.setText(QCoreApplication.translate("MainWindow", u"SEED", None))
@@ -564,14 +639,20 @@ class Ui_MainWindow(object):
         self.scaleValueBox.setText(QCoreApplication.translate("MainWindow", u"7", None))
         self.imageAmountLabel.setText(QCoreApplication.translate("MainWindow", u"IMAGES", None))
         self.imageCountValueBox.setText(QCoreApplication.translate("MainWindow", u"1", None))
-        self.iterationLabel.setText(QCoreApplication.translate("MainWindow", u"ITERATIONS", None))
-        self.iterationsValueBox.setText(QCoreApplication.translate("MainWindow", u"2", None))
+        self.img2imgGroup.setTitle(QCoreApplication.translate("MainWindow", u"IMG2IMG", None))
+        self.img2imgCheckbox.setText(QCoreApplication.translate("MainWindow", u"ENABLED", None))
+        self.img2imgInitPathLineEdit.setText(QCoreApplication.translate("MainWindow", u"ui/preview.png", None))
+        self.img2imgChoosefolder.setText(QCoreApplication.translate("MainWindow", u"Choose Folder", None))
+        self.strengthLabel.setText(QCoreApplication.translate("MainWindow", u"STRENGTH", None))
+        self.strengthValueBox.setText(QCoreApplication.translate("MainWindow", u"70%", None))
         self.generateButton.setText(QCoreApplication.translate("MainWindow", u"Generate", None))
 #if QT_CONFIG(shortcut)
-        self.generateButton.setShortcut(QCoreApplication.translate("MainWindow", u"Return", None))
+        self.generateButton.setShortcut(QCoreApplication.translate("MainWindow", u"Ctrl+Return", None))
 #endif // QT_CONFIG(shortcut)
         self.imagePreview.setText("")
-        self.label.setText("")
+        self.outputFolderLabel.setText(QCoreApplication.translate("MainWindow", u"Output folder", None))
+        self.imageOutputFolderLineEdit.setText(QCoreApplication.translate("MainWindow", u"Outputs/SingleImage", None))
+        self.imageOutputFolderButton.setText(QCoreApplication.translate("MainWindow", u"Choose Folder", None))
         self.menuMenu.setTitle(QCoreApplication.translate("MainWindow", u"Menu", None))
     # retranslateUi
 

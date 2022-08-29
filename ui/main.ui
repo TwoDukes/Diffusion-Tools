@@ -7,13 +7,13 @@
     <x>0</x>
     <y>0</y>
     <width>1200</width>
-    <height>740</height>
+    <height>720</height>
    </rect>
   </property>
   <property name="minimumSize">
    <size>
     <width>1200</width>
-    <height>680</height>
+    <height>720</height>
    </size>
   </property>
   <property name="windowTitle">
@@ -33,7 +33,7 @@ color: rgb(255, 255, 255);</string>
      <verstretch>0</verstretch>
     </sizepolicy>
    </property>
-   <layout class="QVBoxLayout" name="verticalLayout_2" stretch="0,0,0,0">
+   <layout class="QVBoxLayout" name="verticalLayout_2" stretch="0,0,0">
     <property name="sizeConstraint">
      <enum>QLayout::SetDefaultConstraint</enum>
     </property>
@@ -444,7 +444,7 @@ color: rgb(35, 35, 35);</string>
             </property>
             <property name="sizeHint" stdset="0">
              <size>
-              <width>300</width>
+              <width>310</width>
               <height>20</height>
              </size>
             </property>
@@ -836,81 +836,6 @@ color: rgb(35, 35, 35);</string>
          </layout>
         </item>
         <item>
-         <layout class="QHBoxLayout" name="horizontalLayout_8">
-          <item>
-           <widget class="QLabel" name="iterationLabel">
-            <property name="maximumSize">
-             <size>
-              <width>75</width>
-              <height>16777215</height>
-             </size>
-            </property>
-            <property name="font">
-             <font>
-              <weight>75</weight>
-              <bold>true</bold>
-             </font>
-            </property>
-            <property name="text">
-             <string>ITERATIONS</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QSlider" name="iterationsSlider">
-            <property name="minimum">
-             <number>1</number>
-            </property>
-            <property name="maximum">
-             <number>10</number>
-            </property>
-            <property name="pageStep">
-             <number>1</number>
-            </property>
-            <property name="value">
-             <number>2</number>
-            </property>
-            <property name="orientation">
-             <enum>Qt::Horizontal</enum>
-            </property>
-            <property name="tickPosition">
-             <enum>QSlider::TicksAbove</enum>
-            </property>
-            <property name="tickInterval">
-             <number>1</number>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QLineEdit" name="iterationsValueBox">
-            <property name="maximumSize">
-             <size>
-              <width>30</width>
-              <height>16777215</height>
-             </size>
-            </property>
-            <property name="font">
-             <font>
-              <pointsize>10</pointsize>
-             </font>
-            </property>
-            <property name="inputMethodHints">
-             <set>Qt::ImhDigitsOnly</set>
-            </property>
-            <property name="text">
-             <string>2</string>
-            </property>
-            <property name="frame">
-             <bool>false</bool>
-            </property>
-            <property name="alignment">
-             <set>Qt::AlignCenter</set>
-            </property>
-           </widget>
-          </item>
-         </layout>
-        </item>
-        <item>
          <layout class="QVBoxLayout" name="verticalLayout_3">
           <item>
            <widget class="QGroupBox" name="img2imgGroup">
@@ -938,122 +863,128 @@ color: rgb(35, 35, 35);</string>
             <property name="checkable">
              <bool>false</bool>
             </property>
-            <widget class="QWidget" name="verticalLayoutWidget_2">
-             <property name="geometry">
-              <rect>
-               <x>10</x>
-               <y>20</y>
-               <width>441</width>
-               <height>80</height>
-              </rect>
-             </property>
-             <layout class="QVBoxLayout" name="verticalLayout_4">
-              <property name="spacing">
-               <number>7</number>
-              </property>
-              <item>
-               <layout class="QHBoxLayout" name="horizontalLayout_10">
-                <item>
-                 <widget class="QCheckBox" name="img2imgCheckbox">
-                  <property name="font">
-                   <font>
-                    <weight>75</weight>
-                    <bold>true</bold>
-                   </font>
-                  </property>
-                  <property name="text">
-                   <string>ENABLED</string>
-                  </property>
-                  <property name="tristate">
-                   <bool>false</bool>
-                  </property>
-                 </widget>
-                </item>
-                <item>
-                 <widget class="QLineEdit" name="img2imgInitPathLineEdit">
-                  <property name="styleSheet">
-                   <string notr="true">background-color: rgb(218, 218, 218);
+            <layout class="QVBoxLayout" name="verticalLayout_7">
+             <item>
+              <layout class="QVBoxLayout" name="verticalLayout_4">
+               <property name="spacing">
+                <number>7</number>
+               </property>
+               <item>
+                <layout class="QHBoxLayout" name="horizontalLayout_10">
+                 <item>
+                  <widget class="QCheckBox" name="img2imgCheckbox">
+                   <property name="font">
+                    <font>
+                     <weight>75</weight>
+                     <bold>true</bold>
+                    </font>
+                   </property>
+                   <property name="text">
+                    <string>ENABLED</string>
+                   </property>
+                   <property name="tristate">
+                    <bool>false</bool>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QLineEdit" name="img2imgInitPathLineEdit">
+                   <property name="styleSheet">
+                    <string notr="true">background-color: rgb(218, 218, 218);
 color: rgb(35, 35, 35);</string>
-                  </property>
-                 </widget>
-                </item>
-                <item>
-                 <widget class="QPushButton" name="img2imgChoosefolder">
-                  <property name="text">
-                   <string>Choose Folder</string>
-                  </property>
-                 </widget>
-                </item>
-               </layout>
-              </item>
-              <item>
-               <layout class="QHBoxLayout" name="horizontalLayout_13">
-                <item>
-                 <widget class="QLabel" name="strengthLabel">
-                  <property name="font">
-                   <font>
-                    <weight>75</weight>
-                    <bold>true</bold>
-                   </font>
-                  </property>
-                  <property name="text">
-                   <string>STRENGTH</string>
-                  </property>
-                 </widget>
-                </item>
-                <item>
-                 <widget class="QSlider" name="strengthSlider">
-                  <property name="maximum">
-                   <number>100</number>
-                  </property>
-                  <property name="singleStep">
-                   <number>1</number>
-                  </property>
-                  <property name="value">
-                   <number>70</number>
-                  </property>
-                  <property name="orientation">
-                   <enum>Qt::Horizontal</enum>
-                  </property>
-                  <property name="tickPosition">
-                   <enum>QSlider::TicksAbove</enum>
-                  </property>
-                  <property name="tickInterval">
-                   <number>10</number>
-                  </property>
-                 </widget>
-                </item>
-                <item>
-                 <widget class="QLineEdit" name="strengthValueBox">
-                  <property name="maximumSize">
-                   <size>
-                    <width>30</width>
-                    <height>16777215</height>
-                   </size>
-                  </property>
-                  <property name="sizeIncrement">
-                   <size>
-                    <width>0</width>
-                    <height>0</height>
-                   </size>
-                  </property>
-                  <property name="font">
-                   <font>
-                    <pointsize>10</pointsize>
-                   </font>
-                  </property>
-                  <property name="text">
-                   <string>0.7</string>
-                  </property>
-                  <property name="frame">
-                   <bool>false</bool>
-                  </property>
-                 </widget>
-                </item>
-               </layout>
-              </item>
-             </layout>
-            </widget>
+                   </property>
+                   <property name="text">
+                    <string>ui/preview.png</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QPushButton" name="img2imgChoosefolder">
+                   <property name="text">
+                    <string>Choose Folder</string>
+                   </property>
+                  </widget>
+                 </item>
+                </layout>
+               </item>
+               <item>
+                <layout class="QHBoxLayout" name="horizontalLayout_13">
+                 <item>
+                  <widget class="QLabel" name="strengthLabel">
+                   <property name="font">
+                    <font>
+                     <weight>75</weight>
+                     <bold>true</bold>
+                    </font>
+                   </property>
+                   <property name="text">
+                    <string>STRENGTH</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QSlider" name="strengthSlider">
+                   <property name="maximum">
+                    <number>100</number>
+                   </property>
+                   <property name="singleStep">
+                    <number>1</number>
+                   </property>
+                   <property name="value">
+                    <number>70</number>
+                   </property>
+                   <property name="orientation">
+                    <enum>Qt::Horizontal</enum>
+                   </property>
+                   <property name="tickPosition">
+                    <enum>QSlider::TicksAbove</enum>
+                   </property>
+                   <property name="tickInterval">
+                    <number>10</number>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QLineEdit" name="strengthValueBox">
+                   <property name="minimumSize">
+                    <size>
+                     <width>50</width>
+                     <height>0</height>
+                    </size>
+                   </property>
+                   <property name="maximumSize">
+                    <size>
+                     <width>30</width>
+                     <height>16777215</height>
+                    </size>
+                   </property>
+                   <property name="sizeIncrement">
+                    <size>
+                     <width>0</width>
+                     <height>0</height>
+                    </size>
+                   </property>
+                   <property name="font">
+                    <font>
+                     <pointsize>10</pointsize>
+                    </font>
+                   </property>
+                   <property name="text">
+                    <string>70%</string>
+                   </property>
+                   <property name="frame">
+                    <bool>false</bool>
+                   </property>
+                   <property name="alignment">
+                    <set>Qt::AlignCenter</set>
+                   </property>
+                  </widget>
+                 </item>
+                </layout>
+               </item>
+              </layout>
+             </item>
+            </layout>
            </widget>
           </item>
          </layout>
@@ -1153,6 +1084,9 @@ color: rgb(16, 16, 16);</string>
              <string notr="true">background-color: rgb(218, 218, 218);
 color: rgb(35, 35, 35);</string>
             </property>
+            <property name="text">
+             <string>Outputs/SingleImage</string>
+            </property>
            </widget>
           </item>
           <item>
@@ -1193,13 +1127,6 @@ color: rgb(35, 35, 35);</string>
        </spacer>
       </item>
      </layout>
-    </item>
-    <item>
-     <widget class="QLabel" name="label">
-      <property name="text">
-       <string/>
-      </property>
-     </widget>
     </item>
    </layout>
   </widget>

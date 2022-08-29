@@ -7,7 +7,7 @@ import torch
 import traceback
 from Tools.txt2img.txt2img import main as txt2img
 from Tools.img2img.img2img import main as img2img
-from PySide2.QtWidgets import QApplication, QMainWindow, QVBoxLayout, QLabel, QPushButton, QWidget
+from PySide2.QtWidgets import QApplication, QMainWindow, QVBoxLayout, QLabel, QPushButton, QWidget, QFileDialog
 from PySide2.QtCore import QFile, QTimer, QRunnable, Slot, Signal, QObject, QThreadPool
 from PySide2 import QtCore, QtGui, QtWidgets
 from PySide2.QtCore import QRunnable, Slot, QThreadPool
@@ -137,9 +137,11 @@ class MainWindow(QMainWindow):
         self.threadpool = QThreadPool()
         print("Multithreading with maximum %d threads" % self.threadpool.maxThreadCount())
 
+# may be used in the future
+curImage_g = None
+usedImage_g = None
 
-
-def Generate_txt2img(args, previewLabel, window):                                                                                   
+def Generate_Image(args, previewLabel, window):                                                                                   
     print("GENERATING")
     #SetPreviewImage(previewLabel, 'ui/loading.png')
 
@@ -147,11 +149,14 @@ def Generate_txt2img(args, previewLabel, window):
         print(f"{n}% !!!!!!!!!!!!!!!!!!!!!!!")
 
     def setResult(curImage):
+        #set init image line edit to cur image
+        window.ui.img2imgInitPathLineEdit.setText(curImage)
+        #curImage_g = curImage
         SetPreviewImage(previewLabel, curImage)
 
     args = {
                 'prompt': args['prompt'],
-                'outdir':  'Outputs/txt2img-samples',
+                'outdir':  args['outdir'],
                 'skip_grid': None,
                 'skip_save': True,
                 'ddim_steps': args['steps'],
@@ -159,7 +164,7 @@ def Generate_txt2img(args, previewLabel, window):
                 'laion400m': False,
                 'fixed_code': None,
                 'ddim_eta': 0.0,
-                'n_iter': args['iterations'],
+                'n_iter': 1,
                 'H': args['H'],
                 'W': args['W'],
                 'C': 4,
@@ -171,19 +176,21 @@ def Generate_txt2img(args, previewLabel, window):
                 'config': 'configs/stable-diffusion/v1-inference.yaml', 
                 'ckpt': 'models/ldm/stable-diffusion-v1/model.ckpt',
                 'seed': int(args['seed']),
-                'precision':'autocast'
+                'precision':'autocast',
+                'init_img': args['init_img'],
+                'strength': args['strength']
             }
 
     args = dotdict(args)
-    generationWorker = Worker(txt2img, args, model_g)
-    #curImage = txt2img(args, model_g, config_g)
-    #generationWorker.run()
+
+    genMethod = img2img if window.ui.img2imgCheckbox.isChecked() else txt2img
+    generationWorker = Worker(genMethod, args, model_g)
+
     generationWorker.signals.result.connect(setResult)
     generationWorker.signals.progress.connect(progress_fn)
 
     window.threadpool.start(generationWorker)
-    #print(curImage)
-    #SetPreviewImage(previewLabel, curImage)
+
 
 
 
@@ -205,6 +212,24 @@ def SeedRandomize(seed, isRandom):
         seed.setText(str(random.randint(0, 999999999)))
 
     return seed.text()
+
+def setFilePath(fileLineEdit):
+    fileLineEdit.setText(QFileDialog.getExistingDirectory(None, "Select Directory"))
+
+def getArgs(window):
+    args = {
+        'prompt': window.ui.promptInput.toPlainText(),
+        'steps': int(window.ui.stepsValueBox.text()),
+        'scale': int(window.ui.scaleValueBox.text()),
+        'imageCount': int(window.ui.imageCountValueBox.text()),
+        'seed': SeedRandomize(window.ui.seedInputBox,window.ui.seedRandomized.isChecked()),
+        'W': window.ui.widthInput.value(),
+        'H': window.ui.heightInput.value(),
+        'outdir': window.ui.imageOutputFolderLineEdit.text(),
+        'strength': float(window.ui.strengthSlider.value())/100.0,
+        'init_img': window.ui.img2imgInitPathLineEdit.text()
+    }
+    return args
     
 
 
@@ -215,23 +240,22 @@ if __name__ == '__main__':
 
     window = MainWindow()
 
+   
+
     #sliders
     window.ui.stepSlider.valueChanged.connect(lambda: SliderChanged((window.ui.stepSlider.value()*5, window.ui.stepsValueBox)))
     window.ui.scaleSlider.valueChanged.connect(lambda: SliderChanged((window.ui.scaleSlider.value(), window.ui.scaleValueBox)))
     window.ui.imageCountSlider.valueChanged.connect(lambda: SliderChanged((window.ui.imageCountSlider.value(), window.ui.imageCountValueBox)))
-    window.ui.iterationsSlider.valueChanged.connect(lambda: SliderChanged((window.ui.iterationsSlider.value(), window.ui.iterationsValueBox)))
+    window.ui.strengthSlider.valueChanged.connect(lambda: SliderChanged((f"{window.ui.strengthSlider.value()}%", window.ui.strengthValueBox)))
+
+    #buttons
+    window.ui.imageOutputFolderButton.clicked.connect(lambda: setFilePath(window.ui.imageOutputFolderLineEdit))
+    window.ui.img2imgChoosefolder.clicked.connect(lambda: setFilePath(window.ui.img2imgInitPathLineEdit))
+
+    #checkboxes
 
     #gererate button
-    window.ui.generateButton.clicked.connect(lambda: Generate_txt2img({
-        'prompt': window.ui.promptInput.toPlainText(),
-        'steps': int(window.ui.stepsValueBox.txt())*5,
-        'scale': int(window.ui.scaleValueBox.txt()),
-        'imageCount': int(window.ui.imageCountValueBox.txt()),
-        'iterations': int(window.ui.iterationsValueBox.txt()),
-        'seed': SeedRandomize(window.ui.seedInputBox,window.ui.seedRandomized.isChecked()),
-        'W': window.ui.widthInput.value(),
-        'H': window.ui.heightInput.value(),
-    },window.ui.imagePreview, window))
+    window.ui.generateButton.clicked.connect(lambda: Generate_Image(getArgs(window), window.ui.imagePreview, window))
     
     SetPreviewImage(window.ui.imagePreview, 'ui/preview.png')
 

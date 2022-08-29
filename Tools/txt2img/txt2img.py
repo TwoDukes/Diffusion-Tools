@@ -1,7 +1,5 @@
 import argparse, os, sys, glob
-import cv2
 import torch
-import asyncio
 import numpy as np
 from random import randint
 from omegaconf import OmegaConf
@@ -43,17 +41,6 @@ def numpy_to_pil(images):
     pil_images = [Image.fromarray(image) for image in images]
 
     return pil_images
-
-
-
-
-
-def put_watermark(img, wm_encoder=None):
-    if wm_encoder is not None:
-        img = cv2.cvtColor(np.array(img), cv2.COLOR_RGB2BGR)
-        img = wm_encoder.encode(img, 'dwtDct')
-        img = Image.fromarray(img[:, :, ::-1])
-    return img
 
 
 def load_replacement(x):
@@ -208,6 +195,7 @@ def main(args, model, progress_callback):
         choices=["full", "autocast"],
         default="autocast"
     )
+
     if args is None:
         args = parser.parse_args()
 

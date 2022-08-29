@@ -26,26 +26,6 @@ def chunk(it, size):
     return iter(lambda: tuple(islice(it, size)), ())
 
 
-def load_model_from_config(config, ckpt, verbose=False):
-    print(f"Loading model from {ckpt}")
-    pl_sd = torch.load(ckpt, map_location="cpu")
-    if "global_step" in pl_sd:
-        print(f"Global Step: {pl_sd['global_step']}")
-    sd = pl_sd["state_dict"]
-    model = instantiate_from_config(config.model)
-    m, u = model.load_state_dict(sd, strict=False)
-    if len(m) > 0 and verbose:
-        print("missing keys:")
-        print(m)
-    if len(u) > 0 and verbose:
-        print("unexpected keys:")
-        print(u)
-
-    model.cuda()
-    model.eval()
-    return model
-
-
 def load_img(path):
     image = Image.open(path).convert("RGB")
     w, h = image.size
@@ -58,7 +38,7 @@ def load_img(path):
     return 2.*image - 1.
 
 
-def main():
+def main(args, model, progress_callback):
     parser = argparse.ArgumentParser()
 
     parser.add_argument(
@@ -194,15 +174,16 @@ def main():
         default="autocast"
     )
 
-    opt = parser.parse_args()
+    if args is None:
+        args = parser.parse_args()
+
+    opt = args
 
     if opt.seed == None:
         opt.seed = randint(0, 1000000)
     print("init_seed = ", opt.seed)
     seed_everything(opt.seed)
-
-    config = OmegaConf.load(f"{opt.config}")
-    model = load_model_from_config(config, f"{opt.ckpt}")
+    
 
     device = torch.device("cuda") if torch.cuda.is_available() else torch.device("cpu")
     model = model.to(device)
@@ -245,6 +226,10 @@ def main():
     t_enc = int(opt.strength * opt.ddim_steps)
     print(f"target t_enc is {t_enc} steps")
 
+    finalPath = None
+
+    progress_callback.emit(50)
+
     precision_scope = autocast if opt.precision == "autocast" else nullcontext
     with torch.no_grad():
         with precision_scope("cuda"):
@@ -275,6 +260,7 @@ def main():
                                 Image.fromarray(x_sample.astype(np.uint8)).save(
                                     os.path.join(sample_path, f"{base_count:05}.png"))
                                 base_count += 1
+                                finalPath = os.path.join(sample_path, f"{base_count:05}.png")
                         all_samples.append(x_samples)
 
                 if not opt.skip_grid:
@@ -286,13 +272,14 @@ def main():
                     # to image
                     grid = 255. * rearrange(grid, 'c h w -> h w c').cpu().numpy()
                     Image.fromarray(grid.astype(np.uint8)).save(os.path.join(outpath, f'grid-{grid_count:04}.png'))
+                    finalPath = os.path.join(outpath, f'grid-{grid_count:04}.png')
                     grid_count += 1
 
                 toc = time.time()
 
     print(f"Your samples are ready and waiting for you here: \n{outpath} \n"
           f" \nEnjoy.")
-
+    return finalPath
 
 if __name__ == "__main__":
     main()
