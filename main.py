@@ -233,6 +233,16 @@ def SetImageSize(w,h,label):
     label.setMaximumWidth(w)
     label.setMinimumWidth(w)
 
+def SwitchTabs(tabNumb, window):
+    if tabNumb == 0:
+        window.ui.mainStackedWidget.setCurrentIndex(0)
+        window.ui.AnimatorTabButton.setChecked(False)
+
+    elif tabNumb == 1:
+        window.ui.mainStackedWidget.setCurrentIndex(1)
+        window.ui.imageTabButton.setChecked(False)
+
+
 
 def getArgs(window):
     args = {
@@ -257,7 +267,15 @@ if __name__ == '__main__':
     model_g, config_g = loadSDModel()
 
     window = MainWindow()
+    window.ui.mainStackedWidget.setCurrentIndex(0)
 
+
+    #Tab switching
+    window.ui.imageTabButton.clicked.connect(lambda: SwitchTabs(0, window))
+    window.ui.AnimatorTabButton.clicked.connect(lambda: SwitchTabs(1, window))
+
+
+    ######### IMAGE TAB #########
 
     #sliders
     window.ui.stepSlider.valueChanged.connect(lambda: SliderChanged((window.ui.stepSlider.value()*5, window.ui.stepsValueBox)))
@@ -273,6 +291,8 @@ if __name__ == '__main__':
     window.ui.generateButton.clicked.connect(lambda: Generate_Image(getArgs(window), window.ui.imagePreview, window))
     
     SetPreviewImage(window.ui.imagePreview, 'ui/preview.png')
+
+    ######### ANIMATOR TAB #########
 
 
     window.show()
