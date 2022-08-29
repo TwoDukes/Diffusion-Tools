@@ -1038,7 +1038,7 @@ color: rgb(16, 16, 16);</string>
            <string>Generate</string>
           </property>
           <property name="shortcut">
-           <string>Ctrl+Return</string>
+           <string>Return</string>
           </property>
          </widget>
         </item>

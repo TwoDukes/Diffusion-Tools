@@ -672,7 +672,7 @@ class Ui_MainWindow(object):
         self.strengthValueBox.setText(QCoreApplication.translate("MainWindow", u"70%", None))
         self.generateButton.setText(QCoreApplication.translate("MainWindow", u"Generate", None))
 #if QT_CONFIG(shortcut)
-        self.generateButton.setShortcut(QCoreApplication.translate("MainWindow", u"Ctrl+Return", None))
+        self.generateButton.setShortcut(QCoreApplication.translate("MainWindow", u"Return", None))
 #endif // QT_CONFIG(shortcut)
         self.imagePreview.setText("")
         self.outputFolderLabel.setText(QCoreApplication.translate("MainWindow", u"Output folder", None))
