@@ -329,14 +329,14 @@ def main():
     sampler.make_schedule(ddim_num_steps=opt.ddim_steps, ddim_eta=opt.ddim_eta, verbose=False)
 
 
-    promptList = [("a river running through a snow-covered landscape, winter, cold, water",0.45, 100, (0, 1.02, 0, 0)),
-                  ("a mountain range with tall peaks and deep valleys, landscapes, scenery",0.45, 100, (0.1, 1.02, 0, 0)),
-                  ("a garden of brightly-colored flowers, floral, pretty",0.45, 100, (-0.2, 0.99, 0, 0)),
-                  ("a tree-lined street in autumn, fall colors, leaves",0.45, 100, (0.5, 1.01, -0.5, 0)),
-                  (" dewdrops on blades of grass",0.45, 100, (-0.4, 1, 3, 2)),
-                  ("a large body of water with a mountain in the background, lake, mountain",0.45, 100, (0.1, 1.015, 5, 0)),
-                  ("A stream running through a field of flowers, macro photography, close up, nature",0.45, 100, (-0.1, 1.015, -3, -2)),
-                  ("A small waterfall in the woods, nature photography, scenic, beautiful",0.45, 100, (0.3, 1.02, 2, 2)),]
+    promptList = [("a river running through a snow-covered landscape, winter, Lawren Harris",0.40, 100, (0, 1.015, -0.4, 0.3)),
+                  ("a mountain range with tall peaks and deep valleys, Jacek Yerka",0.40, 100, (0, 1.015, -0.4, 0.3)),
+                  ("a garden of brightly-colored flowers, Rodney Matthews",0.40, 100, (0, 1.015, -0.4, 0.3)),
+                  ("a tree-lined street in autumn, fall colors, Guido Borelli da Caluso",0.40, 100, (0, 1.015, -0.4, 0.3)),
+                  (" dewdrops on blades of grass",0.40, 100, (0, 1.015, -0.4, 0.3)),
+                  ("a large body of water with a mountain in the background, Isaac Levitan",0.40, 100, (0, 1.015, -0.4, 0.3)),
+                  ("A stream running through a field of flowers, Rob Gonsalves ",0.40, 100, (0, 1.015, -0.4, 0.3)),
+                  ("A small waterfall in the woods, Rafal Olbinski",0.40, 100, (0, 1.015, -0.4, 0.3)),]
 
 
 
