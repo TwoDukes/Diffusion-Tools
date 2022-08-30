@@ -125,7 +125,7 @@ def setup_next_img(img, lutImg, prevLutImg, sampleCount, CurrentSampleNum, curPr
         img_res,
         xform,
         (img_res.shape[1], img_res.shape[0]),
-        borderMode=cv2.BORDER_WRAP# if anim_args.border == 'wrap' else cv2.BORDER_REPLICATE
+        borderMode=cv2.BORDER_REPLICATE#cv2.BORDER_WRAP# if anim_args.border == 'wrap' else cv2.BORDER_REPLICATE
     )
 
     prev_img = Image.fromarray(prev_img) 
@@ -329,14 +329,14 @@ def main():
     sampler.make_schedule(ddim_num_steps=opt.ddim_steps, ddim_eta=opt.ddim_eta, verbose=False)
 
 
-    promptList = [("a river running through a snow-covered landscape, winter, cold, water",0.46, 100, (0, 1.02, 0, 0)),
-                  ("a mountain range with tall peaks and deep valleys, landscapes, scenery",0.46, 100, (0.1, 1.02, 0, 0)),
-                  ("a garden of brightly-colored flowers, floral, pretty",0.46, 100, (-0.2, 0.98, 0, 0)),
-                  ("a tree-lined street in autumn, fall colors, leaves",0.46, 100, (0.5, 0.98, 0, 0)),
-                  (" dewdrops on blades of grass",0.46, 100, (-0.4, 1, 3, 2)),
-                  ("a large body of water with a mountain in the background, lake, mountain",0.46, 100, (0.1, 1.015, 5, 0)),
-                  ("A stream running through a field of flowers, macro photography, close up, nature",0.46, 100, (-0.1, 1.015, -3, -2)),
-                  ("A small waterfall in the woods, nature photography, scenic, beautiful",0.46, 100, (0.3, 1.02, 2, 2)),]
+    promptList = [("a river running through a snow-covered landscape, winter, cold, water",0.45, 100, (0, 1.02, 0, 0)),
+                  ("a mountain range with tall peaks and deep valleys, landscapes, scenery",0.45, 100, (0.1, 1.02, 0, 0)),
+                  ("a garden of brightly-colored flowers, floral, pretty",0.45, 100, (-0.2, 0.99, 0, 0)),
+                  ("a tree-lined street in autumn, fall colors, leaves",0.45, 100, (0.5, 1.01, -0.5, 0)),
+                  (" dewdrops on blades of grass",0.45, 100, (-0.4, 1, 3, 2)),
+                  ("a large body of water with a mountain in the background, lake, mountain",0.45, 100, (0.1, 1.015, 5, 0)),
+                  ("A stream running through a field of flowers, macro photography, close up, nature",0.45, 100, (-0.1, 1.015, -3, -2)),
+                  ("A small waterfall in the woods, nature photography, scenic, beautiful",0.45, 100, (0.3, 1.02, 2, 2)),]
 
 
 
