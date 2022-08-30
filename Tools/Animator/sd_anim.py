@@ -4,6 +4,7 @@ import argparse, os, sys, glob
 import PIL
 import torch
 import numpy as np
+import cv2
 
 from color_matcher import ColorMatcher
 from color_matcher.io_handler import load_img_file, save_img_file, FILE_EXTS
@@ -67,7 +68,7 @@ def load_img(path):
 cm = ColorMatcher()
 prevLutImg = None
 
-def setup_next_img(img, lutImg, prevLutImg, sampleCount, CurrentSampleNum):
+def setup_next_img(img, lutImg, prevLutImg, sampleCount, CurrentSampleNum, curPromptInfo):
     
     
     w, h = img.size
@@ -83,10 +84,53 @@ def setup_next_img(img, lutImg, prevLutImg, sampleCount, CurrentSampleNum):
     img_res = cm.transfer(src=img_src, ref=lut_Img, method='mkl')
     img_res = Normalizer(img_res).uint8_norm()
 
-    img2 = Image.fromarray(img_res)
+    #img2 = Image.fromarray(img_res)
 
+    angle = curPromptInfo[3][0]
+    zoom = curPromptInfo[3][1]
+    translation_x = curPromptInfo[3][2]
+    translation_y = curPromptInfo[3][3]
+    print(
+        f'angle: {angle}',
+        f'zoom: {zoom}',
+        f'translation_x: {translation_x}',
+        f'translation_y: {translation_y}',
+    )
 
-    image = np.array(img2).astype(np.float32) / 255.0
+    def make_xform_2d(width, height, translation_x, translation_y, angle, scale):
+        center = (width // 2, height // 2)
+        trans_mat = np.float32([[1, 0, translation_x], [0, 1, translation_y]])
+        rot_mat = cv2.getRotationMatrix2D(center, angle, scale)
+        trans_mat = np.vstack([trans_mat, [0,0,1]])
+        rot_mat = np.vstack([rot_mat, [0,0,1]])
+        return np.matmul(rot_mat, trans_mat)
+
+    xform = make_xform_2d(w, h, translation_x, translation_y, angle, zoom)
+
+    def sample_to_cv2(sample: torch.Tensor) -> np.ndarray:
+        sample_f32 = rearrange(sample.squeeze().cpu().numpy(), "c h w -> h w c").astype(np.float32)
+        sample_f32 = ((sample_f32 * 0.5) + 0.5).clip(0, 1)
+        sample_int8 = (sample_f32 * 255).astype(np.uint8)
+        return sample_int8
+
+    def sample_from_cv2(sample: np.ndarray) -> torch.Tensor:
+        sample = ((sample.astype(float) / 255.0) * 2) - 1
+        sample = sample[None].transpose(0, 3, 1, 2).astype(np.float16)
+        sample = torch.from_numpy(sample)
+        return sample
+
+    # transform previous frame
+    #prev_img = sample_to_cv2(img2)
+    prev_img = cv2.warpPerspective(
+        img_res,
+        xform,
+        (img_res.shape[1], img_res.shape[0]),
+        borderMode=cv2.BORDER_WRAP# if anim_args.border == 'wrap' else cv2.BORDER_REPLICATE
+    )
+
+    prev_img = Image.fromarray(prev_img) 
+
+    image = np.array(prev_img).astype(np.float32) / 255.0
     image = image[None].transpose(0, 3, 1, 2)
     image = torch.from_numpy(image)
     return 2.*image - 1.
@@ -189,7 +233,7 @@ def main():
     parser.add_argument(
         "--scale",
         type=float,
-        default=5.5,
+        default=7,
         help="unconditional guidance scale: eps = eps(x, empty) + scale * (eps(x, cond) - eps(x, empty))",
     )
 
@@ -285,41 +329,12 @@ def main():
     sampler.make_schedule(ddim_num_steps=opt.ddim_steps, ddim_eta=opt.ddim_eta, verbose=False)
 
 
-    promptList = [("portrait of face to face humans scientific intelligences meet online, mooc, intricate, elegant, highly detailed, concept art, smooth, sharp focus, lineart, illustration, shadows, penned with thin colors on white, 8 k ",0.32, 50),
-                  ("A face to face meeting of two scientific minds online, one human and one AI, digital art, pixiv, detailed ",0.32, 50),]
+    promptList = [("a girl in a college classroom, - - - neon galaxy vibes",0.45, 60, (0, 1, 0, -5)),
+                  ("a girl at the liquor store, Bastien Lecouffe-Deharme ",0.45, 60, (0.2, 1.02, 0, 0)),
+                  ("a girl at a friends house party, art by carpenter brut ",0.45, 60, (-0.2, 1, 0, 5)),
+                  ("a girl at a nightclub, digital art, artstation ",0.45, 60, (0.5, 0.97, 0, 0)),
+                  ("a girl walking the streets of a city, night, cyberpunk vibes, f 1.4, iso 250 ",0.45, 60, (-0.4, 1, -3, -2)),]
 
-    '''
-    promptList = [    ("Futurama, Everyone at church listening to zoidberg's sermon, religious, traditional",0.36, 40),
-("Futurama, hermes performing his latest stunt, clowning around, circus",0.32, 25),
-("Futurama visiting the moon for a dinner party, wealthy lifestyle, upper class",0.3, 30),
-#("Star wipe, cinematic transistion",0.5, 10),
-("family guy, quagmire skateboarding down a steep hill, daredevil, rebellious",0.36, 45),
-("family guy, lois at an annual bake-off, with everyone bringing their best desserts, competition, food",0.35, 20),
-("family guy, peter going on a family camping trip, nature, outdoors",0.30, 30),
-#("Star wipe, hand drawn transistion",0.5, 10),
-("The Simpsons gathered around the TV watching a football game, American, family, comedy",0.35, 60),
-("The simpsons, Lisa playing the saxophone in front of Homer, jazz, band, school",0.35, 30),
-("The simpsons, Marge baking cookies while the kids play in the background, domestic, home life",0.35, 30),
-#("fade to black, transistion",0.5, 10),
-("South park, cartman getting in trouble at school, classroom, funny",0.3, 40),
-("South park, kenny playing a video game,gaming, tv, ",0.3, 35),
-("South park, stan and kyle talking in the park, friendship, outdoors",0.3, 30),
-#("cross fade, transistion",0.5, 10),
-("seinfeld, jerry and george talking in a coffee shop, friendship, comedy",0.3, 40),
-("seinfeld, elaine buying dresses, shopping, colorful",0.3, 35),
-("seinfeld, jerry and george in a meeting, business, comedy",0.3, 30),
-#("field of stars, transistion",0.5, 10),
-("star wars film still, ,luke and leia talking on the Millennium Falcon, friendship, space",0.3, 40),
-("star wars film still, Darth Vader fighting Obi Wan, action, space",0.3, 40),
-("star wars film still,, the Millennium Falcon being chased by Imperial ships, action, space",0.3, 35),
-#("fade to white, transistion",0.5, 10),
-("minions,  the minions playing in a park, , comedy",0.3, 40),
-("minions, the minions at a restaurant, eating, food",0.3, 35),
-("minions, the minions going down a slide, comedy",0.3, 35),
-("End credits, film credits",0.375, 50)]
-    '''
-
-    
 
 
     sampleCount = 0
@@ -447,7 +462,7 @@ def main():
                                         base_count += 1
                                         #init_image = automatic_brightness_and_contrast(im)
                                         #init_image = Image.fromarray(init_image)
-                                        init_image = setup_next_img(im, LUT_IMG, PREV_LUT, sampleCount, i).to(device)
+                                        init_image = setup_next_img(im, LUT_IMG, PREV_LUT, sampleCount, i, promptList[promptIndex]).to(device)
                                         print("Next Image\n\n")
                                 all_samples.append(x_samples)
 

@@ -296,6 +296,7 @@ class Ui_MainWindow(object):
         self.heightInput.setObjectName(u"heightInput")
         self.heightInput.setMinimum(64)
         self.heightInput.setMaximum(1024)
+        self.heightInput.setSingleStep(64)
         self.heightInput.setValue(512)
 
         self.horizontalLayout_3.addWidget(self.heightInput)
