@@ -237,10 +237,12 @@ def SetImageSize(w,h,label):
 def SwitchTabs(tabNumb, window):
     if tabNumb == 0:
         window.ui.mainStackedWidget.setCurrentIndex(0)
+        window.ui.SecondaryStackedWidget.setCurrentIndex(0)
         window.ui.AnimatorTabButton.setChecked(False)
 
     elif tabNumb == 1:
         window.ui.mainStackedWidget.setCurrentIndex(1)
+        window.ui.SecondaryStackedWidget.setCurrentIndex(0)
         window.ui.imageTabButton.setChecked(False)
 
 
@@ -270,7 +272,7 @@ if __name__ == '__main__':
     window = MainWindow()
     window.ui.mainStackedWidget.setCurrentIndex(0)
 
-
+    
     #Tab switching
     window.ui.imageTabButton.clicked.connect(lambda: SwitchTabs(0, window))
     window.ui.AnimatorTabButton.clicked.connect(lambda: SwitchTabs(1, window))
@@ -297,12 +299,14 @@ if __name__ == '__main__':
     curAnimPromptCount = 1
 
     def makeNewPromptBox():
-        curAnimPromptCount = curAnimPromptCount + 1
-        generateNewPromptBox(window, curAnimPromptCount)
+        global curAnimPromptCount
+        curAnimPromptCount += 1
         print(curAnimPromptCount)
+        generateNewPromptBox(window, curAnimPromptCount)
+
 
     #buttons
-    window.ui.animNewPromptButton.clicked.connect(lambda: generateNewPromptBox(window, curAnimPromptCount+1))
+    window.ui.animNewPromptButton.clicked.connect(lambda: makeNewPromptBox())
 
 
 
