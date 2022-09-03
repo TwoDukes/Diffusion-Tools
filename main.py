@@ -242,7 +242,7 @@ def SwitchTabs(tabNumb, window):
 
     elif tabNumb == 1:
         window.ui.mainStackedWidget.setCurrentIndex(1)
-        window.ui.SecondaryStackedWidget.setCurrentIndex(0)
+        window.ui.SecondaryStackedWidget.setCurrentIndex(1)
         window.ui.imageTabButton.setChecked(False)
 
 

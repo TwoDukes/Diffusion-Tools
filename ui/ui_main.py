@@ -827,6 +827,7 @@ class Ui_MainWindow(object):
 
         self.animInitEnabledCheckbox = QCheckBox(self.Animator)
         self.animInitEnabledCheckbox.setObjectName(u"animInitEnabledCheckbox")
+        self.animInitEnabledCheckbox.setChecked(True)
 
         self.horizontalLayout_18.addWidget(self.animInitEnabledCheckbox)
 
@@ -884,7 +885,8 @@ class Ui_MainWindow(object):
         self.AnimatorTabButton.setDefault(False)
         self.vid2vidTabButton.setDefault(False)
         self.inpaintingButton.setDefault(False)
-        self.mainStackedWidget.setCurrentIndex(1)
+        self.mainStackedWidget.setCurrentIndex(0)
+        self.SecondaryStackedWidget.setCurrentIndex(0)
 
 
         QMetaObject.connectSlotsByName(MainWindow)
