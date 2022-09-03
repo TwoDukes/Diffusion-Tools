@@ -6,13 +6,13 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1275</width>
-    <height>720</height>
+    <width>1689</width>
+    <height>917</height>
    </rect>
   </property>
   <property name="minimumSize">
    <size>
-    <width>1275</width>
+    <width>1670</width>
     <height>720</height>
    </size>
   </property>
@@ -82,7 +82,7 @@ color: rgb(255, 255, 255);</string>
      </widget>
     </item>
     <item>
-     <layout class="QHBoxLayout" name="horizontalLayout_15">
+     <layout class="QHBoxLayout" name="horizontalLayout_15" stretch="0,2,0">
       <item>
        <layout class="QVBoxLayout" name="verticalLayout_5">
         <property name="spacing">
@@ -302,7 +302,7 @@ color: rgb(255, 255, 255);</string>
       <item>
        <widget class="QStackedWidget" name="mainStackedWidget">
         <property name="currentIndex">
-         <number>0</number>
+         <number>1</number>
         </property>
         <widget class="QWidget" name="SingleImagePage">
          <layout class="QVBoxLayout" name="verticalLayout_9">
@@ -319,17 +319,10 @@ color: rgb(255, 255, 255);</string>
            <number>1</number>
           </property>
           <item>
-           <layout class="QHBoxLayout" name="horizontalLayout" stretch="0,0">
+           <layout class="QHBoxLayout" name="horizontalLayout" stretch="0">
             <property name="rightMargin">
              <number>20</number>
             </property>
-            <item>
-             <widget class="Line" name="line_2">
-              <property name="orientation">
-               <enum>Qt::Vertical</enum>
-              </property>
-             </widget>
-            </item>
             <item>
              <layout class="QVBoxLayout" name="verticalLayout">
               <property name="spacing">
@@ -998,7 +991,7 @@ color: rgb(35, 35, 35);</string>
                           </sizepolicy>
                          </property>
                          <property name="text">
-                          <string>Choose Folder</string>
+                          <string>Choose Image</string>
                          </property>
                         </widget>
                        </item>
@@ -1152,18 +1145,339 @@ color: rgb(16, 16, 16);</string>
         <widget class="QWidget" name="AnimatorPage">
          <layout class="QVBoxLayout" name="verticalLayout_8">
           <item>
-           <widget class="QLabel" name="label">
-            <property name="font">
-             <font>
-              <pointsize>30</pointsize>
-             </font>
+           <widget class="QScrollArea" name="animPromptScrollArea">
+            <property name="horizontalScrollBarPolicy">
+             <enum>Qt::ScrollBarAlwaysOff</enum>
             </property>
-            <property name="text">
-             <string>COMING SOON</string>
+            <property name="widgetResizable">
+             <bool>true</bool>
             </property>
-            <property name="alignment">
-             <set>Qt::AlignCenter</set>
-            </property>
+            <widget class="QWidget" name="animMainPromptScrollContainer">
+             <property name="geometry">
+              <rect>
+               <x>0</x>
+               <y>0</y>
+               <width>962</width>
+               <height>753</height>
+              </rect>
+             </property>
+             <layout class="QVBoxLayout" name="animPromptContainterLayoutGroup">
+              <item>
+               <widget class="QLabel" name="label">
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
+                  <horstretch>0</horstretch>
+                  <verstretch>0</verstretch>
+                 </sizepolicy>
+                </property>
+                <property name="font">
+                 <font>
+                  <pointsize>18</pointsize>
+                 </font>
+                </property>
+                <property name="text">
+                 <string>ANIMATOR</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <layout class="QVBoxLayout" name="AnimatorMainVertLayoutGroup">
+                <item>
+                 <layout class="QVBoxLayout" name="verticalAnimPromptContainer">
+                  <item>
+                   <widget class="QLabel" name="animLabel1">
+                    <property name="sizePolicy">
+                     <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                      <horstretch>0</horstretch>
+                      <verstretch>0</verstretch>
+                     </sizepolicy>
+                    </property>
+                    <property name="font">
+                     <font>
+                      <pointsize>10</pointsize>
+                      <weight>75</weight>
+                      <bold>true</bold>
+                     </font>
+                    </property>
+                    <property name="text">
+                     <string>Prompt #1</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QLineEdit" name="animPrompt1">
+                    <property name="styleSheet">
+                     <string notr="true">background-color: rgb(218, 218, 218);
+color: rgb(35, 35, 35);</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <layout class="QHBoxLayout" name="animHorizOptionContainter">
+                    <item>
+                     <widget class="QDoubleSpinBox" name="animStength1">
+                      <property name="sizePolicy">
+                       <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                        <horstretch>0</horstretch>
+                        <verstretch>0</verstretch>
+                       </sizepolicy>
+                      </property>
+                      <property name="minimumSize">
+                       <size>
+                        <width>120</width>
+                        <height>0</height>
+                       </size>
+                      </property>
+                      <property name="font">
+                       <font>
+                        <pointsize>8</pointsize>
+                        <weight>50</weight>
+                        <bold>false</bold>
+                       </font>
+                      </property>
+                      <property name="specialValueText">
+                       <string/>
+                      </property>
+                      <property name="prefix">
+                       <string>Strength: </string>
+                      </property>
+                      <property name="maximum">
+                       <double>1.000000000000000</double>
+                      </property>
+                      <property name="singleStep">
+                       <double>0.050000000000000</double>
+                      </property>
+                      <property name="value">
+                       <double>0.450000000000000</double>
+                      </property>
+                     </widget>
+                    </item>
+                    <item>
+                     <widget class="QDoubleSpinBox" name="animCfgScaleSpinBox">
+                      <property name="sizePolicy">
+                       <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                        <horstretch>0</horstretch>
+                        <verstretch>0</verstretch>
+                       </sizepolicy>
+                      </property>
+                      <property name="minimumSize">
+                       <size>
+                        <width>120</width>
+                        <height>0</height>
+                       </size>
+                      </property>
+                      <property name="prefix">
+                       <string>CFG Scale: </string>
+                      </property>
+                      <property name="minimum">
+                       <double>-99.000000000000000</double>
+                      </property>
+                      <property name="value">
+                       <double>7.000000000000000</double>
+                      </property>
+                     </widget>
+                    </item>
+                    <item>
+                     <widget class="QSpinBox" name="animFrameCount1">
+                      <property name="sizePolicy">
+                       <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                        <horstretch>0</horstretch>
+                        <verstretch>0</verstretch>
+                       </sizepolicy>
+                      </property>
+                      <property name="minimumSize">
+                       <size>
+                        <width>120</width>
+                        <height>0</height>
+                       </size>
+                      </property>
+                      <property name="suffix">
+                       <string/>
+                      </property>
+                      <property name="prefix">
+                       <string>Frames: </string>
+                      </property>
+                      <property name="maximum">
+                       <number>100000</number>
+                      </property>
+                      <property name="singleStep">
+                       <number>5</number>
+                      </property>
+                      <property name="value">
+                       <number>50</number>
+                      </property>
+                     </widget>
+                    </item>
+                    <item>
+                     <widget class="Line" name="anim2ndOptionLine1">
+                      <property name="orientation">
+                       <enum>Qt::Vertical</enum>
+                      </property>
+                     </widget>
+                    </item>
+                    <item>
+                     <widget class="Line" name="animOptionLine1">
+                      <property name="orientation">
+                       <enum>Qt::Vertical</enum>
+                      </property>
+                     </widget>
+                    </item>
+                    <item>
+                     <widget class="QDoubleSpinBox" name="animZoom1">
+                      <property name="sizePolicy">
+                       <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                        <horstretch>0</horstretch>
+                        <verstretch>0</verstretch>
+                       </sizepolicy>
+                      </property>
+                      <property name="minimumSize">
+                       <size>
+                        <width>120</width>
+                        <height>0</height>
+                       </size>
+                      </property>
+                      <property name="prefix">
+                       <string>Zoom: </string>
+                      </property>
+                      <property name="suffix">
+                       <string/>
+                      </property>
+                      <property name="minimum">
+                       <double>-99.000000000000000</double>
+                      </property>
+                      <property name="singleStep">
+                       <double>0.100000000000000</double>
+                      </property>
+                      <property name="value">
+                       <double>1.000000000000000</double>
+                      </property>
+                     </widget>
+                    </item>
+                    <item>
+                     <widget class="QDoubleSpinBox" name="animRotation1">
+                      <property name="sizePolicy">
+                       <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                        <horstretch>0</horstretch>
+                        <verstretch>0</verstretch>
+                       </sizepolicy>
+                      </property>
+                      <property name="minimumSize">
+                       <size>
+                        <width>120</width>
+                        <height>0</height>
+                       </size>
+                      </property>
+                      <property name="prefix">
+                       <string>Rotation: </string>
+                      </property>
+                      <property name="minimum">
+                       <double>-10.000000000000000</double>
+                      </property>
+                      <property name="maximum">
+                       <double>10.000000000000000</double>
+                      </property>
+                      <property name="singleStep">
+                       <double>0.100000000000000</double>
+                      </property>
+                     </widget>
+                    </item>
+                    <item>
+                     <widget class="QDoubleSpinBox" name="animXMotion1">
+                      <property name="sizePolicy">
+                       <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                        <horstretch>0</horstretch>
+                        <verstretch>0</verstretch>
+                       </sizepolicy>
+                      </property>
+                      <property name="minimumSize">
+                       <size>
+                        <width>120</width>
+                        <height>0</height>
+                       </size>
+                      </property>
+                      <property name="prefix">
+                       <string>X Motion:</string>
+                      </property>
+                      <property name="minimum">
+                       <double>-99.000000000000000</double>
+                      </property>
+                      <property name="singleStep">
+                       <double>0.100000000000000</double>
+                      </property>
+                     </widget>
+                    </item>
+                    <item>
+                     <widget class="QDoubleSpinBox" name="animYMotion1">
+                      <property name="sizePolicy">
+                       <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                        <horstretch>0</horstretch>
+                        <verstretch>0</verstretch>
+                       </sizepolicy>
+                      </property>
+                      <property name="minimumSize">
+                       <size>
+                        <width>120</width>
+                        <height>0</height>
+                       </size>
+                      </property>
+                      <property name="prefix">
+                       <string>Y Motion: </string>
+                      </property>
+                      <property name="minimum">
+                       <double>-99.000000000000000</double>
+                      </property>
+                      <property name="singleStep">
+                       <double>0.100000000000000</double>
+                      </property>
+                     </widget>
+                    </item>
+                    <item>
+                     <spacer name="animOptionHorizSpacer1">
+                      <property name="orientation">
+                       <enum>Qt::Horizontal</enum>
+                      </property>
+                      <property name="sizeHint" stdset="0">
+                       <size>
+                        <width>40</width>
+                        <height>20</height>
+                       </size>
+                      </property>
+                     </spacer>
+                    </item>
+                   </layout>
+                  </item>
+                 </layout>
+                </item>
+               </layout>
+              </item>
+              <item>
+               <widget class="QPushButton" name="animNewPromptButton">
+                <property name="font">
+                 <font>
+                  <weight>75</weight>
+                  <bold>true</bold>
+                 </font>
+                </property>
+                <property name="text">
+                 <string>NEW PROMPT</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <spacer name="verticalSpacer_4">
+                <property name="orientation">
+                 <enum>Qt::Vertical</enum>
+                </property>
+                <property name="sizeHint" stdset="0">
+                 <size>
+                  <width>20</width>
+                  <height>40</height>
+                 </size>
+                </property>
+               </spacer>
+              </item>
+             </layout>
+            </widget>
            </widget>
           </item>
          </layout>
@@ -1199,7 +1513,7 @@ color: rgb(16, 16, 16);</string>
           <item>
            <widget class="QLabel" name="imagePreview">
             <property name="sizePolicy">
-             <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+             <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
               <horstretch>0</horstretch>
               <verstretch>0</verstretch>
              </sizepolicy>
@@ -1220,7 +1534,7 @@ color: rgb(16, 16, 16);</string>
              <string/>
             </property>
             <property name="pixmap">
-             <pixmap>../outputs/txt2img-samples/grid-0018.png</pixmap>
+             <pixmap>../../../../.designer/outputs/txt2img-samples/grid-0018.png</pixmap>
             </property>
             <property name="scaledContents">
              <bool>true</bool>
@@ -1249,6 +1563,12 @@ color: rgb(16, 16, 16);</string>
          <layout class="QHBoxLayout" name="horizontalLayout_9">
           <item>
            <widget class="QLabel" name="outputFolderLabel">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
             <property name="font">
              <font>
               <weight>75</weight>
@@ -1285,6 +1605,12 @@ color: rgb(35, 35, 35);</string>
           </item>
           <item>
            <widget class="QPushButton" name="imageOutputFolderButton">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
             <property name="text">
              <string>Choose Folder</string>
             </property>
@@ -1296,7 +1622,7 @@ color: rgb(35, 35, 35);</string>
              <enum>Qt::Horizontal</enum>
             </property>
             <property name="sizeType">
-             <enum>QSizePolicy::Expanding</enum>
+             <enum>QSizePolicy::Minimum</enum>
             </property>
             <property name="sizeHint" stdset="0">
              <size>
@@ -1307,6 +1633,77 @@ color: rgb(35, 35, 35);</string>
            </spacer>
           </item>
          </layout>
+        </item>
+        <item>
+         <widget class="QStackedWidget" name="SecondaryStackedWidget">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <widget class="QWidget" name="SingleImage"/>
+          <widget class="QWidget" name="Animator">
+           <layout class="QVBoxLayout" name="verticalLayout_12">
+            <property name="leftMargin">
+             <number>0</number>
+            </property>
+            <item>
+             <layout class="QHBoxLayout" name="horizontalLayout_18">
+              <item>
+               <widget class="QLabel" name="animInitLabel">
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="Maximum" vsizetype="Maximum">
+                  <horstretch>0</horstretch>
+                  <verstretch>0</verstretch>
+                 </sizepolicy>
+                </property>
+                <property name="font">
+                 <font>
+                  <pointsize>8</pointsize>
+                  <weight>75</weight>
+                  <bold>true</bold>
+                 </font>
+                </property>
+                <property name="text">
+                 <string>Init Image</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QCheckBox" name="animInitEnabledCheckbox">
+                <property name="text">
+                 <string>Enabled</string>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </item>
+            <item>
+             <layout class="QHBoxLayout" name="horizontalLayout_19">
+              <item>
+               <widget class="QLineEdit" name="animInitFileLocation">
+                <property name="styleSheet">
+                 <string notr="true">background-color: rgb(218, 218, 218);
+color: rgb(35, 35, 35);</string>
+                </property>
+                <property name="text">
+                 <string>ui/preview.png</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QPushButton" name="animInitChooseFileButton">
+                <property name="text">
+                 <string>Choose Image</string>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </item>
+           </layout>
+          </widget>
+         </widget>
         </item>
         <item>
          <spacer name="verticalSpacer_2">
@@ -1332,7 +1729,7 @@ color: rgb(35, 35, 35);</string>
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1275</width>
+     <width>1689</width>
      <height>26</height>
     </rect>
    </property>

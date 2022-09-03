@@ -68,7 +68,7 @@ def load_img(path):
 cm = ColorMatcher()
 prevLutImg = None
 
-def setup_next_img(img, lutImg, prevLutImg, sampleCount, CurrentSampleNum, curPromptInfo):
+def setup_next_img(img, prevImg, lutImg, prevLutImg, sampleCount, CurrentSampleNum, curPromptInfo):
     
     
     w, h = img.size
@@ -329,14 +329,20 @@ def main():
     sampler.make_schedule(ddim_num_steps=opt.ddim_steps, ddim_eta=opt.ddim_eta, verbose=False)
 
 
-    promptList = [("a river running through a snow-covered landscape, winter, Lawren Harris",0.40, 100, (0, 1.015, -0.4, 0.3)),
-                  ("a mountain range with tall peaks and deep valleys, Jacek Yerka",0.40, 100, (0, 1.015, -0.4, 0.3)),
-                  ("a garden of brightly-colored flowers, Rodney Matthews",0.40, 100, (0, 1.015, -0.4, 0.3)),
-                  ("a tree-lined street in autumn, fall colors, Guido Borelli da Caluso",0.40, 100, (0, 1.015, -0.4, 0.3)),
-                  (" dewdrops on blades of grass",0.40, 100, (0, 1.015, -0.4, 0.3)),
-                  ("a large body of water with a mountain in the background, Isaac Levitan",0.40, 100, (0, 1.015, -0.4, 0.3)),
-                  ("A stream running through a field of flowers, Rob Gonsalves ",0.40, 100, (0, 1.015, -0.4, 0.3)),
-                  ("A small waterfall in the woods, Rafal Olbinski",0.40, 100, (0, 1.015, -0.4, 0.3)),]
+    promptList = [("Animated Lions clinking glasses of wine together",0.45, 60, (0.0, 1.01, 1, 1)),
+    ("bottles of champagne that explode into a characature wave of champagne",0.45, 60, (0.1, 1.01, -0.0, 0.0)),
+    ("Majestic Ocean Wave crashing on the beach",0.45, 60, (0.1, 1.01, -0.0, 0.0)),
+    ("colorful nightclub, in the style of Andy Warhol",0.45, 60, (0.1, 1.01, -0.0, 0.0)),
+    ("A lion dj hyping up a rave",0.45, 60, (0.1, 1.01, -0.0, 0.0)),
+    ("stylized rave crowd dancing",0.45, 60, (0.1, 1.01, -0.0, 0.0)),
+    ("Sparkling explosion",0.45, 60, (0.1, 1.01, -0.0, 0.0))]
+                  #("a mountain range with tall peaks and deep valleys, Jacek Yerka",0.39, 100, (0.15, 0.982, -0.4, 0.3)),
+                  #("a garden of brightly-colored flowers, Rodney Matthews",0.39, 100, (0.15, 0.982, -0.4, 0.3)),
+                  #("a tree-lined street in autumn, fall colors, Guido Borelli da Caluso",0.4, 100, (0.15, 0.982, -0.4, 0.3)),
+                  #("A beautiful desert landscape, Roberto da Matta",0.39, 100, (0.15, 0.982, -0.4, 0.3)),
+                  #("a lake with a mountain in the background, Kate Greenaway",0.39, 100, (0.15, 0.982, -0.4, 0.3)),
+                  #("A stream running through a field of flowers, Rob Gonsalves ",0.39, 100, (0.15, 0.982, -0.4, 0.3)),
+                  #("A small waterfall in the woods, Rafal Olbinski",0.39, 100, (0.15, 0.982, -0.4, 0.3)),]
 
 
 
@@ -363,6 +369,7 @@ def main():
             PREV_LUT = LUT_IMG.convert("RGB")
 
 
+        prev_init = init_image
 
 
         precision_scope = autocast if opt.precision=="autocast" else nullcontext
@@ -412,7 +419,6 @@ def main():
 
         
 
-
         for i in range(0, int(sampleCount)):
 
 
@@ -424,8 +430,8 @@ def main():
             print(f"Prompt Batch #{promptIndex+1}")
             print("\n")
             
-            seed_everything(randint(0, 1000000)) #TEST
-
+            #seed_everything(randint(0, 1000000)) #TEST
+            
             init_image = repeat(init_image, '1 ... -> b ...', b=batch_size)
             init_latent = model.get_first_stage_encoding(model.encode_first_stage(init_image))
 
@@ -465,7 +471,8 @@ def main():
                                         base_count += 1
                                         #init_image = automatic_brightness_and_contrast(im)
                                         #init_image = Image.fromarray(init_image)
-                                        init_image = setup_next_img(im, LUT_IMG, PREV_LUT, sampleCount, i, promptList[promptIndex]).to(device)
+                                        init_image = setup_next_img(im, prev_init, LUT_IMG, PREV_LUT, sampleCount, i, promptList[promptIndex]).to(device)
+                                        prev_init = init_image
                                         print("Next Image\n\n")
                                 all_samples.append(x_samples)
 

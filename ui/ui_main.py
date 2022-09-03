@@ -17,8 +17,8 @@ class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         if not MainWindow.objectName():
             MainWindow.setObjectName(u"MainWindow")
-        MainWindow.resize(1275, 720)
-        MainWindow.setMinimumSize(QSize(1275, 720))
+        MainWindow.resize(1689, 917)
+        MainWindow.setMinimumSize(QSize(1670, 720))
         MainWindow.setStyleSheet(u"background-color: rgb(68, 68, 68);\n"
 "\n"
 "color: rgb(255, 255, 255);")
@@ -165,13 +165,6 @@ class Ui_MainWindow(object):
         self.horizontalLayout = QHBoxLayout()
         self.horizontalLayout.setObjectName(u"horizontalLayout")
         self.horizontalLayout.setContentsMargins(-1, -1, 20, -1)
-        self.line_2 = QFrame(self.SingleImagePage)
-        self.line_2.setObjectName(u"line_2")
-        self.line_2.setFrameShape(QFrame.VLine)
-        self.line_2.setFrameShadow(QFrame.Sunken)
-
-        self.horizontalLayout.addWidget(self.line_2)
-
         self.verticalLayout = QVBoxLayout()
         self.verticalLayout.setSpacing(15)
         self.verticalLayout.setObjectName(u"verticalLayout")
@@ -564,14 +557,170 @@ class Ui_MainWindow(object):
         self.AnimatorPage.setObjectName(u"AnimatorPage")
         self.verticalLayout_8 = QVBoxLayout(self.AnimatorPage)
         self.verticalLayout_8.setObjectName(u"verticalLayout_8")
-        self.label = QLabel(self.AnimatorPage)
+        self.animPromptScrollArea = QScrollArea(self.AnimatorPage)
+        self.animPromptScrollArea.setObjectName(u"animPromptScrollArea")
+        self.animPromptScrollArea.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
+        self.animPromptScrollArea.setWidgetResizable(True)
+        self.animMainPromptScrollContainer = QWidget()
+        self.animMainPromptScrollContainer.setObjectName(u"animMainPromptScrollContainer")
+        self.animMainPromptScrollContainer.setGeometry(QRect(0, 0, 962, 753))
+        self.animPromptContainterLayoutGroup = QVBoxLayout(self.animMainPromptScrollContainer)
+        self.animPromptContainterLayoutGroup.setObjectName(u"animPromptContainterLayoutGroup")
+        self.label = QLabel(self.animMainPromptScrollContainer)
         self.label.setObjectName(u"label")
-        font9 = QFont()
-        font9.setPointSize(30)
-        self.label.setFont(font9)
-        self.label.setAlignment(Qt.AlignCenter)
+        sizePolicy7 = QSizePolicy(QSizePolicy.Minimum, QSizePolicy.Preferred)
+        sizePolicy7.setHorizontalStretch(0)
+        sizePolicy7.setVerticalStretch(0)
+        sizePolicy7.setHeightForWidth(self.label.sizePolicy().hasHeightForWidth())
+        self.label.setSizePolicy(sizePolicy7)
+        self.label.setFont(font3)
 
-        self.verticalLayout_8.addWidget(self.label)
+        self.animPromptContainterLayoutGroup.addWidget(self.label)
+
+        self.AnimatorMainVertLayoutGroup = QVBoxLayout()
+        self.AnimatorMainVertLayoutGroup.setObjectName(u"AnimatorMainVertLayoutGroup")
+        self.verticalAnimPromptContainer = QVBoxLayout()
+        self.verticalAnimPromptContainer.setObjectName(u"verticalAnimPromptContainer")
+        self.animLabel1 = QLabel(self.animMainPromptScrollContainer)
+        self.animLabel1.setObjectName(u"animLabel1")
+        sizePolicy.setHeightForWidth(self.animLabel1.sizePolicy().hasHeightForWidth())
+        self.animLabel1.setSizePolicy(sizePolicy)
+        font9 = QFont()
+        font9.setPointSize(10)
+        font9.setBold(True)
+        font9.setWeight(75)
+        self.animLabel1.setFont(font9)
+
+        self.verticalAnimPromptContainer.addWidget(self.animLabel1)
+
+        self.animPrompt1 = QLineEdit(self.animMainPromptScrollContainer)
+        self.animPrompt1.setObjectName(u"animPrompt1")
+        self.animPrompt1.setStyleSheet(u"background-color: rgb(218, 218, 218);\n"
+"color: rgb(35, 35, 35);")
+
+        self.verticalAnimPromptContainer.addWidget(self.animPrompt1)
+
+        self.animHorizOptionContainter = QHBoxLayout()
+        self.animHorizOptionContainter.setObjectName(u"animHorizOptionContainter")
+        self.animStength1 = QDoubleSpinBox(self.animMainPromptScrollContainer)
+        self.animStength1.setObjectName(u"animStength1")
+        sizePolicy2.setHeightForWidth(self.animStength1.sizePolicy().hasHeightForWidth())
+        self.animStength1.setSizePolicy(sizePolicy2)
+        self.animStength1.setMinimumSize(QSize(120, 0))
+        font10 = QFont()
+        font10.setPointSize(8)
+        font10.setBold(False)
+        font10.setWeight(50)
+        self.animStength1.setFont(font10)
+        self.animStength1.setMaximum(1.000000000000000)
+        self.animStength1.setSingleStep(0.050000000000000)
+        self.animStength1.setValue(0.450000000000000)
+
+        self.animHorizOptionContainter.addWidget(self.animStength1)
+
+        self.animCfgScaleSpinBox = QDoubleSpinBox(self.animMainPromptScrollContainer)
+        self.animCfgScaleSpinBox.setObjectName(u"animCfgScaleSpinBox")
+        sizePolicy2.setHeightForWidth(self.animCfgScaleSpinBox.sizePolicy().hasHeightForWidth())
+        self.animCfgScaleSpinBox.setSizePolicy(sizePolicy2)
+        self.animCfgScaleSpinBox.setMinimumSize(QSize(120, 0))
+        self.animCfgScaleSpinBox.setMinimum(-99.000000000000000)
+        self.animCfgScaleSpinBox.setValue(7.000000000000000)
+
+        self.animHorizOptionContainter.addWidget(self.animCfgScaleSpinBox)
+
+        self.animFrameCount1 = QSpinBox(self.animMainPromptScrollContainer)
+        self.animFrameCount1.setObjectName(u"animFrameCount1")
+        sizePolicy2.setHeightForWidth(self.animFrameCount1.sizePolicy().hasHeightForWidth())
+        self.animFrameCount1.setSizePolicy(sizePolicy2)
+        self.animFrameCount1.setMinimumSize(QSize(120, 0))
+        self.animFrameCount1.setMaximum(100000)
+        self.animFrameCount1.setSingleStep(5)
+        self.animFrameCount1.setValue(50)
+
+        self.animHorizOptionContainter.addWidget(self.animFrameCount1)
+
+        self.anim2ndOptionLine1 = QFrame(self.animMainPromptScrollContainer)
+        self.anim2ndOptionLine1.setObjectName(u"anim2ndOptionLine1")
+        self.anim2ndOptionLine1.setFrameShape(QFrame.VLine)
+        self.anim2ndOptionLine1.setFrameShadow(QFrame.Sunken)
+
+        self.animHorizOptionContainter.addWidget(self.anim2ndOptionLine1)
+
+        self.animOptionLine1 = QFrame(self.animMainPromptScrollContainer)
+        self.animOptionLine1.setObjectName(u"animOptionLine1")
+        self.animOptionLine1.setFrameShape(QFrame.VLine)
+        self.animOptionLine1.setFrameShadow(QFrame.Sunken)
+
+        self.animHorizOptionContainter.addWidget(self.animOptionLine1)
+
+        self.animZoom1 = QDoubleSpinBox(self.animMainPromptScrollContainer)
+        self.animZoom1.setObjectName(u"animZoom1")
+        sizePolicy2.setHeightForWidth(self.animZoom1.sizePolicy().hasHeightForWidth())
+        self.animZoom1.setSizePolicy(sizePolicy2)
+        self.animZoom1.setMinimumSize(QSize(120, 0))
+        self.animZoom1.setMinimum(-99.000000000000000)
+        self.animZoom1.setSingleStep(0.100000000000000)
+        self.animZoom1.setValue(1.000000000000000)
+
+        self.animHorizOptionContainter.addWidget(self.animZoom1)
+
+        self.animRotation1 = QDoubleSpinBox(self.animMainPromptScrollContainer)
+        self.animRotation1.setObjectName(u"animRotation1")
+        sizePolicy2.setHeightForWidth(self.animRotation1.sizePolicy().hasHeightForWidth())
+        self.animRotation1.setSizePolicy(sizePolicy2)
+        self.animRotation1.setMinimumSize(QSize(120, 0))
+        self.animRotation1.setMinimum(-10.000000000000000)
+        self.animRotation1.setMaximum(10.000000000000000)
+        self.animRotation1.setSingleStep(0.100000000000000)
+
+        self.animHorizOptionContainter.addWidget(self.animRotation1)
+
+        self.animXMotion1 = QDoubleSpinBox(self.animMainPromptScrollContainer)
+        self.animXMotion1.setObjectName(u"animXMotion1")
+        sizePolicy2.setHeightForWidth(self.animXMotion1.sizePolicy().hasHeightForWidth())
+        self.animXMotion1.setSizePolicy(sizePolicy2)
+        self.animXMotion1.setMinimumSize(QSize(120, 0))
+        self.animXMotion1.setMinimum(-99.000000000000000)
+        self.animXMotion1.setSingleStep(0.100000000000000)
+
+        self.animHorizOptionContainter.addWidget(self.animXMotion1)
+
+        self.animYMotion1 = QDoubleSpinBox(self.animMainPromptScrollContainer)
+        self.animYMotion1.setObjectName(u"animYMotion1")
+        sizePolicy2.setHeightForWidth(self.animYMotion1.sizePolicy().hasHeightForWidth())
+        self.animYMotion1.setSizePolicy(sizePolicy2)
+        self.animYMotion1.setMinimumSize(QSize(120, 0))
+        self.animYMotion1.setMinimum(-99.000000000000000)
+        self.animYMotion1.setSingleStep(0.100000000000000)
+
+        self.animHorizOptionContainter.addWidget(self.animYMotion1)
+
+        self.animOptionHorizSpacer1 = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
+
+        self.animHorizOptionContainter.addItem(self.animOptionHorizSpacer1)
+
+
+        self.verticalAnimPromptContainer.addLayout(self.animHorizOptionContainter)
+
+
+        self.AnimatorMainVertLayoutGroup.addLayout(self.verticalAnimPromptContainer)
+
+
+        self.animPromptContainterLayoutGroup.addLayout(self.AnimatorMainVertLayoutGroup)
+
+        self.animNewPromptButton = QPushButton(self.animMainPromptScrollContainer)
+        self.animNewPromptButton.setObjectName(u"animNewPromptButton")
+        self.animNewPromptButton.setFont(font4)
+
+        self.animPromptContainterLayoutGroup.addWidget(self.animNewPromptButton)
+
+        self.verticalSpacer_4 = QSpacerItem(20, 40, QSizePolicy.Minimum, QSizePolicy.Expanding)
+
+        self.animPromptContainterLayoutGroup.addItem(self.verticalSpacer_4)
+
+        self.animPromptScrollArea.setWidget(self.animMainPromptScrollContainer)
+
+        self.verticalLayout_8.addWidget(self.animPromptScrollArea)
 
         self.mainStackedWidget.addWidget(self.AnimatorPage)
         self.vid2vidPage = QWidget()
@@ -580,11 +729,11 @@ class Ui_MainWindow(object):
         self.verticalLayout_10.setObjectName(u"verticalLayout_10")
         self.tempLabel = QLabel(self.vid2vidPage)
         self.tempLabel.setObjectName(u"tempLabel")
-        font10 = QFont()
-        font10.setPointSize(30)
-        font10.setBold(False)
-        font10.setWeight(50)
-        self.tempLabel.setFont(font10)
+        font11 = QFont()
+        font11.setPointSize(30)
+        font11.setBold(False)
+        font11.setWeight(50)
+        self.tempLabel.setFont(font11)
         self.tempLabel.setAlignment(Qt.AlignCenter)
 
         self.verticalLayout_10.addWidget(self.tempLabel)
@@ -602,14 +751,11 @@ class Ui_MainWindow(object):
         self.horizontalLayout_8.setObjectName(u"horizontalLayout_8")
         self.imagePreview = QLabel(self.centralwidget)
         self.imagePreview.setObjectName(u"imagePreview")
-        sizePolicy7 = QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Preferred)
-        sizePolicy7.setHorizontalStretch(0)
-        sizePolicy7.setVerticalStretch(0)
-        sizePolicy7.setHeightForWidth(self.imagePreview.sizePolicy().hasHeightForWidth())
-        self.imagePreview.setSizePolicy(sizePolicy7)
+        sizePolicy4.setHeightForWidth(self.imagePreview.sizePolicy().hasHeightForWidth())
+        self.imagePreview.setSizePolicy(sizePolicy4)
         self.imagePreview.setMinimumSize(QSize(512, 512))
         self.imagePreview.setMaximumSize(QSize(512, 512))
-        self.imagePreview.setPixmap(QPixmap(u"../outputs/txt2img-samples/grid-0018.png"))
+        self.imagePreview.setPixmap(QPixmap(u"../../../../.designer/outputs/txt2img-samples/grid-0018.png"))
         self.imagePreview.setScaledContents(True)
 
         self.horizontalLayout_8.addWidget(self.imagePreview)
@@ -625,6 +771,8 @@ class Ui_MainWindow(object):
         self.horizontalLayout_9.setObjectName(u"horizontalLayout_9")
         self.outputFolderLabel = QLabel(self.centralwidget)
         self.outputFolderLabel.setObjectName(u"outputFolderLabel")
+        sizePolicy4.setHeightForWidth(self.outputFolderLabel.sizePolicy().hasHeightForWidth())
+        self.outputFolderLabel.setSizePolicy(sizePolicy4)
         self.outputFolderLabel.setFont(font4)
 
         self.horizontalLayout_9.addWidget(self.outputFolderLabel)
@@ -640,15 +788,71 @@ class Ui_MainWindow(object):
 
         self.imageOutputFolderButton = QPushButton(self.centralwidget)
         self.imageOutputFolderButton.setObjectName(u"imageOutputFolderButton")
+        sizePolicy5.setHeightForWidth(self.imageOutputFolderButton.sizePolicy().hasHeightForWidth())
+        self.imageOutputFolderButton.setSizePolicy(sizePolicy5)
 
         self.horizontalLayout_9.addWidget(self.imageOutputFolderButton)
 
-        self.horizontalSpacer_5 = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
+        self.horizontalSpacer_5 = QSpacerItem(40, 20, QSizePolicy.Minimum, QSizePolicy.Minimum)
 
         self.horizontalLayout_9.addItem(self.horizontalSpacer_5)
 
 
         self.verticalLayout_6.addLayout(self.horizontalLayout_9)
+
+        self.SecondaryStackedWidget = QStackedWidget(self.centralwidget)
+        self.SecondaryStackedWidget.setObjectName(u"SecondaryStackedWidget")
+        sizePolicy1.setHeightForWidth(self.SecondaryStackedWidget.sizePolicy().hasHeightForWidth())
+        self.SecondaryStackedWidget.setSizePolicy(sizePolicy1)
+        self.SingleImage = QWidget()
+        self.SingleImage.setObjectName(u"SingleImage")
+        self.SecondaryStackedWidget.addWidget(self.SingleImage)
+        self.Animator = QWidget()
+        self.Animator.setObjectName(u"Animator")
+        self.verticalLayout_12 = QVBoxLayout(self.Animator)
+        self.verticalLayout_12.setObjectName(u"verticalLayout_12")
+        self.verticalLayout_12.setContentsMargins(0, -1, -1, -1)
+        self.horizontalLayout_18 = QHBoxLayout()
+        self.horizontalLayout_18.setObjectName(u"horizontalLayout_18")
+        self.animInitLabel = QLabel(self.Animator)
+        self.animInitLabel.setObjectName(u"animInitLabel")
+        sizePolicy8 = QSizePolicy(QSizePolicy.Maximum, QSizePolicy.Maximum)
+        sizePolicy8.setHorizontalStretch(0)
+        sizePolicy8.setVerticalStretch(0)
+        sizePolicy8.setHeightForWidth(self.animInitLabel.sizePolicy().hasHeightForWidth())
+        self.animInitLabel.setSizePolicy(sizePolicy8)
+        self.animInitLabel.setFont(font8)
+
+        self.horizontalLayout_18.addWidget(self.animInitLabel)
+
+        self.animInitEnabledCheckbox = QCheckBox(self.Animator)
+        self.animInitEnabledCheckbox.setObjectName(u"animInitEnabledCheckbox")
+
+        self.horizontalLayout_18.addWidget(self.animInitEnabledCheckbox)
+
+
+        self.verticalLayout_12.addLayout(self.horizontalLayout_18)
+
+        self.horizontalLayout_19 = QHBoxLayout()
+        self.horizontalLayout_19.setObjectName(u"horizontalLayout_19")
+        self.animInitFileLocation = QLineEdit(self.Animator)
+        self.animInitFileLocation.setObjectName(u"animInitFileLocation")
+        self.animInitFileLocation.setStyleSheet(u"background-color: rgb(218, 218, 218);\n"
+"color: rgb(35, 35, 35);")
+
+        self.horizontalLayout_19.addWidget(self.animInitFileLocation)
+
+        self.animInitChooseFileButton = QPushButton(self.Animator)
+        self.animInitChooseFileButton.setObjectName(u"animInitChooseFileButton")
+
+        self.horizontalLayout_19.addWidget(self.animInitChooseFileButton)
+
+
+        self.verticalLayout_12.addLayout(self.horizontalLayout_19)
+
+        self.SecondaryStackedWidget.addWidget(self.Animator)
+
+        self.verticalLayout_6.addWidget(self.SecondaryStackedWidget)
 
         self.verticalSpacer_2 = QSpacerItem(20, 40, QSizePolicy.Minimum, QSizePolicy.Expanding)
 
@@ -657,13 +861,14 @@ class Ui_MainWindow(object):
 
         self.horizontalLayout_15.addLayout(self.verticalLayout_6)
 
+        self.horizontalLayout_15.setStretch(1, 2)
 
         self.verticalLayout_2.addLayout(self.horizontalLayout_15)
 
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QMenuBar(MainWindow)
         self.menubar.setObjectName(u"menubar")
-        self.menubar.setGeometry(QRect(0, 0, 1275, 26))
+        self.menubar.setGeometry(QRect(0, 0, 1689, 26))
         self.menuMenu = QMenu(self.menubar)
         self.menuMenu.setObjectName(u"menuMenu")
         MainWindow.setMenuBar(self.menubar)
@@ -679,7 +884,7 @@ class Ui_MainWindow(object):
         self.AnimatorTabButton.setDefault(False)
         self.vid2vidTabButton.setDefault(False)
         self.inpaintingButton.setDefault(False)
-        self.mainStackedWidget.setCurrentIndex(0)
+        self.mainStackedWidget.setCurrentIndex(1)
 
 
         QMetaObject.connectSlotsByName(MainWindow)
@@ -735,19 +940,35 @@ class Ui_MainWindow(object):
         self.img2imgGroup.setTitle(QCoreApplication.translate("MainWindow", u"IMG2IMG", None))
         self.img2imgCheckbox.setText(QCoreApplication.translate("MainWindow", u"ENABLED", None))
         self.img2imgInitPathLineEdit.setText(QCoreApplication.translate("MainWindow", u"ui/preview.png", None))
-        self.img2imgChoosefolder.setText(QCoreApplication.translate("MainWindow", u"Choose Folder", None))
+        self.img2imgChoosefolder.setText(QCoreApplication.translate("MainWindow", u"Choose Image", None))
         self.strengthLabel.setText(QCoreApplication.translate("MainWindow", u"STRENGTH", None))
         self.strengthValueBox.setText(QCoreApplication.translate("MainWindow", u"70%", None))
         self.generateButton.setText(QCoreApplication.translate("MainWindow", u"Generate", None))
 #if QT_CONFIG(shortcut)
         self.generateButton.setShortcut(QCoreApplication.translate("MainWindow", u"Return", None))
 #endif // QT_CONFIG(shortcut)
-        self.label.setText(QCoreApplication.translate("MainWindow", u"COMING SOON", None))
+        self.label.setText(QCoreApplication.translate("MainWindow", u"ANIMATOR", None))
+        self.animLabel1.setText(QCoreApplication.translate("MainWindow", u"Prompt #1", None))
+        self.animStength1.setSpecialValueText("")
+        self.animStength1.setPrefix(QCoreApplication.translate("MainWindow", u"Strength: ", None))
+        self.animCfgScaleSpinBox.setPrefix(QCoreApplication.translate("MainWindow", u"CFG Scale: ", None))
+        self.animFrameCount1.setSuffix("")
+        self.animFrameCount1.setPrefix(QCoreApplication.translate("MainWindow", u"Frames: ", None))
+        self.animZoom1.setPrefix(QCoreApplication.translate("MainWindow", u"Zoom: ", None))
+        self.animZoom1.setSuffix("")
+        self.animRotation1.setPrefix(QCoreApplication.translate("MainWindow", u"Rotation: ", None))
+        self.animXMotion1.setPrefix(QCoreApplication.translate("MainWindow", u"X Motion:", None))
+        self.animYMotion1.setPrefix(QCoreApplication.translate("MainWindow", u"Y Motion: ", None))
+        self.animNewPromptButton.setText(QCoreApplication.translate("MainWindow", u"NEW PROMPT", None))
         self.tempLabel.setText(QCoreApplication.translate("MainWindow", u"COMING SOON", None))
         self.imagePreview.setText("")
         self.outputFolderLabel.setText(QCoreApplication.translate("MainWindow", u"Output folder", None))
         self.imageOutputFolderLineEdit.setText(QCoreApplication.translate("MainWindow", u"Outputs/SingleImage", None))
         self.imageOutputFolderButton.setText(QCoreApplication.translate("MainWindow", u"Choose Folder", None))
+        self.animInitLabel.setText(QCoreApplication.translate("MainWindow", u"Init Image", None))
+        self.animInitEnabledCheckbox.setText(QCoreApplication.translate("MainWindow", u"Enabled", None))
+        self.animInitFileLocation.setText(QCoreApplication.translate("MainWindow", u"ui/preview.png", None))
+        self.animInitChooseFileButton.setText(QCoreApplication.translate("MainWindow", u"Choose Image", None))
         self.menuMenu.setTitle(QCoreApplication.translate("MainWindow", u"Menu", None))
     # retranslateUi
 

@@ -14,6 +14,7 @@ from PySide2.QtCore import QRunnable, Slot, QThreadPool
 from ui.ui_main import Ui_MainWindow
 from omegaconf import OmegaConf
 from ldm.util import instantiate_from_config
+from ui.DynamicElementBuilder import generateNewPromptBox
 
 config_g = None
 model_g = None
@@ -293,6 +294,16 @@ if __name__ == '__main__':
     SetPreviewImage(window.ui.imagePreview, 'ui/preview.png')
 
     ######### ANIMATOR TAB #########
+    curAnimPromptCount = 1
+
+    def makeNewPromptBox():
+        curAnimPromptCount = curAnimPromptCount + 1
+        generateNewPromptBox(window, curAnimPromptCount)
+        print(curAnimPromptCount)
+
+    #buttons
+    window.ui.animNewPromptButton.clicked.connect(lambda: generateNewPromptBox(window, curAnimPromptCount+1))
+
 
 
     window.show()
