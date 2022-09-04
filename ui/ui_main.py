@@ -243,7 +243,7 @@ class Ui_MainWindow(object):
 
         self.horizontalLayout_2.addWidget(self.seedRandomized)
 
-        self.horizontalSpacer = QSpacerItem(270, 20, QSizePolicy.Preferred, QSizePolicy.Minimum)
+        self.horizontalSpacer = QSpacerItem(270, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
 
         self.horizontalLayout_2.addItem(self.horizontalSpacer)
 
@@ -558,7 +558,7 @@ class Ui_MainWindow(object):
         self.animPromptScrollArea.setWidgetResizable(True)
         self.animMainPromptScrollContainer = QWidget()
         self.animMainPromptScrollContainer.setObjectName(u"animMainPromptScrollContainer")
-        self.animMainPromptScrollContainer.setGeometry(QRect(0, 0, 943, 709))
+        self.animMainPromptScrollContainer.setGeometry(QRect(0, 0, 943, 691))
         self.animPromptContainterLayoutGroup = QVBoxLayout(self.animMainPromptScrollContainer)
         self.animPromptContainterLayoutGroup.setObjectName(u"animPromptContainterLayoutGroup")
         self.label = QLabel(self.animMainPromptScrollContainer)
@@ -869,6 +869,17 @@ class Ui_MainWindow(object):
 
         self.verticalLayout_12.addWidget(self.startAnimationButton)
 
+        self.animCompletionProgressBar = QProgressBar(self.Animator)
+        self.animCompletionProgressBar.setObjectName(u"animCompletionProgressBar")
+        self.animCompletionProgressBar.setEnabled(True)
+        self.animCompletionProgressBar.setValue(0)
+        self.animCompletionProgressBar.setTextVisible(False)
+        self.animCompletionProgressBar.setOrientation(Qt.Horizontal)
+        self.animCompletionProgressBar.setInvertedAppearance(False)
+        self.animCompletionProgressBar.setTextDirection(QProgressBar.TopToBottom)
+
+        self.verticalLayout_12.addWidget(self.animCompletionProgressBar)
+
         self.SecondaryStackedWidget.addWidget(self.Animator)
 
         self.verticalLayout_6.addWidget(self.SecondaryStackedWidget)
@@ -903,8 +914,8 @@ class Ui_MainWindow(object):
         self.AnimatorTabButton.setDefault(False)
         self.vid2vidTabButton.setDefault(False)
         self.inpaintingButton.setDefault(False)
-        self.mainStackedWidget.setCurrentIndex(0)
-        self.SecondaryStackedWidget.setCurrentIndex(0)
+        self.mainStackedWidget.setCurrentIndex(1)
+        self.SecondaryStackedWidget.setCurrentIndex(1)
 
 
         QMetaObject.connectSlotsByName(MainWindow)

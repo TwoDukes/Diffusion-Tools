@@ -202,9 +202,14 @@ def Generate_Animation(args, previewLabel, window):
 
     print(args['prompts'])
     
+    totalImageCount = 0
+    for prompt in args['prompts']:
+        totalImageCount += prompt[2]
+    
 
     def progress_fn(curImage):
         
+        window.ui.animCompletionProgressBar.setValue(floor((curImage/totalImageCount)*100))
 
         file_type = r'\*png'
         files = glob.glob(f"{args['outdir']}/anim_{args['prompts'][0][0]}" + file_type)
@@ -212,7 +217,6 @@ def Generate_Animation(args, previewLabel, window):
         window.curImage_g = max_file
 
         print(curImage)
-        print("PROGRESS IS HAPPENING")
         SetImageSize(args['W'], args['H'], previewLabel)
         SetPreviewImage(previewLabel, max_file)
 

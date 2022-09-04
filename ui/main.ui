@@ -302,7 +302,7 @@ color: rgb(255, 255, 255);</string>
       <item>
        <widget class="QStackedWidget" name="mainStackedWidget">
         <property name="currentIndex">
-         <number>0</number>
+         <number>1</number>
         </property>
         <widget class="QWidget" name="SingleImagePage">
          <layout class="QVBoxLayout" name="verticalLayout_9">
@@ -497,7 +497,7 @@ color: rgb(35, 35, 35);</string>
                    <enum>Qt::Horizontal</enum>
                   </property>
                   <property name="sizeType">
-                   <enum>QSizePolicy::Preferred</enum>
+                   <enum>QSizePolicy::Expanding</enum>
                   </property>
                   <property name="sizeHint" stdset="0">
                    <size>
@@ -1155,7 +1155,7 @@ color: rgb(16, 16, 16);</string>
                <x>0</x>
                <y>0</y>
                <width>943</width>
-               <height>709</height>
+               <height>691</height>
               </rect>
              </property>
              <layout class="QVBoxLayout" name="animPromptContainterLayoutGroup">
@@ -1630,7 +1630,7 @@ color: rgb(35, 35, 35);</string>
            </sizepolicy>
           </property>
           <property name="currentIndex">
-           <number>0</number>
+           <number>1</number>
           </property>
           <widget class="QWidget" name="SingleImage"/>
           <widget class="QWidget" name="Animator">
@@ -1735,6 +1735,28 @@ color: rgb(16, 16, 16);</string>
               </property>
               <property name="text">
                <string>START ANIMATION</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QProgressBar" name="animCompletionProgressBar">
+              <property name="enabled">
+               <bool>true</bool>
+              </property>
+              <property name="value">
+               <number>0</number>
+              </property>
+              <property name="textVisible">
+               <bool>false</bool>
+              </property>
+              <property name="orientation">
+               <enum>Qt::Horizontal</enum>
+              </property>
+              <property name="invertedAppearance">
+               <bool>false</bool>
+              </property>
+              <property name="textDirection">
+               <enum>QProgressBar::TopToBottom</enum>
               </property>
              </widget>
             </item>
