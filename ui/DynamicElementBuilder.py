@@ -48,7 +48,7 @@ def generateNewPromptBox(self, number):
         animXMotion1.setMinimumSize(QSize(120, 0))
         animXMotion1.setMinimum(-99.000000000000000)
         animXMotion1.setSingleStep(0.100000000000000)
-        
+
 
         anim2ndOptionLine1 = QFrame(self.ui.animMainPromptScrollContainer)
         anim2ndOptionLine1.setObjectName(f"anim2ndOptionLine1{number}")
@@ -71,7 +71,7 @@ def generateNewPromptBox(self, number):
         animZoom1.setSizePolicy(sizePolicy2)
         animZoom1.setMinimumSize(QSize(120, 0))
         animZoom1.setMinimum(-99.000000000000000)
-        animZoom1.setSingleStep(0.100000000000000)
+        animZoom1.setSingleStep(0.05000000000000)
         animZoom1.setValue(1.000000000000000)
 
 

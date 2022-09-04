@@ -9,6 +9,7 @@ import os
 import asyncio
 import torch
 import traceback
+import cv2
 from Tools.txt2img.txt2img import main as txt2img
 from Tools.img2img.img2img import main as img2img
 from Tools.Animator.sd_anim import main as txt2anim
@@ -216,9 +217,25 @@ def Generate_Animation(args, previewLabel, window):
         SetPreviewImage(previewLabel, max_file)
 
     def setResult(curImage):
-        print("FINISHED")
         SetInitLines(window)
+        print("CREATING VIDEO")
+        img_array = []
+        file_type = r'\*png'
+        for filename in glob.glob(f"{args['outdir']}/anim_{args['prompts'][0][0]}" + file_type):
+            img = cv2.imread(filename)
+            height, width, layers = img.shape
+            size = (width,height)
+            img_array.append(img)
         
+        fourcc = cv2.VideoWriter_fourcc(*'avc1')
+        out = cv2.VideoWriter(f"{args['outdir']}/anim_{args['prompts'][0][0]}/{args['prompts'][0][0]}.mp4",fourcc, 10, size)
+ 
+        for i in range(len(img_array)):
+            out.write(img_array[i])
+
+        out.release()
+        print("FINISHED")
+ 
 
     args = {
                 'prompts': args['prompts'],
@@ -378,6 +395,7 @@ if __name__ == '__main__':
 
     window = MainWindow()
     window.ui.mainStackedWidget.setCurrentIndex(0)
+    window.ui.SecondaryStackedWidget.setCurrentIndex(0)
 
     
     #Tab switching

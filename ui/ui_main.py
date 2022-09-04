@@ -649,7 +649,7 @@ class Ui_MainWindow(object):
         self.animZoom1.setSizePolicy(sizePolicy2)
         self.animZoom1.setMinimumSize(QSize(120, 0))
         self.animZoom1.setMinimum(-99.000000000000000)
-        self.animZoom1.setSingleStep(0.100000000000000)
+        self.animZoom1.setSingleStep(0.050000000000000)
         self.animZoom1.setValue(1.000000000000000)
 
         self.animHorizOptionContainter.addWidget(self.animZoom1)
@@ -903,7 +903,7 @@ class Ui_MainWindow(object):
         self.vid2vidTabButton.setDefault(False)
         self.inpaintingButton.setDefault(False)
         self.mainStackedWidget.setCurrentIndex(1)
-        self.SecondaryStackedWidget.setCurrentIndex(1)
+        self.SecondaryStackedWidget.setCurrentIndex(0)
 
 
         QMetaObject.connectSlotsByName(MainWindow)

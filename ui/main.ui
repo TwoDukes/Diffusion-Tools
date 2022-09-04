@@ -1321,7 +1321,7 @@ color: rgb(35, 35, 35);</string>
                        <double>-99.000000000000000</double>
                       </property>
                       <property name="singleStep">
-                       <double>0.100000000000000</double>
+                       <double>0.050000000000000</double>
                       </property>
                       <property name="value">
                        <double>1.000000000000000</double>
@@ -1618,7 +1618,7 @@ color: rgb(35, 35, 35);</string>
            </sizepolicy>
           </property>
           <property name="currentIndex">
-           <number>1</number>
+           <number>0</number>
           </property>
           <widget class="QWidget" name="SingleImage"/>
           <widget class="QWidget" name="Animator">
