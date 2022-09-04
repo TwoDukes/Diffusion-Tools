@@ -1,4 +1,5 @@
 from ast import arg
+from inspect import getargs
 from math import ceil, floor
 import random
 import sys
@@ -7,6 +8,7 @@ import torch
 import traceback
 from Tools.txt2img.txt2img import main as txt2img
 from Tools.img2img.img2img import main as img2img
+from Tools.Animator.sd_anim import main as txt2anim
 from PySide2.QtWidgets import QApplication, QMainWindow, QVBoxLayout, QLabel, QPushButton, QWidget, QFileDialog
 from PySide2.QtCore import QFile, QTimer, QRunnable, Slot, Signal, QObject, QThreadPool
 from PySide2 import QtCore, QtGui, QtWidgets
@@ -144,7 +146,6 @@ usedImage_g = None
 
 def Generate_Image(args, previewLabel, window):                                                                                   
     print("GENERATING")
-    #SetPreviewImage(previewLabel, 'ui/loading.png')
 
     def progress_fn(n):
         print(f"{n}% !!!!!!!!!!!!!!!!!!!!!!!")
@@ -186,6 +187,59 @@ def Generate_Image(args, previewLabel, window):
     args = dotdict(args)
 
     genMethod = img2img if window.ui.img2imgCheckbox.isChecked() else txt2img
+    generationWorker = Worker(genMethod, args, model_g)
+
+    generationWorker.signals.result.connect(setResult)
+    generationWorker.signals.progress.connect(progress_fn)
+
+    window.threadpool.start(generationWorker)
+
+
+def Generate_Animation(args, previewLabel, window):
+    print("GENERATING")
+
+    print(args['prompts'])
+
+    def progress_fn(curImage):
+        #curImage_g = curImage
+        print("PROGRESS IS HAPPENING")
+        SetImageSize(args['W'], args['H'], previewLabel)
+        SetPreviewImage(previewLabel, curImage)
+
+    def setResult(curImage):
+        print("FINISHED")
+        
+
+    args = {
+                'prompts': args['prompts'],
+                'outdir':  args['outdir'],
+                'skip_grid': None,
+                'skip_save': None,
+                'ddim_steps': args['steps'],
+                'plms': None,
+                'laion400m': False,
+                'fixed_code': None,
+                'ddim_eta': 0.0,
+                'n_iter': 1,
+                'H': args['H'],
+                'W': args['W'],
+                'C': 4,
+                'f': 8,
+                'n_samples': args['imageCount'],
+                'n_rows': int(floor(float(args['imageCount'])/2)),
+                'scale': args['scale'],
+                'from_file': None,
+                'config': 'configs/stable-diffusion/v1-inference.yaml', 
+                'ckpt': 'models/ldm/stable-diffusion-v1/model.ckpt',
+                'seed': int(args['seed']),
+                'precision':'autocast',
+                'init_img': args['init_img'],
+                'strength': args['strength']
+            }
+
+    args = dotdict(args)
+
+    genMethod = txt2anim
     generationWorker = Worker(genMethod, args, model_g)
 
     generationWorker.signals.result.connect(setResult)
@@ -254,7 +308,8 @@ def GetAnimPrompts(window):
             curPromptLayout = window.ui.AnimatorMainVertLayoutGroup.itemAt(i)
 
             prompt = curPromptLayout.itemAt(1).widget().text()
-            strength = curPromptLayout.itemAt(2).itemAt(1).widget().value()
+            strength = curPromptLayout.itemAt(2).itemAt(0).widget().value()
+            scale = curPromptLayout.itemAt(2).itemAt(1).widget().value()
             frames = curPromptLayout.itemAt(2).itemAt(2).widget().value()
 
             #skip 2 for lines
@@ -264,17 +319,31 @@ def GetAnimPrompts(window):
             xMotion = curPromptLayout.itemAt(2).itemAt(7).widget().value()
             yMotion = curPromptLayout.itemAt(2).itemAt(8).widget().value()
 
-
-            curPrompt = (prompt,strength,frames,(rotation, zoom, xMotion, yMotion))
+            curPrompt = (prompt,strength,scale,frames,(rotation, zoom, xMotion, yMotion))
             print(curPrompt)
             prompts.append(curPrompt)
 
     return prompts
 
 
-def getArgs(window):
-    args = {
-        'prompt': window.ui.promptInput.text(),
+def getArgs(window, type = 0):
+    if(type == 0): #Single Image
+        args = {
+            'prompt': window.ui.promptInput.text(),
+            'steps': int(window.ui.stepsValueBox.text()),
+            'scale': int(window.ui.scaleValueBox.text()),
+            'imageCount': int(window.ui.imageCountValueBox.text()),
+            'seed': SeedRandomize(window.ui.seedInputBox,window.ui.seedRandomized.isChecked()),
+            'W': window.ui.widthInput.value(),
+            'H': window.ui.heightInput.value(),
+            'outdir': window.ui.imageOutputFolderLineEdit.text(),
+            'strength': float(window.ui.strengthSlider.value())/100.0,
+            'init_img': window.ui.img2imgInitPathLineEdit.text(),
+            'prompts': GetAnimPrompts(window)
+        }
+    elif(type == 1): #Animator (TODO)
+        args = {
+        'prompts': GetAnimPrompts(window),
         'steps': int(window.ui.stepsValueBox.text()),
         'scale': int(window.ui.scaleValueBox.text()),
         'imageCount': int(window.ui.imageCountValueBox.text()),
@@ -284,7 +353,7 @@ def getArgs(window):
         'outdir': window.ui.imageOutputFolderLineEdit.text(),
         'strength': float(window.ui.strengthSlider.value())/100.0,
         'init_img': window.ui.img2imgInitPathLineEdit.text()
-    }
+        }
     return args
     
 
@@ -315,8 +384,8 @@ if __name__ == '__main__':
     window.ui.imageOutputFolderButton.clicked.connect(lambda: setFolderPath(window.ui.imageOutputFolderLineEdit))
     window.ui.img2imgChoosefolder.clicked.connect(lambda: setFilePath(window.ui.img2imgInitPathLineEdit, window.ui.imagePreview))
 
-    #gererate button
-    window.ui.generateButton.clicked.connect(lambda: Generate_Image(getArgs(window), window.ui.imagePreview, window))
+    #generate button
+    window.ui.generateButton.clicked.connect(lambda: Generate_Image(getArgs(window, 0), window.ui.imagePreview, window))
     
     SetPreviewImage(window.ui.imagePreview, 'ui/preview.png')
 
@@ -326,15 +395,15 @@ if __name__ == '__main__':
     def makeNewPromptBox():
         global curAnimPromptCount
         curAnimPromptCount += 1
-        print(curAnimPromptCount)
         generateNewPromptBox(window, curAnimPromptCount)
-        GetAnimPrompts(window)
         
 
 
     #buttons
     window.ui.animNewPromptButton.clicked.connect(lambda: makeNewPromptBox())
 
+    #generate button
+    window.ui.startAnimationButton.clicked.connect(lambda: Generate_Animation(getArgs(window, 1), window.ui.imagePreview, window))
 
 
     window.show()

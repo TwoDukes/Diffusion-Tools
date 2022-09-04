@@ -33,25 +33,6 @@ def chunk(it, size):
     return iter(lambda: tuple(islice(it, size)), ())
 
 
-def load_model_from_config(config, ckpt, verbose=False):
-    print(f"Loading model from {ckpt}")
-    pl_sd = torch.load(ckpt, map_location="cpu")
-    if "global_step" in pl_sd:
-        print(f"Global Step: {pl_sd['global_step']}")
-    sd = pl_sd["state_dict"]
-    model = instantiate_from_config(config.model)
-    m, u = model.load_state_dict(sd, strict=False)
-    if len(m) > 0 and verbose:
-        print("missing keys:")
-        print(m)
-    if len(u) > 0 and verbose:
-        print("unexpected keys:")
-        print(u)
-
-    model.cuda()
-    model.eval()
-    return model
-
 
 def load_img(path):
     image = Image.open(path).convert("RGB")
@@ -74,7 +55,7 @@ def setup_next_img(img, prevImg, lutImg, prevLutImg, sampleCount, CurrentSampleN
     w, h = img.size
 
     lutImg = lutImg.resize((w, h), resample=PIL.Image.LANCZOS)
-    prevLutImg = prevLutImg.resize((w, h), resample=PIL.Image.LANCZOS)
+    prevLutImg = prevLutImg.resize((w, h), resample=PIL.Image.Resampling.LANCZOS)
 
     lutImg = PIL.ImageChops.blend(prevLutImg, lutImg, (CurrentSampleNum+0.001)/ (sampleCount+0.001))
 
@@ -86,10 +67,10 @@ def setup_next_img(img, prevImg, lutImg, prevLutImg, sampleCount, CurrentSampleN
 
     #img2 = Image.fromarray(img_res)
 
-    angle = curPromptInfo[3][0]
-    zoom = curPromptInfo[3][1]
-    translation_x = curPromptInfo[3][2]
-    translation_y = curPromptInfo[3][3]
+    angle = curPromptInfo[4][0]
+    zoom = curPromptInfo[4][1]
+    translation_x = curPromptInfo[4][2]
+    translation_y = curPromptInfo[4][3]
     print(
         f'angle: {angle}',
         f'zoom: {zoom}',
@@ -137,7 +118,7 @@ def setup_next_img(img, prevImg, lutImg, prevLutImg, sampleCount, CurrentSampleN
 
 
 
-def main():
+def main(args, model, progress_callback):
     parser = argparse.ArgumentParser()
 
     parser.add_argument(
@@ -273,15 +254,16 @@ def main():
         default="autocast"
     )
 
-    opt = parser.parse_args()
+    if args is None:
+        args = parser.parse_args()
+
+    opt = args
+    print(opt)
 
     if opt.seed == None:
         opt.seed = randint(0, 1000000)
     print("init_seed = ", opt.seed)
     seed_everything(opt.seed)
-
-    config = OmegaConf.load(f"{opt.config}")
-    model = load_model_from_config(config, f"{opt.ckpt}")
 
     device = torch.device("cuda") if torch.cuda.is_available() else torch.device("cpu")
     model = model.to(device)
@@ -299,7 +281,7 @@ def main():
     n_rows = opt.n_rows if opt.n_rows > 0 else batch_size
     '''
     if not opt.from_file:
-        prompt = opt.prompt
+        prompt = opt.prompts[0][0]
         assert prompt is not None
         data = [batch_size * [prompt]]
 
@@ -310,10 +292,10 @@ def main():
             data = list(chunk(data, batch_size))
     '''
 
-    sample_path = os.path.join(outpath, f"anim_{opt.prompt}")
+    sample_path = os.path.join(outpath, f"anim_{opt.prompts[0][0]}")
     os.makedirs(sample_path, exist_ok=True)
 
-    lut_path = os.path.join(sample_path, f"lut_{opt.prompt}")
+    lut_path = os.path.join(sample_path, f"lut_{opt.prompts[0][0]}")
     os.makedirs(lut_path, exist_ok=True)
 
     lut_base_count = len(os.listdir(sample_path))
@@ -329,34 +311,17 @@ def main():
     sampler.make_schedule(ddim_num_steps=opt.ddim_steps, ddim_eta=opt.ddim_eta, verbose=False)
 
 
-    promptList = [("Animated Lions clinking glasses of wine together",0.45, 60, (0.0, 1.01, 1, 1)),
-    ("bottles of champagne that explode into a characature wave of champagne",0.45, 60, (0.1, 1.01, -0.0, 0.0)),
-    ("Majestic Ocean Wave crashing on the beach",0.45, 60, (0.1, 1.01, -0.0, 0.0)),
-    ("colorful nightclub, in the style of Andy Warhol",0.45, 60, (0.1, 1.01, -0.0, 0.0)),
-    ("A lion dj hyping up a rave",0.45, 60, (0.1, 1.01, -0.0, 0.0)),
-    ("stylized rave crowd dancing",0.45, 60, (0.1, 1.01, -0.0, 0.0)),
-    ("Sparkling explosion",0.45, 60, (0.1, 1.01, -0.0, 0.0))]
-                  #("a mountain range with tall peaks and deep valleys, Jacek Yerka",0.39, 100, (0.15, 0.982, -0.4, 0.3)),
-                  #("a garden of brightly-colored flowers, Rodney Matthews",0.39, 100, (0.15, 0.982, -0.4, 0.3)),
-                  #("a tree-lined street in autumn, fall colors, Guido Borelli da Caluso",0.4, 100, (0.15, 0.982, -0.4, 0.3)),
-                  #("A beautiful desert landscape, Roberto da Matta",0.39, 100, (0.15, 0.982, -0.4, 0.3)),
-                  #("a lake with a mountain in the background, Kate Greenaway",0.39, 100, (0.15, 0.982, -0.4, 0.3)),
-                  #("A stream running through a field of flowers, Rob Gonsalves ",0.39, 100, (0.15, 0.982, -0.4, 0.3)),
-                  #("A small waterfall in the woods, Rafal Olbinski",0.39, 100, (0.15, 0.982, -0.4, 0.3)),]
-
-
-
     sampleCount = 0
     imageCount = 0
 
     LUT_IMG = None
     PREV_LUT = init_image_pil 
-    for promptIndex in range(len(promptList)):
-        curPrompt = promptList[promptIndex][0]
-        sampleCount = promptList[promptIndex][2]
+    for promptIndex in range(len(opt.prompts)):
+        curPrompt = opt.prompts[promptIndex][0]
+        sampleCount = opt.prompts[promptIndex][3]
 
         try:
-            nextPrompt = promptList[promptIndex + 1][0]
+            nextPrompt = opt.prompts[promptIndex + 1][0]
         except:
             nextPrompt = curPrompt
         
@@ -392,7 +357,7 @@ def main():
                                                             batch_size=1,
                                                             shape=shape,
                                                             verbose=False,
-                                                            unconditional_guidance_scale=opt.scale,
+                                                            unconditional_guidance_scale=opt.prompts[promptIndex][2],
                                                             unconditional_conditioning=uc,
                                                             eta=opt.ddim_eta,
                                                             x_T=None)
@@ -406,13 +371,12 @@ def main():
 
                             x_checked_image_torch = torch.from_numpy(x_checked_image).permute(0, 3, 1, 2)
 
-                            if not opt.skip_save:
-                                for x_sample in x_checked_image_torch:
-                                    x_sample = 255. * rearrange(x_sample.cpu().numpy(), 'c h w -> h w c')
-                                    img = Image.fromarray(x_sample.astype(np.uint8))
-                                    img.save(os.path.join(lut_path, f"{lut_base_count:05}.png"))
-                                    LUT_IMG = img.convert("RGB")
-                                    lut_base_count += 1
+                            for x_sample in x_checked_image_torch:
+                                x_sample = 255. * rearrange(x_sample.cpu().numpy(), 'c h w -> h w c')
+                                img = Image.fromarray(x_sample.astype(np.uint8))
+                                img.save(os.path.join(lut_path, f"{lut_base_count:05}.png"))
+                                LUT_IMG = img.convert("RGB")
+                                lut_base_count += 1
                    
 
                     toc = time.time()
@@ -425,7 +389,7 @@ def main():
             imageCount += 1
             print("\n")
             print(f"CURRENT PROMPT: {curPrompt}")
-            print(f"CURRENT STRENGTH: {promptList[promptIndex][1]}")
+            print(f"CURRENT STRENGTH: {opt.prompts[promptIndex][1]}")
             print(f"Image #{imageCount}")
             print(f"Prompt Batch #{promptIndex+1}")
             print("\n")
@@ -435,8 +399,8 @@ def main():
             init_image = repeat(init_image, '1 ... -> b ...', b=batch_size)
             init_latent = model.get_first_stage_encoding(model.encode_first_stage(init_image))
 
-            assert 0. <= promptList[promptIndex][1] <= 1., 'can only work with strength in [0.0, 1.0]'
-            t_enc = int(promptList[promptIndex][1] * opt.ddim_steps)
+            assert 0. <= opt.prompts[promptIndex][1] <= 1., 'can only work with strength in [0.0, 1.0]'
+            t_enc = int(opt.prompts[promptIndex][1] * opt.ddim_steps)
             print(f"target t_enc is {t_enc} steps")
 
             precision_scope = autocast if opt.precision == "autocast" else nullcontext
@@ -457,23 +421,25 @@ def main():
                                 # encode (scaled latent)
                                 z_enc = sampler.stochastic_encode(init_latent, torch.tensor([t_enc]*batch_size).to(device))
                                 # decode it
-                                samples = sampler.decode(z_enc, c, t_enc, unconditional_guidance_scale=opt.scale,
+                                samples = sampler.decode(z_enc, c, t_enc, unconditional_guidance_scale=opt.prompts[promptIndex][2],
                                                         unconditional_conditioning=uc,)
 
                                 x_samples = model.decode_first_stage(samples)
                                 x_samples = torch.clamp((x_samples + 1.0) / 2.0, min=0.0, max=1.0)
 
-                                if not opt.skip_save:
-                                    for x_sample in x_samples:
-                                        x_sample = 255. * rearrange(x_sample.cpu().numpy(), 'c h w -> h w c')
-                                        im = Image.fromarray(x_sample.astype(np.uint8))
-                                        im.save(os.path.join(sample_path, f"{base_count:05}.png"))
-                                        base_count += 1
-                                        #init_image = automatic_brightness_and_contrast(im)
-                                        #init_image = Image.fromarray(init_image)
-                                        init_image = setup_next_img(im, prev_init, LUT_IMG, PREV_LUT, sampleCount, i, promptList[promptIndex]).to(device)
-                                        prev_init = init_image
-                                        print("Next Image\n\n")
+                               
+                                for x_sample in x_samples:
+                                    x_sample = 255. * rearrange(x_sample.cpu().numpy(), 'c h w -> h w c')
+                                    im = Image.fromarray(x_sample.astype(np.uint8))
+                                    pathToCurImage = os.path.join(sample_path, f"{base_count:05}.png")
+                                    im.save(pathToCurImage)
+                                    progress_callback.emit(pathToCurImage)
+                                    base_count += 1
+                                    #init_image = automatic_brightness_and_contrast(im)
+                                    #init_image = Image.fromarray(init_image)
+                                    init_image = setup_next_img(im, prev_init, LUT_IMG, PREV_LUT, sampleCount, i, opt.prompts[promptIndex]).to(device)
+                                    prev_init = init_image
+                                    print("Next Image\n\n")
                                 all_samples.append(x_samples)
 
                         

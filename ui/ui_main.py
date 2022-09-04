@@ -17,7 +17,7 @@ class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         if not MainWindow.objectName():
             MainWindow.setObjectName(u"MainWindow")
-        MainWindow.resize(1689, 917)
+        MainWindow.resize(1670, 748)
         MainWindow.setMinimumSize(QSize(1670, 720))
         MainWindow.setStyleSheet(u"background-color: rgb(68, 68, 68);\n"
 "\n"
@@ -851,6 +851,13 @@ class Ui_MainWindow(object):
 
         self.verticalLayout_12.addLayout(self.horizontalLayout_19)
 
+        self.startAnimationButton = QPushButton(self.Animator)
+        self.startAnimationButton.setObjectName(u"startAnimationButton")
+        self.startAnimationButton.setStyleSheet(u"background-color: rgb(216, 216, 216);\n"
+"color: rgb(16, 16, 16);")
+
+        self.verticalLayout_12.addWidget(self.startAnimationButton)
+
         self.SecondaryStackedWidget.addWidget(self.Animator)
 
         self.verticalLayout_6.addWidget(self.SecondaryStackedWidget)
@@ -869,7 +876,7 @@ class Ui_MainWindow(object):
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QMenuBar(MainWindow)
         self.menubar.setObjectName(u"menubar")
-        self.menubar.setGeometry(QRect(0, 0, 1689, 26))
+        self.menubar.setGeometry(QRect(0, 0, 1670, 26))
         self.menuMenu = QMenu(self.menubar)
         self.menuMenu.setObjectName(u"menuMenu")
         MainWindow.setMenuBar(self.menubar)
@@ -971,6 +978,7 @@ class Ui_MainWindow(object):
         self.animInitEnabledCheckbox.setText(QCoreApplication.translate("MainWindow", u"Enabled", None))
         self.animInitFileLocation.setText(QCoreApplication.translate("MainWindow", u"ui/preview.png", None))
         self.animInitChooseFileButton.setText(QCoreApplication.translate("MainWindow", u"Choose Image", None))
+        self.startAnimationButton.setText(QCoreApplication.translate("MainWindow", u"START ANIMATION", None))
         self.menuMenu.setTitle(QCoreApplication.translate("MainWindow", u"Menu", None))
     # retranslateUi
 

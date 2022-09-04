@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1689</width>
-    <height>917</height>
+    <width>1670</width>
+    <height>748</height>
    </rect>
   </property>
   <property name="minimumSize">
@@ -1707,6 +1707,17 @@ color: rgb(35, 35, 35);</string>
               </item>
              </layout>
             </item>
+            <item>
+             <widget class="QPushButton" name="startAnimationButton">
+              <property name="styleSheet">
+               <string notr="true">background-color: rgb(216, 216, 216);
+color: rgb(16, 16, 16);</string>
+              </property>
+              <property name="text">
+               <string>START ANIMATION</string>
+              </property>
+             </widget>
+            </item>
            </layout>
           </widget>
          </widget>
@@ -1735,7 +1746,7 @@ color: rgb(35, 35, 35);</string>
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1689</width>
+     <width>1670</width>
      <height>26</height>
     </rect>
    </property>
