@@ -300,6 +300,17 @@ def SeedRandomize(seed, isRandom):
 
     return seed.text()
 
+def deleteLayout(cur_lay):
+           
+        if cur_lay is not None:
+            while cur_lay.count():
+                item = cur_lay.takeAt(0)
+                widget = item.widget()
+                if widget is not None:
+                    widget.deleteLater()
+                else:
+                    deleteLayout(item.layout())
+
 
 def setFolderPath(fileLineEdit):
     filePath = QFileDialog.getExistingDirectory(None, "Select Directory")
@@ -430,8 +441,8 @@ if __name__ == '__main__':
 
     def removePromptBox():
         global curAnimPromptCount
-        #curAnimPromptCount -= 1
-        #window.ui.AnimatorMainVertLayoutGroup.itemAt(curAnimPromptCount).widget().deleteLater()
+        curAnimPromptCount -= 1
+        deleteLayout(window.ui.AnimatorMainVertLayoutGroup.takeAt(curAnimPromptCount))
         
 
     #buttons
