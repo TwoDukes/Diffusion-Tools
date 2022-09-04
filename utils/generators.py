@@ -59,3 +59,36 @@ def txt2img_generator(opt, model, sampler):
                             return img
 
                 toc = time.time()
+
+def img2img_generator(opt, init_latent, model, sampler):
+    precision_scope = autocast if opt.precision == "autocast" else nullcontext
+    with torch.no_grad():
+        with precision_scope("cuda"):
+            with model.ema_scope():
+                tic = time.time()
+                all_samples = list()
+                for n in trange(opt.n_iter, desc="Sampling"):
+                    for prompts in tqdm(opt.data, desc="data"):
+                        uc = None
+                        if opt.scale != 1.0:
+                            uc = model.get_learned_conditioning(opt.batch_size * [""])
+                        if isinstance(prompts, tuple):
+                            prompts = list(prompts)
+                        c = model.get_learned_conditioning(prompts)
+
+                        # encode (scaled latent)
+                        z_enc = sampler.stochastic_encode(init_latent, torch.tensor([opt.t_enc]*opt.batch_size).to(opt.device))
+                        # decode it
+                        samples = sampler.decode(z_enc, c, opt.t_enc, unconditional_guidance_scale=opt.scale,
+                                                 unconditional_conditioning=uc,)
+
+                        x_samples = model.decode_first_stage(samples)
+                        x_samples = torch.clamp((x_samples + 1.0) / 2.0, min=0.0, max=1.0)
+
+
+                        for x_sample in x_samples:
+                            x_sample = 255. * rearrange(x_sample.cpu().numpy(), 'c h w -> h w c')
+                            img = Image.fromarray(x_sample.astype(np.uint8))
+                            return img           
+
+                toc = time.time()
