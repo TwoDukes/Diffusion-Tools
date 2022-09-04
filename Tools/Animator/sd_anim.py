@@ -433,7 +433,7 @@ def main(args, model, progress_callback):
                                     im = Image.fromarray(x_sample.astype(np.uint8))
                                     pathToCurImage = os.path.join(sample_path, f"{base_count:05}.png")
                                     im.save(pathToCurImage)
-                                    progress_callback.emit(pathToCurImage)
+                                    progress_callback.emit(imageCount)
                                     base_count += 1
                                     #init_image = automatic_brightness_and_contrast(im)
                                     #init_image = Image.fromarray(init_image)

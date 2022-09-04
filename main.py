@@ -1,8 +1,11 @@
 from ast import arg
 from inspect import getargs
+from locale import currency
 from math import ceil, floor
 import random
 import sys
+import glob
+import os
 import asyncio
 import torch
 import traceback
@@ -199,12 +202,20 @@ def Generate_Animation(args, previewLabel, window):
     print("GENERATING")
 
     print(args['prompts'])
+    
 
     def progress_fn(curImage):
-        #curImage_g = curImage
+        
+
+        file_type = r'\*png'
+        files = glob.glob(f"{args['outdir']}/anim_{args['prompts'][0][0]}" + file_type)
+        max_file = max(files, key=os.path.getctime)
+        curImage_g = max_file
+
+        print(curImage)
         print("PROGRESS IS HAPPENING")
         SetImageSize(args['W'], args['H'], previewLabel)
-        SetPreviewImage(previewLabel, curImage)
+        SetPreviewImage(previewLabel, max_file)
 
     def setResult(curImage):
         print("FINISHED")
@@ -304,7 +315,7 @@ def GetAnimPrompts(window):
     promptCount = window.ui.AnimatorMainVertLayoutGroup.count()
     prompts = []
     #example  ("bottles of champagne that explode into a characature wave of champagne",0.45, 60, (0.1, 1.01, -0.0, 0.0))
-    for i in range(promptCount-1):
+    for i in range(promptCount):
             curPromptLayout = window.ui.AnimatorMainVertLayoutGroup.itemAt(i)
 
             prompt = curPromptLayout.itemAt(1).widget().text()
