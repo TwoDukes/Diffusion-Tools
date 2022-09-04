@@ -48,16 +48,7 @@ def generateNewPromptBox(self, number):
         animXMotion1.setMinimumSize(QSize(120, 0))
         animXMotion1.setMinimum(-99.000000000000000)
         animXMotion1.setSingleStep(0.100000000000000)
-
-
-        animCfgScaleSpinBox = QDoubleSpinBox(self.ui.animMainPromptScrollContainer)
-        animCfgScaleSpinBox.setObjectName(f"animCfgScaleSpinBox{number}")
-        sizePolicy2.setHeightForWidth(animCfgScaleSpinBox.sizePolicy().hasHeightForWidth())
-        animCfgScaleSpinBox.setSizePolicy(sizePolicy2)
-        animCfgScaleSpinBox.setMinimumSize(QSize(120, 0))
-        animCfgScaleSpinBox.setMinimum(-99.000000000000000)
-        animCfgScaleSpinBox.setValue(7.000000000000000)
-
+        
 
         anim2ndOptionLine1 = QFrame(self.ui.animMainPromptScrollContainer)
         anim2ndOptionLine1.setObjectName(f"anim2ndOptionLine1{number}")
@@ -128,7 +119,6 @@ def generateNewPromptBox(self, number):
         animOptionLine1.setFrameShadow(QFrame.Sunken)
 
         animStength1.setPrefix(u"Strength: ")
-        animCfgScaleSpinBox.setPrefix(u"CFG Scale: ")
         animFrameCount1.setPrefix(u"Frames: ")
         animZoom1.setPrefix(u"Zoom: ")
         animRotation1.setPrefix(u"Rotation: ")
@@ -136,7 +126,6 @@ def generateNewPromptBox(self, number):
         animYMotion1.setPrefix(u"Y Motion: ")
 
         animHorizOptionContainter.addWidget(animStength1)
-        animHorizOptionContainter.addWidget(animCfgScaleSpinBox)
         animHorizOptionContainter.addWidget(animFrameCount1)
         animHorizOptionContainter.addWidget(animOptionLine1)
         animHorizOptionContainter.addWidget(anim2ndOptionLine1)

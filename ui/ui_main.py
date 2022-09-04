@@ -17,7 +17,7 @@ class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         if not MainWindow.objectName():
             MainWindow.setObjectName(u"MainWindow")
-        MainWindow.resize(1670, 748)
+        MainWindow.resize(1670, 873)
         MainWindow.setMinimumSize(QSize(1670, 720))
         MainWindow.setStyleSheet(u"background-color: rgb(68, 68, 68);\n"
 "\n"
@@ -563,7 +563,7 @@ class Ui_MainWindow(object):
         self.animPromptScrollArea.setWidgetResizable(True)
         self.animMainPromptScrollContainer = QWidget()
         self.animMainPromptScrollContainer.setObjectName(u"animMainPromptScrollContainer")
-        self.animMainPromptScrollContainer.setGeometry(QRect(0, 0, 962, 753))
+        self.animMainPromptScrollContainer.setGeometry(QRect(0, 0, 943, 709))
         self.animPromptContainterLayoutGroup = QVBoxLayout(self.animMainPromptScrollContainer)
         self.animPromptContainterLayoutGroup.setObjectName(u"animPromptContainterLayoutGroup")
         self.label = QLabel(self.animMainPromptScrollContainer)
@@ -617,16 +617,6 @@ class Ui_MainWindow(object):
         self.animStength1.setValue(0.450000000000000)
 
         self.animHorizOptionContainter.addWidget(self.animStength1)
-
-        self.animCfgScaleSpinBox = QDoubleSpinBox(self.animMainPromptScrollContainer)
-        self.animCfgScaleSpinBox.setObjectName(u"animCfgScaleSpinBox")
-        sizePolicy2.setHeightForWidth(self.animCfgScaleSpinBox.sizePolicy().hasHeightForWidth())
-        self.animCfgScaleSpinBox.setSizePolicy(sizePolicy2)
-        self.animCfgScaleSpinBox.setMinimumSize(QSize(120, 0))
-        self.animCfgScaleSpinBox.setMinimum(-99.000000000000000)
-        self.animCfgScaleSpinBox.setValue(7.000000000000000)
-
-        self.animHorizOptionContainter.addWidget(self.animCfgScaleSpinBox)
 
         self.animFrameCount1 = QSpinBox(self.animMainPromptScrollContainer)
         self.animFrameCount1.setObjectName(u"animFrameCount1")
@@ -836,12 +826,12 @@ class Ui_MainWindow(object):
 
         self.horizontalLayout_19 = QHBoxLayout()
         self.horizontalLayout_19.setObjectName(u"horizontalLayout_19")
-        self.animInitFileLocation = QLineEdit(self.Animator)
-        self.animInitFileLocation.setObjectName(u"animInitFileLocation")
-        self.animInitFileLocation.setStyleSheet(u"background-color: rgb(218, 218, 218);\n"
+        self.animInitPathLineEdit = QLineEdit(self.Animator)
+        self.animInitPathLineEdit.setObjectName(u"animInitPathLineEdit")
+        self.animInitPathLineEdit.setStyleSheet(u"background-color: rgb(218, 218, 218);\n"
 "color: rgb(35, 35, 35);")
 
-        self.horizontalLayout_19.addWidget(self.animInitFileLocation)
+        self.horizontalLayout_19.addWidget(self.animInitPathLineEdit)
 
         self.animInitChooseFileButton = QPushButton(self.Animator)
         self.animInitChooseFileButton.setObjectName(u"animInitChooseFileButton")
@@ -850,6 +840,26 @@ class Ui_MainWindow(object):
 
 
         self.verticalLayout_12.addLayout(self.horizontalLayout_19)
+
+        self.horizontalLayout_11 = QHBoxLayout()
+        self.horizontalLayout_11.setObjectName(u"horizontalLayout_11")
+        self.animStepsSpinBox = QDoubleSpinBox(self.Animator)
+        self.animStepsSpinBox.setObjectName(u"animStepsSpinBox")
+        self.animStepsSpinBox.setMaximum(200.000000000000000)
+        self.animStepsSpinBox.setSingleStep(5.000000000000000)
+        self.animStepsSpinBox.setValue(50.000000000000000)
+
+        self.horizontalLayout_11.addWidget(self.animStepsSpinBox)
+
+        self.animScaleSpinBox = QDoubleSpinBox(self.Animator)
+        self.animScaleSpinBox.setObjectName(u"animScaleSpinBox")
+        self.animScaleSpinBox.setMinimum(-99.000000000000000)
+        self.animScaleSpinBox.setValue(7.000000000000000)
+
+        self.horizontalLayout_11.addWidget(self.animScaleSpinBox)
+
+
+        self.verticalLayout_12.addLayout(self.horizontalLayout_11)
 
         self.startAnimationButton = QPushButton(self.Animator)
         self.startAnimationButton.setObjectName(u"startAnimationButton")
@@ -892,8 +902,8 @@ class Ui_MainWindow(object):
         self.AnimatorTabButton.setDefault(False)
         self.vid2vidTabButton.setDefault(False)
         self.inpaintingButton.setDefault(False)
-        self.mainStackedWidget.setCurrentIndex(0)
-        self.SecondaryStackedWidget.setCurrentIndex(0)
+        self.mainStackedWidget.setCurrentIndex(1)
+        self.SecondaryStackedWidget.setCurrentIndex(1)
 
 
         QMetaObject.connectSlotsByName(MainWindow)
@@ -960,7 +970,6 @@ class Ui_MainWindow(object):
         self.animLabel1.setText(QCoreApplication.translate("MainWindow", u"Prompt #1", None))
         self.animStength1.setSpecialValueText("")
         self.animStength1.setPrefix(QCoreApplication.translate("MainWindow", u"Strength: ", None))
-        self.animCfgScaleSpinBox.setPrefix(QCoreApplication.translate("MainWindow", u"CFG Scale: ", None))
         self.animFrameCount1.setSuffix("")
         self.animFrameCount1.setPrefix(QCoreApplication.translate("MainWindow", u"Frames: ", None))
         self.animZoom1.setPrefix(QCoreApplication.translate("MainWindow", u"Zoom: ", None))
@@ -976,8 +985,10 @@ class Ui_MainWindow(object):
         self.imageOutputFolderButton.setText(QCoreApplication.translate("MainWindow", u"Choose Folder", None))
         self.animInitLabel.setText(QCoreApplication.translate("MainWindow", u"Init Image", None))
         self.animInitEnabledCheckbox.setText(QCoreApplication.translate("MainWindow", u"Enabled", None))
-        self.animInitFileLocation.setText(QCoreApplication.translate("MainWindow", u"ui/preview.png", None))
+        self.animInitPathLineEdit.setText(QCoreApplication.translate("MainWindow", u"ui/preview.png", None))
         self.animInitChooseFileButton.setText(QCoreApplication.translate("MainWindow", u"Choose Image", None))
+        self.animStepsSpinBox.setPrefix(QCoreApplication.translate("MainWindow", u"STEPS: ", None))
+        self.animScaleSpinBox.setPrefix(QCoreApplication.translate("MainWindow", u"CFG SCALE: ", None))
         self.startAnimationButton.setText(QCoreApplication.translate("MainWindow", u"START ANIMATION", None))
         self.menuMenu.setTitle(QCoreApplication.translate("MainWindow", u"Menu", None))
     # retranslateUi

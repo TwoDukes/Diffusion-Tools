@@ -67,10 +67,10 @@ def setup_next_img(img, prevImg, lutImg, prevLutImg, sampleCount, CurrentSampleN
 
     #img2 = Image.fromarray(img_res)
 
-    angle = curPromptInfo[4][0]
-    zoom = curPromptInfo[4][1]
-    translation_x = curPromptInfo[4][2]
-    translation_y = curPromptInfo[4][3]
+    angle = curPromptInfo[3][0]
+    zoom = curPromptInfo[3][1]
+    translation_x = curPromptInfo[3][2]
+    translation_y = curPromptInfo[3][3]
     print(
         f'angle: {angle}',
         f'zoom: {zoom}',
@@ -318,7 +318,7 @@ def main(args, model, progress_callback):
     PREV_LUT = init_image_pil 
     for promptIndex in range(len(opt.prompts)):
         curPrompt = opt.prompts[promptIndex][0]
-        sampleCount = opt.prompts[promptIndex][3]
+        sampleCount = opt.prompts[promptIndex][2]
 
         try:
             nextPrompt = opt.prompts[promptIndex + 1][0]
@@ -357,7 +357,7 @@ def main(args, model, progress_callback):
                                                             batch_size=1,
                                                             shape=shape,
                                                             verbose=False,
-                                                            unconditional_guidance_scale=opt.prompts[promptIndex][2],
+                                                            unconditional_guidance_scale=opt.scale,
                                                             unconditional_conditioning=uc,
                                                             eta=opt.ddim_eta,
                                                             x_T=None)
@@ -421,7 +421,7 @@ def main(args, model, progress_callback):
                                 # encode (scaled latent)
                                 z_enc = sampler.stochastic_encode(init_latent, torch.tensor([t_enc]*batch_size).to(device))
                                 # decode it
-                                samples = sampler.decode(z_enc, c, t_enc, unconditional_guidance_scale=opt.prompts[promptIndex][2],
+                                samples = sampler.decode(z_enc, c, t_enc, unconditional_guidance_scale=opt.scale,
                                                         unconditional_conditioning=uc,)
 
                                 x_samples = model.decode_first_stage(samples)

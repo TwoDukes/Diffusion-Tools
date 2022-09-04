@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>1670</width>
-    <height>748</height>
+    <height>873</height>
    </rect>
   </property>
   <property name="minimumSize">
@@ -302,7 +302,7 @@ color: rgb(255, 255, 255);</string>
       <item>
        <widget class="QStackedWidget" name="mainStackedWidget">
         <property name="currentIndex">
-         <number>0</number>
+         <number>1</number>
         </property>
         <widget class="QWidget" name="SingleImagePage">
          <layout class="QVBoxLayout" name="verticalLayout_9">
@@ -1157,8 +1157,8 @@ color: rgb(16, 16, 16);</string>
               <rect>
                <x>0</x>
                <y>0</y>
-               <width>962</width>
-               <height>753</height>
+               <width>943</width>
+               <height>709</height>
               </rect>
              </property>
              <layout class="QVBoxLayout" name="animPromptContainterLayoutGroup">
@@ -1249,31 +1249,6 @@ color: rgb(35, 35, 35);</string>
                       </property>
                       <property name="value">
                        <double>0.450000000000000</double>
-                      </property>
-                     </widget>
-                    </item>
-                    <item>
-                     <widget class="QDoubleSpinBox" name="animCfgScaleSpinBox">
-                      <property name="sizePolicy">
-                       <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                        <horstretch>0</horstretch>
-                        <verstretch>0</verstretch>
-                       </sizepolicy>
-                      </property>
-                      <property name="minimumSize">
-                       <size>
-                        <width>120</width>
-                        <height>0</height>
-                       </size>
-                      </property>
-                      <property name="prefix">
-                       <string>CFG Scale: </string>
-                      </property>
-                      <property name="minimum">
-                       <double>-99.000000000000000</double>
-                      </property>
-                      <property name="value">
-                       <double>7.000000000000000</double>
                       </property>
                      </widget>
                     </item>
@@ -1643,7 +1618,7 @@ color: rgb(35, 35, 35);</string>
            </sizepolicy>
           </property>
           <property name="currentIndex">
-           <number>0</number>
+           <number>1</number>
           </property>
           <widget class="QWidget" name="SingleImage"/>
           <widget class="QWidget" name="Animator">
@@ -1688,7 +1663,7 @@ color: rgb(35, 35, 35);</string>
             <item>
              <layout class="QHBoxLayout" name="horizontalLayout_19">
               <item>
-               <widget class="QLineEdit" name="animInitFileLocation">
+               <widget class="QLineEdit" name="animInitPathLineEdit">
                 <property name="styleSheet">
                  <string notr="true">background-color: rgb(218, 218, 218);
 color: rgb(35, 35, 35);</string>
@@ -1702,6 +1677,39 @@ color: rgb(35, 35, 35);</string>
                <widget class="QPushButton" name="animInitChooseFileButton">
                 <property name="text">
                  <string>Choose Image</string>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </item>
+            <item>
+             <layout class="QHBoxLayout" name="horizontalLayout_11">
+              <item>
+               <widget class="QDoubleSpinBox" name="animStepsSpinBox">
+                <property name="prefix">
+                 <string>STEPS: </string>
+                </property>
+                <property name="maximum">
+                 <double>200.000000000000000</double>
+                </property>
+                <property name="singleStep">
+                 <double>5.000000000000000</double>
+                </property>
+                <property name="value">
+                 <double>50.000000000000000</double>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QDoubleSpinBox" name="animScaleSpinBox">
+                <property name="prefix">
+                 <string>CFG SCALE: </string>
+                </property>
+                <property name="minimum">
+                 <double>-99.000000000000000</double>
+                </property>
+                <property name="value">
+                 <double>7.000000000000000</double>
                 </property>
                </widget>
               </item>

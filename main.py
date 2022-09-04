@@ -143,9 +143,6 @@ class MainWindow(QMainWindow):
         self.threadpool = QThreadPool()
         print("Multithreading with maximum %d threads" % self.threadpool.maxThreadCount())
 
-# may be used in the future
-curImage_g = None
-usedImage_g = None
 
 def Generate_Image(args, previewLabel, window):                                                                                   
     print("GENERATING")
@@ -156,7 +153,8 @@ def Generate_Image(args, previewLabel, window):
     def setResult(curImage):
         #set init image line edit to cur image
         window.ui.img2imgInitPathLineEdit.setText(curImage)
-        #curImage_g = curImage
+        window.curImage_g = curImage
+        SetInitLines(window)
         SetImageSize(args['W'], args['H'], previewLabel)
         SetPreviewImage(previewLabel, curImage)
 
@@ -210,7 +208,7 @@ def Generate_Animation(args, previewLabel, window):
         file_type = r'\*png'
         files = glob.glob(f"{args['outdir']}/anim_{args['prompts'][0][0]}" + file_type)
         max_file = max(files, key=os.path.getctime)
-        curImage_g = max_file
+        window.curImage_g = max_file
 
         print(curImage)
         print("PROGRESS IS HAPPENING")
@@ -219,6 +217,7 @@ def Generate_Animation(args, previewLabel, window):
 
     def setResult(curImage):
         print("FINISHED")
+        SetInitLines(window)
         
 
     args = {
@@ -264,6 +263,10 @@ def Generate_Animation(args, previewLabel, window):
 # this function sets an image to a label
 def SetPreviewImage(labelElement, imageURL):
     labelElement.setPixmap(QtGui.QPixmap(imageURL))
+
+def SetInitLines(window):
+    window.ui.img2imgInitPathLineEdit.setText(window.curImage_g)
+    window.ui.animInitPathLineEdit.setText(window.curImage_g)
     
 # this function sets a text to a label
 def SliderChanged(args):
@@ -320,17 +323,16 @@ def GetAnimPrompts(window):
 
             prompt = curPromptLayout.itemAt(1).widget().text()
             strength = curPromptLayout.itemAt(2).itemAt(0).widget().value()
-            scale = curPromptLayout.itemAt(2).itemAt(1).widget().value()
-            frames = curPromptLayout.itemAt(2).itemAt(2).widget().value()
+            frames = curPromptLayout.itemAt(2).itemAt(1).widget().value()
 
             #skip 2 for lines
 
-            zoom = curPromptLayout.itemAt(2).itemAt(5).widget().value()
-            rotation = curPromptLayout.itemAt(2).itemAt(6).widget().value()
-            xMotion = curPromptLayout.itemAt(2).itemAt(7).widget().value()
-            yMotion = curPromptLayout.itemAt(2).itemAt(8).widget().value()
+            zoom = curPromptLayout.itemAt(2).itemAt(4).widget().value()
+            rotation = curPromptLayout.itemAt(2).itemAt(5).widget().value()
+            xMotion = curPromptLayout.itemAt(2).itemAt(6).widget().value()
+            yMotion = curPromptLayout.itemAt(2).itemAt(7).widget().value()
 
-            curPrompt = (prompt,strength,scale,frames,(rotation, zoom, xMotion, yMotion))
+            curPrompt = (prompt,strength,frames,(rotation, zoom, xMotion, yMotion))
             print(curPrompt)
             prompts.append(curPrompt)
 
@@ -355,15 +357,15 @@ def getArgs(window, type = 0):
     elif(type == 1): #Animator (TODO)
         args = {
         'prompts': GetAnimPrompts(window),
-        'steps': int(window.ui.stepsValueBox.text()),
-        'scale': int(window.ui.scaleValueBox.text()),
-        'imageCount': int(window.ui.imageCountValueBox.text()),
+        'steps': int(window.ui.animStepsSpinBox.value()),
+        'scale': int(window.ui.animScaleSpinBox.value()),
+        'imageCount': 1,
         'seed': SeedRandomize(window.ui.seedInputBox,window.ui.seedRandomized.isChecked()),
         'W': window.ui.widthInput.value(),
         'H': window.ui.heightInput.value(),
         'outdir': window.ui.imageOutputFolderLineEdit.text(),
         'strength': float(window.ui.strengthSlider.value())/100.0,
-        'init_img': window.ui.img2imgInitPathLineEdit.text()
+        'init_img': window.ui.animInitPathLineEdit.text()
         }
     return args
     
@@ -412,6 +414,7 @@ if __name__ == '__main__':
 
     #buttons
     window.ui.animNewPromptButton.clicked.connect(lambda: makeNewPromptBox())
+    window.ui.animInitChooseFileButton.clicked.connect(lambda: setFilePath(window.ui.animInitPathLineEdit, window.ui.imagePreview))
 
     #generate button
     window.ui.startAnimationButton.clicked.connect(lambda: Generate_Animation(getArgs(window, 1), window.ui.imagePreview, window))
