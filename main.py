@@ -246,6 +246,31 @@ def SwitchTabs(tabNumb, window):
         window.ui.imageTabButton.setChecked(False)
 
 
+def GetAnimPrompts(window):
+    promptCount = window.ui.AnimatorMainVertLayoutGroup.count()
+    prompts = []
+    #example  ("bottles of champagne that explode into a characature wave of champagne",0.45, 60, (0.1, 1.01, -0.0, 0.0))
+    for i in range(promptCount-1):
+            curPromptLayout = window.ui.AnimatorMainVertLayoutGroup.itemAt(i)
+
+            prompt = curPromptLayout.itemAt(1).widget().text()
+            strength = curPromptLayout.itemAt(2).itemAt(1).widget().value()
+            frames = curPromptLayout.itemAt(2).itemAt(2).widget().value()
+
+            #skip 2 for lines
+
+            zoom = curPromptLayout.itemAt(2).itemAt(5).widget().value()
+            rotation = curPromptLayout.itemAt(2).itemAt(6).widget().value()
+            xMotion = curPromptLayout.itemAt(2).itemAt(7).widget().value()
+            yMotion = curPromptLayout.itemAt(2).itemAt(8).widget().value()
+
+
+            curPrompt = (prompt,strength,frames,(rotation, zoom, xMotion, yMotion))
+            print(curPrompt)
+            prompts.append(curPrompt)
+
+    return prompts
+
 
 def getArgs(window):
     args = {
@@ -303,6 +328,8 @@ if __name__ == '__main__':
         curAnimPromptCount += 1
         print(curAnimPromptCount)
         generateNewPromptBox(window, curAnimPromptCount)
+        GetAnimPrompts(window)
+        
 
 
     #buttons
