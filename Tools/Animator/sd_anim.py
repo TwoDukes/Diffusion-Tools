@@ -351,7 +351,7 @@ def main(args, model, progress_callback):
                             if isinstance(prompts, tuple):
                                 prompts = list(prompts)
                             c = model.get_learned_conditioning(prompts)
-                            shape = [4, 512 // 8, 512 // 8]
+                            shape = [4, opt.H // 8, opt.W // 8]
                             samples_ddim, _ = sampler.sample(S=50,
                                                             conditioning=c,
                                                             batch_size=1,

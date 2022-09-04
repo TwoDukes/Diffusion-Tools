@@ -698,9 +698,15 @@ class Ui_MainWindow(object):
 
         self.animPromptContainterLayoutGroup.addLayout(self.AnimatorMainVertLayoutGroup)
 
+        self.animRemovePromptButton = QPushButton(self.animMainPromptScrollContainer)
+        self.animRemovePromptButton.setObjectName(u"animRemovePromptButton")
+        self.animRemovePromptButton.setFont(font9)
+
+        self.animPromptContainterLayoutGroup.addWidget(self.animRemovePromptButton)
+
         self.animNewPromptButton = QPushButton(self.animMainPromptScrollContainer)
         self.animNewPromptButton.setObjectName(u"animNewPromptButton")
-        self.animNewPromptButton.setFont(font4)
+        self.animNewPromptButton.setFont(font9)
 
         self.animPromptContainterLayoutGroup.addWidget(self.animNewPromptButton)
 
@@ -977,7 +983,8 @@ class Ui_MainWindow(object):
         self.animRotation1.setPrefix(QCoreApplication.translate("MainWindow", u"Rotation: ", None))
         self.animXMotion1.setPrefix(QCoreApplication.translate("MainWindow", u"X Motion:", None))
         self.animYMotion1.setPrefix(QCoreApplication.translate("MainWindow", u"Y Motion: ", None))
-        self.animNewPromptButton.setText(QCoreApplication.translate("MainWindow", u"NEW PROMPT", None))
+        self.animRemovePromptButton.setText(QCoreApplication.translate("MainWindow", u"-", None))
+        self.animNewPromptButton.setText(QCoreApplication.translate("MainWindow", u"+", None))
         self.tempLabel.setText(QCoreApplication.translate("MainWindow", u"COMING SOON", None))
         self.imagePreview.setText("")
         self.outputFolderLabel.setText(QCoreApplication.translate("MainWindow", u"Output folder", None))

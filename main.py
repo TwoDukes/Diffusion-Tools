@@ -228,7 +228,7 @@ def Generate_Animation(args, previewLabel, window):
             img_array.append(img)
         
         fourcc = cv2.VideoWriter_fourcc(*'avc1')
-        out = cv2.VideoWriter(f"{args['outdir']}/anim_{args['prompts'][0][0]}/{args['prompts'][0][0]}.mp4",fourcc, 10, size)
+        out = cv2.VideoWriter(f"{args['outdir']}/anim_{args['prompts'][0][0]}/animation.mp4",fourcc, 10, size)
  
         for i in range(len(img_array)):
             out.write(img_array[i])
@@ -427,11 +427,16 @@ if __name__ == '__main__':
         global curAnimPromptCount
         curAnimPromptCount += 1
         generateNewPromptBox(window, curAnimPromptCount)
-        
 
+    def removePromptBox():
+        global curAnimPromptCount
+        #curAnimPromptCount -= 1
+        #window.ui.AnimatorMainVertLayoutGroup.itemAt(curAnimPromptCount).widget().deleteLater()
+        
 
     #buttons
     window.ui.animNewPromptButton.clicked.connect(lambda: makeNewPromptBox())
+    window.ui.animRemovePromptButton.clicked.connect(lambda: removePromptBox())
     window.ui.animInitChooseFileButton.clicked.connect(lambda: setFilePath(window.ui.animInitPathLineEdit, window.ui.imagePreview))
 
     #generate button

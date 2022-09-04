@@ -1426,15 +1426,30 @@ color: rgb(35, 35, 35);</string>
                </layout>
               </item>
               <item>
-               <widget class="QPushButton" name="animNewPromptButton">
+               <widget class="QPushButton" name="animRemovePromptButton">
                 <property name="font">
                  <font>
+                  <pointsize>10</pointsize>
                   <weight>75</weight>
                   <bold>true</bold>
                  </font>
                 </property>
                 <property name="text">
-                 <string>NEW PROMPT</string>
+                 <string>-</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QPushButton" name="animNewPromptButton">
+                <property name="font">
+                 <font>
+                  <pointsize>10</pointsize>
+                  <weight>75</weight>
+                  <bold>true</bold>
+                 </font>
+                </property>
+                <property name="text">
+                 <string>+</string>
                 </property>
                </widget>
               </item>
