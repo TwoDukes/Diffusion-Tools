@@ -7,13 +7,13 @@
     <x>0</x>
     <y>0</y>
     <width>1670</width>
-    <height>873</height>
+    <height>855</height>
    </rect>
   </property>
   <property name="minimumSize">
    <size>
     <width>1670</width>
-    <height>720</height>
+    <height>855</height>
    </size>
   </property>
   <property name="windowTitle">
@@ -302,7 +302,7 @@ color: rgb(255, 255, 255);</string>
       <item>
        <widget class="QStackedWidget" name="mainStackedWidget">
         <property name="currentIndex">
-         <number>1</number>
+         <number>0</number>
         </property>
         <widget class="QWidget" name="SingleImagePage">
          <layout class="QVBoxLayout" name="verticalLayout_9">
@@ -806,9 +806,6 @@ color: rgb(35, 35, 35);</string>
                  </widget>
                 </item>
                </layout>
-              </item>
-              <item>
-               <layout class="QHBoxLayout" name="horizontalLayout_7"/>
               </item>
               <item>
                <layout class="QHBoxLayout" name="horizontalLayout_6">

@@ -17,8 +17,8 @@ class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         if not MainWindow.objectName():
             MainWindow.setObjectName(u"MainWindow")
-        MainWindow.resize(1670, 873)
-        MainWindow.setMinimumSize(QSize(1670, 720))
+        MainWindow.resize(1670, 855)
+        MainWindow.setMinimumSize(QSize(1670, 855))
         MainWindow.setStyleSheet(u"background-color: rgb(68, 68, 68);\n"
 "\n"
 "color: rgb(255, 255, 255);")
@@ -386,11 +386,6 @@ class Ui_MainWindow(object):
 
 
         self.verticalLayout.addLayout(self.horizontalLayout_5)
-
-        self.horizontalLayout_7 = QHBoxLayout()
-        self.horizontalLayout_7.setObjectName(u"horizontalLayout_7")
-
-        self.verticalLayout.addLayout(self.horizontalLayout_7)
 
         self.horizontalLayout_6 = QHBoxLayout()
         self.horizontalLayout_6.setObjectName(u"horizontalLayout_6")
@@ -908,7 +903,7 @@ class Ui_MainWindow(object):
         self.AnimatorTabButton.setDefault(False)
         self.vid2vidTabButton.setDefault(False)
         self.inpaintingButton.setDefault(False)
-        self.mainStackedWidget.setCurrentIndex(1)
+        self.mainStackedWidget.setCurrentIndex(0)
         self.SecondaryStackedWidget.setCurrentIndex(0)
 
 
