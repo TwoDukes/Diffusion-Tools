@@ -22,9 +22,6 @@ from omegaconf import OmegaConf
 from ldm.util import instantiate_from_config
 from ui.DynamicElementBuilder import generateNewPromptBox
 
-config_g = None
-model_g = None
-
 
 def load_model_from_config(config, ckpt, verbose=False):
     print(f"Loading model from {ckpt}")
@@ -45,18 +42,70 @@ def load_model_from_config(config, ckpt, verbose=False):
     model.eval()
     return model
 
+def load_model_from_config_optimized(ckpt, verbose=False):
+    print(f"Loading model from {ckpt}")
+    pl_sd = torch.load(ckpt, map_location="cpu")
+    if "global_step" in pl_sd:
+        print(f"Global Step: {pl_sd['global_step']}")
+    sd = pl_sd["state_dict"]
+    return sd
+
 class dotdict(dict):    
         __getattr__ = dict.get
         __setattr__ = dict.__setitem__
         __delattr__ = dict.__delitem__
 
-def loadSDModel():
+def loadSDModel(window, firstLoad=False):
+
+    print("Loading SD Model")
+    if(not window.ui.actionMenuOptimized.isChecked() and not firstLoad):
+        return window.model, window.config
+
+    configPath = 'configs/stable-diffusion/v1-inference.yaml'
 
     modelPath = 'models/ldm/stable-diffusion-v1/model.ckpt'
-    configPath = 'configs/stable-diffusion/v1-inference.yaml'
 
     config = OmegaConf.load(f"{configPath}")
     model = load_model_from_config(config, f"{modelPath}")
+
+    window.ui.actionMenuStandard.setChecked(True)
+    window.ui.actionMenuOptimized.setChecked(False)
+   
+    return model, config
+
+def loadOptimizedSDModel(window):
+
+    print("Loading Optimized SD Model")
+
+    if(not window.ui.actionMenuStandard.isChecked()):
+        return window.model, window.config
+
+    configPath = 'configs/stable-diffusion/v1-inference_optimized.yaml'
+
+    modelPath = 'models/ldm/stable-diffusion-v1/model.ckpt'
+
+    config = OmegaConf.load(f"{configPath}")
+    model = load_model_from_config_optimized(f"{modelPath}")
+    li = []
+    lo = []
+    for key, value in model.items():
+        sp = key.split('.')
+        if(sp[0]) == 'model':
+            if('input_blocks' in sp):
+                li.append(key)
+            elif('middle_block' in sp):
+                li.append(key)
+            elif('time_embed' in sp):
+                li.append(key)
+            else:
+                lo.append(key)
+    for key in li:
+        model['model1.' + key[6:]] = model.pop(key)
+    for key in lo:
+        model['model2.' + key[6:]] = model.pop(key)
+
+    window.ui.actionMenuStandard.setChecked(False)
+    window.ui.actionMenuOptimized.setChecked(True)
    
     return model, config
     
@@ -183,13 +232,14 @@ def Generate_Image(args, previewLabel, window):
                 'seed': int(args['seed']),
                 'precision':'autocast',
                 'init_img': args['init_img'],
-                'strength': args['strength']
+                'strength': args['strength'],
+                'optimized': args['optimized']
             }
 
     args = dotdict(args)
 
     genMethod = img2img if window.ui.img2imgCheckbox.isChecked() else txt2img
-    generationWorker = Worker(genMethod, args, model_g)
+    generationWorker = Worker(genMethod, args, window.model, window.config)
 
     generationWorker.signals.result.connect(setResult)
     generationWorker.signals.progress.connect(progress_fn)
@@ -265,13 +315,14 @@ def Generate_Animation(args, previewLabel, window):
                 'seed': int(args['seed']),
                 'precision':'autocast',
                 'init_img': args['init_img'],
-                'strength': args['strength']
+                'strength': args['strength'],
+                'optimized': args['optimized']
             }
 
     args = dotdict(args)
 
     genMethod = txt2anim
-    generationWorker = Worker(genMethod, args, model_g)
+    generationWorker = Worker(genMethod, args, window.model, window.config)
 
     generationWorker.signals.result.connect(setResult)
     generationWorker.signals.progress.connect(progress_fn)
@@ -384,7 +435,8 @@ def getArgs(window, type = 0):
             'outdir': window.ui.imageOutputFolderLineEdit.text(),
             'strength': float(window.ui.strengthSlider.value())/100.0,
             'init_img': window.ui.img2imgInitPathLineEdit.text(),
-            'prompts': GetAnimPrompts(window)
+            'prompts': GetAnimPrompts(window),
+            'optimized': window.ui.actionMenuOptimized.isChecked()
         }
     elif(type == 1): #Animator (TODO)
         args = {
@@ -397,7 +449,8 @@ def getArgs(window, type = 0):
         'H': window.ui.heightInput.value(),
         'outdir': window.ui.imageOutputFolderLineEdit.text(),
         'strength': float(window.ui.strengthSlider.value())/100.0,
-        'init_img': window.ui.animInitPathLineEdit.text()
+        'init_img': window.ui.animInitPathLineEdit.text(),
+        'optimized': window.ui.actionMenuOptimized.isChecked()
         }
     return args
     
@@ -406,12 +459,34 @@ def getArgs(window, type = 0):
 if __name__ == '__main__':
     app = QApplication(sys.argv)
 
-    model_g, config_g = loadSDModel()
-
+    
     window = MainWindow()
+
+    window.model = None
+    window.config = None
+
+    window.model, window.config = loadSDModel(window, True)
+
+    def setModel(isOptimized, window):
+        print("Setting Model")
+        if isOptimized:
+            print("Optimized")
+            window.model, window.config = loadOptimizedSDModel(window)
+        else:
+            print("Standard")
+            window.model, window.config = loadSDModel(window)
+        print("Model Set")
+
+
+
+
+
     window.ui.mainStackedWidget.setCurrentIndex(0)
     window.ui.SecondaryStackedWidget.setCurrentIndex(0)
 
+    #Menu buttons
+    window.ui.actionMenuStandard.triggered.connect(lambda: setModel(False, window))
+    window.ui.actionMenuOptimized.triggered.connect(lambda: setModel(True, window))
     
     #Tab switching
     window.ui.imageTabButton.clicked.connect(lambda: SwitchTabs(0, window))

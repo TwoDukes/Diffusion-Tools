@@ -1796,6 +1796,17 @@ color: rgb(16, 16, 16);</string>
     <property name="title">
      <string>Menu</string>
     </property>
+    <widget class="QMenu" name="menuperformance">
+     <property name="statusTip">
+      <string>Choose setting for your hardware</string>
+     </property>
+     <property name="title">
+      <string>Performance</string>
+     </property>
+     <addaction name="actionMenuStandard"/>
+     <addaction name="actionMenuOptimized"/>
+    </widget>
+    <addaction name="menuperformance"/>
    </widget>
    <addaction name="menuMenu"/>
   </widget>
@@ -1849,6 +1860,25 @@ color: rgb(16, 16, 16);</string>
    </property>
    <property name="statusTip">
     <string/>
+   </property>
+  </action>
+  <action name="actionMenuStandard">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Standard</string>
+   </property>
+  </action>
+  <action name="actionMenuOptimized">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Optimized</string>
    </property>
   </action>
  </widget>

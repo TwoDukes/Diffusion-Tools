@@ -13,10 +13,11 @@ from pytorch_lightning import seed_everything
 from torch import autocast
 from contextlib import contextmanager, nullcontext
 
+from ldm.util import instantiate_from_config
 from ldm.models.diffusion.ddim import DDIMSampler
 from ldm.models.diffusion.plms import PLMSSampler
 
-from utils.generators import txt2img_generator
+from utils.generators import txt2img_generator, txt2img_generator_optimized
 
 from diffusers.pipelines.stable_diffusion.safety_checker import StableDiffusionSafetyChecker
 from transformers import AutoFeatureExtractor
@@ -66,7 +67,7 @@ def check_safety(x_image):
     return x_checked_image, has_nsfw_concept
 
 
-def main(args, model, progress_callback):
+def main(args, model, config, progress_callback):
        
     opt = args
     print(opt)
@@ -82,15 +83,33 @@ def main(args, model, progress_callback):
     print("init_seed = ", opt.seed)
     seed_everything(opt.seed)
 
-    
+    sampler = None
+    opt.device = torch.device("cuda") if torch.cuda.is_available() else torch.device("cpu")
+    if(not opt.optimized):
+        model = model.to(opt.device)
 
-    device = torch.device("cuda") if torch.cuda.is_available() else torch.device("cpu")
-    model = model.to(device)
+        if opt.plms:
+            sampler = PLMSSampler(model)
+        else:
+            sampler = DDIMSampler(model)
 
-    if opt.plms:
-        sampler = PLMSSampler(model)
     else:
-        sampler = DDIMSampler(model)
+        config.modelUNet.params.ddim_steps = opt.ddim_steps
+        config.modelUNet.params.small_batch = True
+
+        sampler = instantiate_from_config(config.modelUNet)
+        _, _ = sampler.load_state_dict(model, strict=False)
+        sampler.eval()
+            
+        samplerCS = instantiate_from_config(config.modelCondStage)
+        _, _ = samplerCS.load_state_dict(model, strict=False)
+        samplerCS.eval()
+            
+        samplerFS = instantiate_from_config(config.modelFirstStage)
+        _, _ = samplerFS.load_state_dict(model, strict=False)
+        samplerFS.eval()
+
+        sampler=(sampler, samplerCS, samplerFS)
 
     os.makedirs(opt.outdir, exist_ok=True)
     outpath = opt.outdir
@@ -115,14 +134,22 @@ def main(args, model, progress_callback):
     base_count = len(os.listdir(sample_path))
     grid_count = len(os.listdir(outpath)) - 1
 
+
     opt.start_code = None
     if opt.fixed_code:
-        opt.start_code = torch.randn([opt.n_samples, opt.C, opt.H // opt.f, opt.W // opt.f], device=device)
+        opt.start_code = torch.randn([opt.n_samples, opt.C, opt.H // opt.f, opt.W // opt.f], device=opt.device)
 
     progress_callback.emit(50)
 
     #generate images
-    img = txt2img_generator(opt, model, sampler)
+    img = None
+    if(opt.optimized):
+        print("Using optimized generator")
+        img = txt2img_generator_optimized(opt, model, config, sampler)
+    else:
+        print("Using default generator")
+        img = txt2img_generator(opt, model, sampler)
+    
     base_count+=1
 
     finalPath = os.path.join(sample_path, f"{base_count:05}.png")

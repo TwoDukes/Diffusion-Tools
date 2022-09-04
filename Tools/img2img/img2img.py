@@ -20,7 +20,7 @@ from ldm.util import instantiate_from_config
 from ldm.models.diffusion.ddim import DDIMSampler
 from ldm.models.diffusion.plms import PLMSSampler
 
-from utils.generators import img2img_generator
+from utils.generators import img2img_generator, img2img_generator_optimized
 
 
 def chunk(it, size):
@@ -40,7 +40,7 @@ def load_img(path):
     return 2.*image - 1.
 
 
-def main(args, model, progress_callback):
+def main(args, model, config, progress_callback):
     
     opt = args
 
@@ -50,14 +50,34 @@ def main(args, model, progress_callback):
     seed_everything(opt.seed)
     
 
+    sampler = None
     opt.device = torch.device("cuda") if torch.cuda.is_available() else torch.device("cpu")
-    model = model.to(opt.device)
+    if(not opt.optimized):
+        model = model.to(opt.device)
 
-    if opt.plms:
-        raise NotImplementedError("PLMS sampler not (yet) supported")
-        sampler = PLMSSampler(model)
+        if opt.plms:
+            raise NotImplementedError("PLMS sampler not (yet) supported")
+            sampler = PLMSSampler(model)
+        else:
+            sampler = DDIMSampler(model)
+
     else:
-        sampler = DDIMSampler(model)
+        config.modelUNet.params.ddim_steps = opt.ddim_steps
+        config.modelUNet.params.small_batch = True
+
+        sampler = instantiate_from_config(config.modelUNet)
+        _, _ = sampler.load_state_dict(model, strict=False)
+        sampler.eval()
+            
+        samplerCS = instantiate_from_config(config.modelCondStage)
+        _, _ = samplerCS.load_state_dict(model, strict=False)
+        samplerCS.eval()
+            
+        samplerFS = instantiate_from_config(config.modelFirstStage)
+        _, _ = samplerFS.load_state_dict(model, strict=False)
+        samplerFS.eval()
+
+        sampler=(sampler, samplerCS, samplerFS)
 
     os.makedirs(opt.outdir, exist_ok=True)
     outpath = opt.outdir
@@ -78,14 +98,23 @@ def main(args, model, progress_callback):
     sample_path = os.path.join(outpath, "samples")
     os.makedirs(sample_path, exist_ok=True)
     base_count = len(os.listdir(sample_path))
-    grid_count = len(os.listdir(outpath)) - 1
 
     assert os.path.isfile(opt.init_img)
     init_image = load_img(opt.init_img).to(opt.device)
-    init_image = repeat(init_image, '1 ... -> b ...', b=opt.batch_size)
-    init_latent = model.get_first_stage_encoding(model.encode_first_stage(init_image))  # move to latent space
 
-    sampler.make_schedule(ddim_num_steps=opt.ddim_steps, ddim_eta=opt.ddim_eta, verbose=False)
+    init_latent = None
+    if not opt.optimized:
+        init_image = repeat(init_image, '1 ... -> b ...', b=opt.batch_size)
+        init_latent = model.get_first_stage_encoding(model.encode_first_stage(init_image)) 
+        sampler.make_schedule(ddim_num_steps=opt.ddim_steps, ddim_eta=opt.ddim_eta, verbose=False)
+    else:  
+        sampler[2].to(opt.device)
+        init_image = repeat(init_image, '1 ... -> b ...', b=opt.batch_size)
+        init_latent = sampler[2].get_first_stage_encoding(sampler[2].encode_first_stage(init_image))  # move to latent space
+        sampler[0].make_schedule(ddim_num_steps=opt.ddim_steps, ddim_eta=opt.ddim_eta, verbose=False)
+
+
+    
 
     assert 0. <= opt.strength <= 1., 'can only work with strength in [0.0, 1.0]'
     opt.t_enc = int(opt.strength * opt.ddim_steps)
@@ -96,7 +125,12 @@ def main(args, model, progress_callback):
     progress_callback.emit(50)
 
     #generate images
-    img = img2img_generator(opt, init_latent, model, sampler)
+    img = None
+    if not opt.optimized:
+        img = img2img_generator(opt, init_latent, model, sampler)
+    else:
+        img = img2img_generator_optimized(opt, init_latent, model, config, sampler)
+
     base_count+=1
 
     finalPath = os.path.join(sample_path, f"{base_count:05}.png")

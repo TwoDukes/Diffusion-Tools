@@ -4,3 +4,4 @@ init*
 *.log
 **/testFiles
 **/testFiles/*
+*.pyc

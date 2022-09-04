@@ -120,7 +120,7 @@ def setup_next_img(img, prevImg, lutImg, prevLutImg, sampleCount, CurrentSampleN
 
 
 
-def main(args, model, progress_callback):
+def main(args, model, config, progress_callback):
     parser = argparse.ArgumentParser()
 
     opt = args
