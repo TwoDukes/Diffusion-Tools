@@ -26,7 +26,7 @@ from ldm.util import instantiate_from_config
 from ldm.models.diffusion.ddim import DDIMSampler
 from ldm.models.diffusion.plms import PLMSSampler
 
-from utils.generators import txt2img_generator, img2img_generator
+from utils.generators import txt2img_generator, img2img_generator, txt2img_generator_optimized, img2img_generator_optimized
 
 #python Tools/Animator/sd_anim.py --prompt "Film test 1" --strength 0.42 --ddim_steps 80 --scale 8
 
@@ -46,7 +46,7 @@ def load_img(path):
     image = np.array(image).astype(np.float32) / 255.0
     image = image[None].transpose(0, 3, 1, 2)
     image = torch.from_numpy(image)
-    return (2.*image - 1., ImageObj)
+    return 2.*image - 1.0, ImageObj
 
 cm = ColorMatcher()
 prevLutImg = None
@@ -131,14 +131,34 @@ def main(args, model, config, progress_callback):
     print("init_seed = ", opt.seed)
     seed_everything(opt.seed)
 
+    sampler = None
     opt.device = torch.device("cuda") if torch.cuda.is_available() else torch.device("cpu")
-    model = model.to(opt.device)
+    if(not opt.optimized):
+        model = model.to(opt.device)
 
-    if opt.plms:
-        raise NotImplementedError("PLMS sampler not (yet) supported")
-        sampler = PLMSSampler(model)
+        if opt.plms:
+            raise NotImplementedError("PLMS sampler not (yet) supported")
+            sampler = PLMSSampler(model)
+        else:
+            sampler = DDIMSampler(model)
+
     else:
-        sampler = DDIMSampler(model)
+        config.modelUNet.params.ddim_steps = opt.ddim_steps
+        config.modelUNet.params.small_batch = True
+
+        sampler = instantiate_from_config(config.modelUNet)
+        _, _ = sampler.load_state_dict(model, strict=False)
+        sampler.eval()
+            
+        samplerCS = instantiate_from_config(config.modelCondStage)
+        _, _ = samplerCS.load_state_dict(model, strict=False)
+        samplerCS.eval()
+            
+        samplerFS = instantiate_from_config(config.modelFirstStage)
+        _, _ = samplerFS.load_state_dict(model, strict=False)
+        samplerFS.eval()
+
+        sampler=(sampler, samplerCS, samplerFS)
 
     os.makedirs(opt.outdir, exist_ok=True)
     outpath = opt.outdir
@@ -160,10 +180,17 @@ def main(args, model, config, progress_callback):
     assert os.path.isfile(opt.init_img)
     init_image, init_image_pil = load_img(opt.init_img)
     init_image = init_image.to(opt.device)
-    #init_image = repeat(init_image, '1 ... -> b ...', b=batch_size)
-    init_latent = model.get_first_stage_encoding(model.encode_first_stage(init_image))  # move to latent space
 
-    sampler.make_schedule(ddim_num_steps=opt.ddim_steps, ddim_eta=opt.ddim_eta, verbose=False)
+    init_latent = None
+    if not opt.optimized:
+        init_image = repeat(init_image, '1 ... -> b ...', b=opt.batch_size)
+        init_latent = model.get_first_stage_encoding(model.encode_first_stage(init_image)) 
+        sampler.make_schedule(ddim_num_steps=opt.ddim_steps, ddim_eta=opt.ddim_eta, verbose=False)
+    else:  
+        sampler[2].to(opt.device)
+        init_image = repeat(init_image, '1 ... -> b ...', b=opt.batch_size)
+        init_latent = sampler[2].get_first_stage_encoding(sampler[2].encode_first_stage(init_image))  # move to latent space
+        sampler[0].make_schedule(ddim_num_steps=opt.ddim_steps, ddim_eta=opt.ddim_eta, verbose=False)
 
 
     sampleCount = 0
@@ -191,7 +218,11 @@ def main(args, model, config, progress_callback):
         prev_init = init_image
 
         #generate LUT
-        img = txt2img_generator(opt, model, sampler)
+        img = None
+        if(not opt.optimized):
+            img = txt2img_generator(opt, model, sampler)
+        else:
+            img = txt2img_generator_optimized(opt, model, config, sampler)
 
         img.save(os.path.join(lut_path, f"{lut_base_count:05}.png"))
         LUT_IMG = img.convert("RGB")
@@ -215,14 +246,31 @@ def main(args, model, config, progress_callback):
             #seed_everything(randint(0, 1000000)) #TEST
             
             init_image = repeat(init_image, '1 ... -> b ...', b=opt.batch_size)
-            init_latent = model.get_first_stage_encoding(model.encode_first_stage(init_image))
+            init_latent = None
+            if not opt.optimized:
+                init_image = repeat(init_image, '1 ... -> b ...', b=opt.batch_size)
+                init_latent = model.get_first_stage_encoding(model.encode_first_stage(init_image)) 
+                #sampler.make_schedule(ddim_num_steps=opt.ddim_steps, ddim_eta=opt.ddim_eta, verbose=False)
+            else:  
+                opt.seed = randint(0, 1000000)
+                seed_everything(opt.seed)
+
+                sampler[2].to(opt.device)
+                init_image = repeat(init_image, '1 ... -> b ...', b=opt.batch_size)
+                init_latent = sampler[2].get_first_stage_encoding(sampler[2].encode_first_stage(init_image))  # move to latent space
+                #sampler[0].make_schedule(ddim_num_steps=opt.ddim_steps, ddim_eta=opt.ddim_eta, verbose=False)
+
 
             assert 0. <= opt.prompts[promptIndex][1] <= 1., 'can only work with strength in [0.0, 1.0]'
             opt.t_enc = int(opt.prompts[promptIndex][1] * opt.ddim_steps)
             print(f"target t_enc is {opt.t_enc} steps")
             
             #generate frame
-            im = img2img_generator(opt, init_latent, model, sampler)
+            im = None
+            if not opt.optimized:
+                im = img2img_generator(opt, init_latent, model, sampler)
+            else:
+                im = img2img_generator_optimized(opt, init_latent, model, config, sampler)
 
                                     
             pathToCurImage = os.path.join(sample_path, f"{base_count:05}.png")

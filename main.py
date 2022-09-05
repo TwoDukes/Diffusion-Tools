@@ -2,6 +2,7 @@ from ast import arg
 from inspect import getargs
 from locale import currency
 from math import ceil, floor
+import gc
 import random
 import sys
 import glob
@@ -468,6 +469,11 @@ if __name__ == '__main__':
     window.model, window.config = loadSDModel(window, True)
 
     def setModel(isOptimized, window):
+        del window.model
+        torch.cuda.empty_cache()
+        
+        gc.collect()
+        
         print("Setting Model")
         if isOptimized:
             print("Optimized")

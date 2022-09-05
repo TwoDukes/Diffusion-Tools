@@ -37,7 +37,7 @@ def load_img(path):
     image = np.array(image).astype(np.float32) / 255.0
     image = image[None].transpose(0, 3, 1, 2)
     image = torch.from_numpy(image)
-    return 2.*image - 1.
+    return 2.*image - 1.0
 
 
 def main(args, model, config, progress_callback):
