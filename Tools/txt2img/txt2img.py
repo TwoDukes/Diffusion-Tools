@@ -71,6 +71,7 @@ def main(args, model, config, progress_callback):
        
     opt = args
     print(opt)
+    
 
     if opt.laion400m:
         print("Falling back to LAION 400M model...")
@@ -94,22 +95,8 @@ def main(args, model, config, progress_callback):
             sampler = DDIMSampler(model)
 
     else:
-        config.modelUNet.params.ddim_steps = opt.ddim_steps
-        config.modelUNet.params.small_batch = True
-
-        sampler = instantiate_from_config(config.modelUNet)
-        _, _ = sampler.load_state_dict(model, strict=False)
-        sampler.eval()
-            
-        samplerCS = instantiate_from_config(config.modelCondStage)
-        _, _ = samplerCS.load_state_dict(model, strict=False)
-        samplerCS.eval()
-            
-        samplerFS = instantiate_from_config(config.modelFirstStage)
-        _, _ = samplerFS.load_state_dict(model, strict=False)
-        samplerFS.eval()
-
-        sampler=(sampler, samplerCS, samplerFS)
+        sampler = (model[0], model[1], model[2])
+        sampler[0].make_schedule(ddim_num_steps=opt.ddim_steps, ddim_eta=opt.ddim_eta, verbose=False)
 
     os.makedirs(opt.outdir, exist_ok=True)
     outpath = opt.outdir

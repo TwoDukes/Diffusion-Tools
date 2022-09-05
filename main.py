@@ -105,10 +105,28 @@ def loadOptimizedSDModel(window):
     for key in lo:
         model['model2.' + key[6:]] = model.pop(key)
 
+
+    #config.modelUNet.params.ddim_steps = opt.ddim_steps
+    config.modelUNet.params.small_batch = True
+
+    sampler = instantiate_from_config(config.modelUNet)
+    _, _ = sampler.load_state_dict(model, strict=False)
+    sampler.eval()
+        
+    samplerCS = instantiate_from_config(config.modelCondStage)
+    _, _ = samplerCS.load_state_dict(model, strict=False)
+    samplerCS.eval()
+        
+    samplerFS = instantiate_from_config(config.modelFirstStage)
+    _, _ = samplerFS.load_state_dict(model, strict=False)
+    samplerFS.eval()
+
+    sampler=(sampler, samplerCS, samplerFS)
+
     window.ui.actionMenuStandard.setChecked(False)
     window.ui.actionMenuOptimized.setChecked(True)
    
-    return model, config
+    return sampler, config
     
 
 #------------------WORKER------------------
@@ -471,7 +489,7 @@ if __name__ == '__main__':
     def setModel(isOptimized, window):
         del window.model
         torch.cuda.empty_cache()
-        
+
         gc.collect()
         
         print("Setting Model")

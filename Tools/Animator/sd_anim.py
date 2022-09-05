@@ -158,7 +158,7 @@ def main(args, model, config, progress_callback):
         _, _ = samplerFS.load_state_dict(model, strict=False)
         samplerFS.eval()
 
-        sampler=(sampler, samplerCS, samplerFS)
+        sampler=[sampler, samplerCS, samplerFS]
 
     os.makedirs(opt.outdir, exist_ok=True)
     outpath = opt.outdir

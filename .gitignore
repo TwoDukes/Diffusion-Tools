@@ -5,3 +5,5 @@ init*
 **/testFiles
 **/testFiles/*
 *.pyc
+**/__pycache__
+**/__pycache__/*
