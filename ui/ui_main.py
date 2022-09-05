@@ -17,8 +17,11 @@ class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         if not MainWindow.objectName():
             MainWindow.setObjectName(u"MainWindow")
-        MainWindow.resize(1670, 855)
-        MainWindow.setMinimumSize(QSize(1670, 855))
+        MainWindow.resize(1670, 900)
+        MainWindow.setMinimumSize(QSize(1670, 900))
+        icon = QIcon()
+        icon.addFile(u"../outputs/SingleImage/samples/00123.png", QSize(), QIcon.Normal, QIcon.Off)
+        MainWindow.setWindowIcon(icon)
         MainWindow.setStyleSheet(u"background-color: rgb(68, 68, 68);\n"
 "\n"
 "color: rgb(255, 255, 255);")
@@ -565,7 +568,7 @@ class Ui_MainWindow(object):
         self.animPromptScrollArea.setWidgetResizable(True)
         self.animMainPromptScrollContainer = QWidget()
         self.animMainPromptScrollContainer.setObjectName(u"animMainPromptScrollContainer")
-        self.animMainPromptScrollContainer.setGeometry(QRect(0, 0, 943, 691))
+        self.animMainPromptScrollContainer.setGeometry(QRect(0, 0, 943, 736))
         self.animPromptContainterLayoutGroup = QVBoxLayout(self.animMainPromptScrollContainer)
         self.animPromptContainterLayoutGroup.setObjectName(u"animPromptContainterLayoutGroup")
         self.label = QLabel(self.animMainPromptScrollContainer)
@@ -615,8 +618,8 @@ class Ui_MainWindow(object):
         font10.setWeight(50)
         self.animStength1.setFont(font10)
         self.animStength1.setMaximum(1.000000000000000)
-        self.animStength1.setSingleStep(0.050000000000000)
-        self.animStength1.setValue(0.450000000000000)
+        self.animStength1.setSingleStep(0.010000000000000)
+        self.animStength1.setValue(0.400000000000000)
 
         self.animHorizOptionContainter.addWidget(self.animStength1)
 
@@ -651,7 +654,7 @@ class Ui_MainWindow(object):
         self.animZoom1.setSizePolicy(sizePolicy2)
         self.animZoom1.setMinimumSize(QSize(120, 0))
         self.animZoom1.setMinimum(-99.000000000000000)
-        self.animZoom1.setSingleStep(0.050000000000000)
+        self.animZoom1.setSingleStep(0.010000000000000)
         self.animZoom1.setValue(1.000000000000000)
 
         self.animHorizOptionContainter.addWidget(self.animZoom1)
@@ -769,8 +772,11 @@ class Ui_MainWindow(object):
         self.horizontalLayout_9.setObjectName(u"horizontalLayout_9")
         self.outputFolderLabel = QLabel(self.centralwidget)
         self.outputFolderLabel.setObjectName(u"outputFolderLabel")
-        sizePolicy4.setHeightForWidth(self.outputFolderLabel.sizePolicy().hasHeightForWidth())
-        self.outputFolderLabel.setSizePolicy(sizePolicy4)
+        sizePolicy8 = QSizePolicy(QSizePolicy.Maximum, QSizePolicy.Maximum)
+        sizePolicy8.setHorizontalStretch(0)
+        sizePolicy8.setVerticalStretch(0)
+        sizePolicy8.setHeightForWidth(self.outputFolderLabel.sizePolicy().hasHeightForWidth())
+        self.outputFolderLabel.setSizePolicy(sizePolicy8)
         self.outputFolderLabel.setFont(font4)
 
         self.horizontalLayout_9.addWidget(self.outputFolderLabel)
@@ -810,28 +816,6 @@ class Ui_MainWindow(object):
         self.verticalLayout_12 = QVBoxLayout(self.Animator)
         self.verticalLayout_12.setObjectName(u"verticalLayout_12")
         self.verticalLayout_12.setContentsMargins(0, -1, -1, -1)
-        self.horizontalLayout_18 = QHBoxLayout()
-        self.horizontalLayout_18.setObjectName(u"horizontalLayout_18")
-        self.animInitLabel = QLabel(self.Animator)
-        self.animInitLabel.setObjectName(u"animInitLabel")
-        sizePolicy8 = QSizePolicy(QSizePolicy.Maximum, QSizePolicy.Maximum)
-        sizePolicy8.setHorizontalStretch(0)
-        sizePolicy8.setVerticalStretch(0)
-        sizePolicy8.setHeightForWidth(self.animInitLabel.sizePolicy().hasHeightForWidth())
-        self.animInitLabel.setSizePolicy(sizePolicy8)
-        self.animInitLabel.setFont(font8)
-
-        self.horizontalLayout_18.addWidget(self.animInitLabel)
-
-        self.animInitEnabledCheckbox = QCheckBox(self.Animator)
-        self.animInitEnabledCheckbox.setObjectName(u"animInitEnabledCheckbox")
-        self.animInitEnabledCheckbox.setChecked(True)
-
-        self.horizontalLayout_18.addWidget(self.animInitEnabledCheckbox)
-
-
-        self.verticalLayout_12.addLayout(self.horizontalLayout_18)
-
         self.horizontalLayout_19 = QHBoxLayout()
         self.horizontalLayout_19.setObjectName(u"horizontalLayout_19")
         self.animInitPathLineEdit = QLineEdit(self.Animator)
@@ -869,19 +853,24 @@ class Ui_MainWindow(object):
 
         self.verticalLayout_12.addLayout(self.horizontalLayout_11)
 
+        self.horizontalLayout_7 = QHBoxLayout()
+        self.horizontalLayout_7.setObjectName(u"horizontalLayout_7")
         self.startAnimationButton = QPushButton(self.Animator)
         self.startAnimationButton.setObjectName(u"startAnimationButton")
         self.startAnimationButton.setStyleSheet(u"background-color: rgb(216, 216, 216);\n"
 "color: rgb(16, 16, 16);")
 
-        self.verticalLayout_12.addWidget(self.startAnimationButton)
+        self.horizontalLayout_7.addWidget(self.startAnimationButton)
 
         self.stopAnimationButton = QPushButton(self.Animator)
         self.stopAnimationButton.setObjectName(u"stopAnimationButton")
         self.stopAnimationButton.setStyleSheet(u"background-color: rgb(255, 42, 42);\n"
 "color: rgb(255, 255, 255);")
 
-        self.verticalLayout_12.addWidget(self.stopAnimationButton)
+        self.horizontalLayout_7.addWidget(self.stopAnimationButton)
+
+
+        self.verticalLayout_12.addLayout(self.horizontalLayout_7)
 
         self.animCompletionProgressBar = QProgressBar(self.Animator)
         self.animCompletionProgressBar.setObjectName(u"animCompletionProgressBar")
@@ -1017,8 +1006,6 @@ class Ui_MainWindow(object):
         self.outputFolderLabel.setText(QCoreApplication.translate("MainWindow", u"Output folder", None))
         self.imageOutputFolderLineEdit.setText(QCoreApplication.translate("MainWindow", u"Outputs/SingleImage", None))
         self.imageOutputFolderButton.setText(QCoreApplication.translate("MainWindow", u"Choose Folder", None))
-        self.animInitLabel.setText(QCoreApplication.translate("MainWindow", u"Init Image", None))
-        self.animInitEnabledCheckbox.setText(QCoreApplication.translate("MainWindow", u"Enabled", None))
         self.animInitPathLineEdit.setText(QCoreApplication.translate("MainWindow", u"ui/preview.png", None))
         self.animInitChooseFileButton.setText(QCoreApplication.translate("MainWindow", u"Choose Image", None))
         self.animStepsSpinBox.setPrefix(QCoreApplication.translate("MainWindow", u"STEPS: ", None))

@@ -28,12 +28,9 @@ from ldm.models.diffusion.plms import PLMSSampler
 
 from utils.generators import txt2img_generator, img2img_generator, txt2img_generator_optimized, img2img_generator_optimized
 
-#python Tools/Animator/sd_anim.py --prompt "Film test 1" --strength 0.42 --ddim_steps 80 --scale 8
-
 def chunk(it, size):
     it = iter(it)
     return iter(lambda: tuple(islice(it, size)), ())
-
 
 
 def load_img(path):
@@ -90,17 +87,6 @@ def setup_next_img(img, prevImg, lutImg, prevLutImg, sampleCount, CurrentSampleN
 
     xform = make_xform_2d(w, h, translation_x, translation_y, angle, zoom)
 
-    def sample_to_cv2(sample: torch.Tensor) -> np.ndarray:
-        sample_f32 = rearrange(sample.squeeze().cpu().numpy(), "c h w -> h w c").astype(np.float32)
-        sample_f32 = ((sample_f32 * 0.5) + 0.5).clip(0, 1)
-        sample_int8 = (sample_f32 * 255).astype(np.uint8)
-        return sample_int8
-
-    def sample_from_cv2(sample: np.ndarray) -> torch.Tensor:
-        sample = ((sample.astype(float) / 255.0) * 2) - 1
-        sample = sample[None].transpose(0, 3, 1, 2).astype(np.float16)
-        sample = torch.from_numpy(sample)
-        return sample
 
     # transform previous frame
     #prev_img = sample_to_cv2(img2)
@@ -268,18 +254,10 @@ def main(args, model, window, progress_callback):
             im.save(pathToCurImage)
             progress_callback.emit(imageCount)
             base_count += 1
-            #init_image = automatic_brightness_and_contrast(im)
-            #init_image = Image.fromarray(init_image)
             init_image = setup_next_img(im, prev_init, LUT_IMG, PREV_LUT, sampleCount, i, opt.prompts[promptIndex]).to(opt.device)
             prev_init = init_image
             print("Next Image\n\n")
-
-                        
-
-
-                        
-
-                    
+     
 
     print(f"Your samples are ready and waiting for you here: \n{outpath} \n"
         f" \nEnjoy.")

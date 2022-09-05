@@ -15,7 +15,7 @@ from Tools.txt2img.txt2img import main as txt2img
 from Tools.img2img.img2img import main as img2img
 from Tools.Animator.sd_anim import main as txt2anim
 from PySide2.QtWidgets import QApplication, QMainWindow, QVBoxLayout, QLabel, QPushButton, QWidget, QFileDialog
-from PySide2.QtCore import QFile, QTimer, QRunnable, Slot, Signal, QObject, QThreadPool
+from PySide2.QtCore import QFile, QTimer, QRunnable, Slot, Signal, QObject, QThreadPool, QSize
 from PySide2 import QtCore, QtGui, QtWidgets
 from PySide2.QtCore import QRunnable, Slot, QThreadPool
 from ui.ui_main import Ui_MainWindow
@@ -489,6 +489,11 @@ if __name__ == '__main__':
 
     
     window = MainWindow()
+
+
+    icon = QtGui.QIcon()
+    icon.addFile(u"./ui/iconAlpha.png", QSize(), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+    window.setWindowIcon(icon)
 
     window.model = None
     window.config = None

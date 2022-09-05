@@ -71,7 +71,7 @@ def generateNewPromptBox(self, number):
         animZoom1.setSizePolicy(sizePolicy2)
         animZoom1.setMinimumSize(QSize(120, 0))
         animZoom1.setMinimum(-99.000000000000000)
-        animZoom1.setSingleStep(0.05000000000000)
+        animZoom1.setSingleStep(0.01000000000000)
         animZoom1.setValue(1.000000000000000)
 
 
@@ -106,8 +106,8 @@ def generateNewPromptBox(self, number):
         font10.setWeight(50)
         animStength1.setFont(font10)
         animStength1.setMaximum(1.000000000000000)
-        animStength1.setSingleStep(0.050000000000000)
-        animStength1.setValue(0.450000000000000)
+        animStength1.setSingleStep(0.010000000000000)
+        animStength1.setValue(0.400000000000000)
 
 
         animOptionHorizSpacer1 = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
