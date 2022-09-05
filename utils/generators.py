@@ -94,7 +94,7 @@ def img2img_generator(opt, init_latent, model, sampler):
                 toc = time.time()
 
 
-def txt2img_generator_optimized(opt, model, config, sampler):
+def txt2img_generator_optimized(opt, model, sampler):
 
     
     if opt.precision == "autocast":
@@ -154,7 +154,7 @@ def txt2img_generator_optimized(opt, model, config, sampler):
 
         toc = time.time()
 
-def img2img_generator_optimized(opt, init_latent, model, config, sampler): 
+def img2img_generator_optimized(opt, init_latent, model, sampler): 
     '''
     if opt.precision == "autocast":
         sampler[0].half()

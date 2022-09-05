@@ -258,7 +258,7 @@ def Generate_Image(args, previewLabel, window):
     args = dotdict(args)
 
     genMethod = img2img if window.ui.img2imgCheckbox.isChecked() else txt2img
-    generationWorker = Worker(genMethod, args, window.model, window.config)
+    generationWorker = Worker(genMethod, args, window.model, window)
 
     generationWorker.signals.result.connect(setResult)
     generationWorker.signals.progress.connect(progress_fn)
@@ -268,6 +268,7 @@ def Generate_Image(args, previewLabel, window):
 
 def Generate_Animation(args, previewLabel, window):
     print("GENERATING")
+    window.stopThread = False
 
     print(args['prompts'])
     
@@ -307,6 +308,10 @@ def Generate_Animation(args, previewLabel, window):
             out.write(img_array[i])
 
         out.release()
+
+        window.ui.animCompletionProgressBar.setValue(100)
+
+        window.stopThread = False
         print("FINISHED")
  
 
@@ -341,7 +346,7 @@ def Generate_Animation(args, previewLabel, window):
     args = dotdict(args)
 
     genMethod = txt2anim
-    generationWorker = Worker(genMethod, args, window.model, window.config)
+    generationWorker = Worker(genMethod, args, window.model, window)
 
     generationWorker.signals.result.connect(setResult)
     generationWorker.signals.progress.connect(progress_fn)
@@ -403,6 +408,10 @@ def SetImageSize(w,h,label):
     label.setMinimumHeight(h)
     label.setMaximumWidth(w)
     label.setMinimumWidth(w)
+
+def StopThread(window):
+    print("STOPPING THREAD")
+    window.stopThread = True
 
 def SwitchTabs(tabNumb, window):
     if tabNumb == 0:
@@ -483,6 +492,7 @@ if __name__ == '__main__':
 
     window.model = None
     window.config = None
+    window.stopThread = False
 
     window.model, window.config = loadSDModel(window, True)
 
@@ -555,6 +565,7 @@ if __name__ == '__main__':
 
     #generate button
     window.ui.startAnimationButton.clicked.connect(lambda: Generate_Animation(getArgs(window, 1), window.ui.imagePreview, window))
+    window.ui.stopAnimationButton.clicked.connect(lambda: StopThread(window))
 
 
     window.show()

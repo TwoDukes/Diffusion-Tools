@@ -40,7 +40,7 @@ def load_img(path):
     return 2.*image - 1.0
 
 
-def main(args, model, config, progress_callback):
+def main(args, model, window, progress_callback):
     
     opt = args
 
@@ -114,7 +114,7 @@ def main(args, model, config, progress_callback):
     if not opt.optimized:
         img = img2img_generator(opt, init_latent, model, sampler)
     else:
-        img = img2img_generator_optimized(opt, init_latent, model, config, sampler)
+        img = img2img_generator_optimized(opt, init_latent, model, sampler)
 
     base_count+=1
 

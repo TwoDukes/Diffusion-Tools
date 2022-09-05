@@ -876,6 +876,13 @@ class Ui_MainWindow(object):
 
         self.verticalLayout_12.addWidget(self.startAnimationButton)
 
+        self.stopAnimationButton = QPushButton(self.Animator)
+        self.stopAnimationButton.setObjectName(u"stopAnimationButton")
+        self.stopAnimationButton.setStyleSheet(u"background-color: rgb(255, 42, 42);\n"
+"color: rgb(16, 16, 16);")
+
+        self.verticalLayout_12.addWidget(self.stopAnimationButton)
+
         self.animCompletionProgressBar = QProgressBar(self.Animator)
         self.animCompletionProgressBar.setObjectName(u"animCompletionProgressBar")
         self.animCompletionProgressBar.setEnabled(True)
@@ -1017,6 +1024,7 @@ class Ui_MainWindow(object):
         self.animStepsSpinBox.setPrefix(QCoreApplication.translate("MainWindow", u"STEPS: ", None))
         self.animScaleSpinBox.setPrefix(QCoreApplication.translate("MainWindow", u"CFG SCALE: ", None))
         self.startAnimationButton.setText(QCoreApplication.translate("MainWindow", u"START ANIMATION", None))
+        self.stopAnimationButton.setText(QCoreApplication.translate("MainWindow", u"STOP ANIMATION", None))
         self.menuMenu.setTitle(QCoreApplication.translate("MainWindow", u"Menu", None))
 #if QT_CONFIG(statustip)
         self.menuperformance.setStatusTip(QCoreApplication.translate("MainWindow", u"Choose setting for your hardware", None))

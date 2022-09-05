@@ -120,7 +120,7 @@ def setup_next_img(img, prevImg, lutImg, prevLutImg, sampleCount, CurrentSampleN
 
 
 
-def main(args, model, config, progress_callback):
+def main(args, model, window, progress_callback):
     parser = argparse.ArgumentParser()
 
     opt = args
@@ -184,6 +184,10 @@ def main(args, model, config, progress_callback):
     LUT_IMG = None
     PREV_LUT = init_image_pil 
     for promptIndex in range(len(opt.prompts)):
+
+        if(window.stopThread):
+            return
+
         curPrompt = opt.prompts[promptIndex][0]
         sampleCount = opt.prompts[promptIndex][2]
 
@@ -207,7 +211,7 @@ def main(args, model, config, progress_callback):
         if(not opt.optimized):
             img = txt2img_generator(opt, model, sampler)
         else:
-            img = txt2img_generator_optimized(opt, model, config, sampler)
+            img = txt2img_generator_optimized(opt, model, sampler)
 
         img.save(os.path.join(lut_path, f"{lut_base_count:05}.png"))
         LUT_IMG = img.convert("RGB")
@@ -219,6 +223,8 @@ def main(args, model, config, progress_callback):
 
         for i in range(0, int(sampleCount)):
 
+            if(window.stopThread):
+                return
 
             imageCount += 1
             print("\n")
@@ -255,7 +261,7 @@ def main(args, model, config, progress_callback):
             if not opt.optimized:
                 im = img2img_generator(opt, init_latent, model, sampler)
             else:
-                im = img2img_generator_optimized(opt, init_latent, model, config, sampler)
+                im = img2img_generator_optimized(opt, init_latent, model, sampler)
 
                                     
             pathToCurImage = os.path.join(sample_path, f"{base_count:05}.png")

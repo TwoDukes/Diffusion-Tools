@@ -1739,6 +1739,17 @@ color: rgb(16, 16, 16);</string>
              </widget>
             </item>
             <item>
+             <widget class="QPushButton" name="stopAnimationButton">
+              <property name="styleSheet">
+               <string notr="true">background-color: rgb(255, 42, 42);
+color: rgb(16, 16, 16);</string>
+              </property>
+              <property name="text">
+               <string>STOP ANIMATION</string>
+              </property>
+             </widget>
+            </item>
+            <item>
              <widget class="QProgressBar" name="animCompletionProgressBar">
               <property name="enabled">
                <bool>true</bool>

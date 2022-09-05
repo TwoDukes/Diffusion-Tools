@@ -67,7 +67,7 @@ def check_safety(x_image):
     return x_checked_image, has_nsfw_concept
 
 
-def main(args, model, config, progress_callback):
+def main(args, model, window, progress_callback):
        
     opt = args
     print(opt)
@@ -132,7 +132,7 @@ def main(args, model, config, progress_callback):
     img = None
     if(opt.optimized):
         print("Using optimized generator")
-        img = txt2img_generator_optimized(opt, model, config, sampler)
+        img = txt2img_generator_optimized(opt, model, sampler)
     else:
         print("Using default generator")
         img = txt2img_generator(opt, model, sampler)
