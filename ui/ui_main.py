@@ -879,7 +879,7 @@ class Ui_MainWindow(object):
         self.stopAnimationButton = QPushButton(self.Animator)
         self.stopAnimationButton.setObjectName(u"stopAnimationButton")
         self.stopAnimationButton.setStyleSheet(u"background-color: rgb(255, 42, 42);\n"
-"color: rgb(16, 16, 16);")
+"color: rgb(255, 255, 255);")
 
         self.verticalLayout_12.addWidget(self.stopAnimationButton)
 
