@@ -20,7 +20,7 @@ class Ui_MainWindow(object):
         MainWindow.resize(1670, 900)
         MainWindow.setMinimumSize(QSize(1670, 900))
         icon = QIcon()
-        icon.addFile(u"../outputs/SingleImage/samples/00123.png", QSize(), QIcon.Normal, QIcon.Off)
+        icon.addFile(u"../../../../.designer/outputs/SingleImage/samples/00123.png", QSize(), QIcon.Normal, QIcon.Off)
         MainWindow.setWindowIcon(icon)
         MainWindow.setStyleSheet(u"background-color: rgb(68, 68, 68);\n"
 "\n"
@@ -756,7 +756,7 @@ class Ui_MainWindow(object):
         self.imagePreview.setSizePolicy(sizePolicy4)
         self.imagePreview.setMinimumSize(QSize(512, 512))
         self.imagePreview.setMaximumSize(QSize(512, 512))
-        self.imagePreview.setPixmap(QPixmap(u"../../../../.designer/outputs/txt2img-samples/grid-0018.png"))
+        self.imagePreview.setPixmap(QPixmap(u"../../../../../../.designer/outputs/txt2img-samples/grid-0018.png"))
         self.imagePreview.setScaledContents(True)
 
         self.horizontalLayout_8.addWidget(self.imagePreview)
@@ -922,7 +922,7 @@ class Ui_MainWindow(object):
         self.AnimatorTabButton.setDefault(False)
         self.vid2vidTabButton.setDefault(False)
         self.inpaintingButton.setDefault(False)
-        self.mainStackedWidget.setCurrentIndex(1)
+        self.mainStackedWidget.setCurrentIndex(0)
         self.SecondaryStackedWidget.setCurrentIndex(1)
 
 
@@ -963,7 +963,7 @@ class Ui_MainWindow(object):
         self.MainName.setText(QCoreApplication.translate("MainWindow", u"DIFFUSION TOOLS", None))
         self.imageTabButton.setText(QCoreApplication.translate("MainWindow", u"Image", None))
         self.AnimatorTabButton.setText(QCoreApplication.translate("MainWindow", u"Animator", None))
-        self.vid2vidTabButton.setText(QCoreApplication.translate("MainWindow", u"vid2vid", None))
+        self.vid2vidTabButton.setText(QCoreApplication.translate("MainWindow", u"Upscaling", None))
         self.inpaintingButton.setText(QCoreApplication.translate("MainWindow", u"Inpainting", None))
         self.label_2.setText(QCoreApplication.translate("MainWindow", u"SINGLE IMAGE DIFFUSION", None))
         self.promptLabel.setText(QCoreApplication.translate("MainWindow", u"PROMPT", None))

@@ -21,7 +21,7 @@
   </property>
   <property name="windowIcon">
    <iconset>
-    <normaloff>../outputs/SingleImage/samples/00123.png</normaloff>../outputs/SingleImage/samples/00123.png</iconset>
+    <normaloff>../../../../.designer/outputs/SingleImage/samples/00123.png</normaloff>../../../../.designer/outputs/SingleImage/samples/00123.png</iconset>
   </property>
   <property name="styleSheet">
    <string notr="true">background-color: rgb(68, 68, 68);
@@ -224,7 +224,7 @@ color: rgb(255, 255, 255);</string>
            <string notr="true"/>
           </property>
           <property name="text">
-           <string>vid2vid</string>
+           <string>Upscaling</string>
           </property>
           <property name="checkable">
            <bool>true</bool>
@@ -306,7 +306,7 @@ color: rgb(255, 255, 255);</string>
       <item>
        <widget class="QStackedWidget" name="mainStackedWidget">
         <property name="currentIndex">
-         <number>1</number>
+         <number>0</number>
         </property>
         <widget class="QWidget" name="SingleImagePage">
          <layout class="QVBoxLayout" name="verticalLayout_9">
@@ -1525,7 +1525,7 @@ color: rgb(35, 35, 35);</string>
              <string/>
             </property>
             <property name="pixmap">
-             <pixmap>../../../../.designer/outputs/txt2img-samples/grid-0018.png</pixmap>
+             <pixmap>../../../../../../.designer/outputs/txt2img-samples/grid-0018.png</pixmap>
             </property>
             <property name="scaledContents">
              <bool>true</bool>

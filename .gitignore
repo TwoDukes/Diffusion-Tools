@@ -7,3 +7,5 @@ init*
 *.pyc
 **/__pycache__
 **/__pycache__/*
+**/latent_diffusion.egg-info
+**/src
