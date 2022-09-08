@@ -9,3 +9,5 @@ init*
 **/__pycache__/*
 **/latent_diffusion.egg-info
 **/src
+**/dist
+**/exe_output
