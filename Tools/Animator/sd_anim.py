@@ -169,6 +169,9 @@ def main(args, model, window, progress_callback):
 
     LUT_IMG = None
     PREV_LUT = init_image_pil 
+    CUR_SEED = opt.seed
+    PREV_SEED = CUR_SEED
+    SEED_SWAPPED = False
     for promptIndex in range(len(opt.prompts)):
 
         if(window.stopThread):
@@ -229,8 +232,18 @@ def main(args, model, window, progress_callback):
                 init_latent = model.get_first_stage_encoding(model.encode_first_stage(init_image)) 
                 #sampler.make_schedule(ddim_num_steps=opt.ddim_steps, ddim_eta=opt.ddim_eta, verbose=False)
             else:  
-                opt.seed = randint(0, 1000000)
-                seed_everything(opt.seed)
+                if(SEED_SWAPPED):
+                    seed_everything(CUR_SEED)
+                    CUR_SEED = PREV_SEED
+                    SEED_SWAPPED = not SEED_SWAPPED
+                else:
+                    seed_everything(CUR_SEED)
+                    SEED_SWAPPED = not SEED_SWAPPED
+                    PREV_SEED = CUR_SEED
+                    CUR_SEED = randint(0, 1000000)
+                
+                print(f"SEED: {CUR_SEED}")
+
 
                 sampler[2].to(opt.device)
                 init_image = repeat(init_image, '1 ... -> b ...', b=opt.batch_size)
